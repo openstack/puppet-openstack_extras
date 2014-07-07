@@ -1,0 +1,3 @@
+fixtures:
+  symlinks:
+    'openstack_extras': "#{source_dir}"
