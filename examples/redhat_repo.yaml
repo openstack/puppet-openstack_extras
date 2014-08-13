@@ -1,0 +1,33 @@
+# This is an example of how to define your own repos in hiera
+# in addition to RDO when using the redhat repo class
+# assuming you have included the class somewhere
+#
+# This is taken from the aptira hiera data files in
+# puppet_openstack_builder and may go out of date.
+#
+# Set up repositories using openstack_extras
+openstack_extras::repo::redhat::redhat::repo_hash:
+  'CentOS-Base':
+    'descr': 'CentOS-$releasever - Base'
+    'baseurl': "%{hiera('yum_base_mirror')}/$releasever/os/$basearch/"
+  'CentOS-Updates':
+    'descr': 'CentOS-$releasever - Updates'
+    'baseurl': "%{hiera('yum_base_mirror')}/$releasever/updates/$basearch/"
+  'CentOS-Extras':
+    'descr': 'CentOS-$releasever - Extras'
+    'baseurl': "%{hiera('yum_base_mirror')}/$releasever/extras/$basearch/"
+  'epel':
+    'descr': 'Extra Packages for Enterprise Linux 6 - $basearch'
+    'baseurl': "%{hiera('yum_epel_mirror')}/$releasever/$basearch/"
+    'gpgkey': 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6'
+    'failovermethod': 'priority'
+
+openstack_extras::repo::redhat::redhat::repo_defaults:
+  'proxy': "http://%{hiera('proxy_host')}:%{hiera('proxy_port')}"
+
+openstack_extras::repo::redhat::redhat::gpgkey_hash:
+  '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6':
+    'source': 'puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-6'
+
+openstack_extras::repo::redhat::redhat::purge_unmanaged: true
+openstack_extras::repo::redhat::redhat::package_require: true
