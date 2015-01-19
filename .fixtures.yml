@@ -1,5 +1,6 @@
 fixtures:
   repositories:
+    'corosync': 'https://github.com/puppetlabs/puppetlabs-corosync'
     'apt'    : 'git://github.com/puppetlabs/puppetlabs-apt'
     'stdlib' : 'git://github.com/puppetlabs/puppetlabs-stdlib'
   symlinks:
