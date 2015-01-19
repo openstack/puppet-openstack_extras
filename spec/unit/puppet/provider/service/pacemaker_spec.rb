@@ -8,6 +8,7 @@ describe Puppet::Type.type(:service).provider(:pacemaker) do
   let(:full_name) { 'clone-p_myservice' }
   let(:name) { 'p_myservice' }
   let(:hostname) { 'mynode' }
+  let(:primitive_class) { 'ocf' }
 
   before :each do
     @class = provider
@@ -17,6 +18,7 @@ describe Puppet::Type.type(:service).provider(:pacemaker) do
     @class.stubs(:name).returns(name)
     @class.stubs(:full_name).returns(full_name)
     @class.stubs(:basic_service_name).returns(title)
+    @class.stubs(:primitive_class).returns(primitive_class)
 
     @class.stubs(:cib_reset).returns(true)
 
@@ -219,6 +221,12 @@ describe Puppet::Type.type(:service).provider(:pacemaker) do
 
     it 'tries to stop the service if it is running' do
       @class.extra_provider.expects(:stop)
+      @class.disable_basic_service
+    end
+
+    it 'does not try to stop a systemd running service' do
+      @class.stubs(:primitive_class).returns('systemd')
+      @class.extra_provider.expects(:stop).never
       @class.disable_basic_service
     end
   end
