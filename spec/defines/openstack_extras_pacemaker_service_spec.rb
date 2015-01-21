@@ -23,7 +23,8 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
         :handler_root_path => '/usr/local/bin',
         :ocf_script_template => false,
         :ocf_script_file => false,
-        :create_primitive => true
+        :create_primitive => true,
+        :clone => false
     }
   end
 
@@ -50,6 +51,12 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
                      'operations' => default_params[:operations],
                      'metadata' => default_params[:metadata],
                      'ms_metadata' => default_params[:ms_metadata],
+                 })
+    end
+    it 'should not create a cloned resource' do
+      should contain_cs_clone('p_foo-api-clone').with(
+                 {
+                     'ensure' => 'absent',
                  })
     end
   end
@@ -132,6 +139,22 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
                      'operations' => params[:operations],
                      'metadata' => params[:metadata],
                      'ms_metadata' => params[:ms_metadata],
+                 })
+    end
+  end
+
+  context 'with cloned resources' do
+    let (:params) do
+      default_params.merge(
+          {
+              :clone => true,
+          })
+    end
+    it 'should create a cloned resource' do
+      should contain_cs_clone('p_foo-api-clone').with(
+                 {
+                     'ensure'    => 'present',
+                     'primitive' => 'p_foo-api',
                  })
     end
   end

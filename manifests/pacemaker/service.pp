@@ -71,6 +71,10 @@
 #   (optional) Controls Pacemaker primitive creation
 #   Defaults to true
 #
+# [*clone*]
+#   (optional) Create a cloned primitive
+#   Defaults to false
+#
 # === Examples
 #
 #  Will create resource and ensure Pacemaker provider for
@@ -119,6 +123,7 @@ define openstack_extras::pacemaker::service (
   $ocf_script_template = false,
   $ocf_script_file     = false,
   $create_primitive    = true,
+  $clone               = false,
 ) {
 
   $service_name     = $title
@@ -148,6 +153,21 @@ define openstack_extras::pacemaker::service (
       operations      => $operations,
       metadata        => $metadata,
       ms_metadata     => $ms_metadata,
+    }
+
+    $clone_name="${primitive_name}-clone"
+    if $clone {
+      cs_clone { $clone_name :
+        ensure    => present,
+        primitive => $primitive_name,
+        require   => Cs_primitive[$primitive_name]
+      }
+    }
+    else {
+      cs_clone { $clone_name :
+        ensure  => absent,
+        require => Cs_primitive[$primitive_name]
+      }
     }
   }
 
