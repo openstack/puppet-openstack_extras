@@ -418,11 +418,17 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   # @return [String]
   def primitive_status(primitive, node = nil)
     if node
-      nodes.
-          fetch(node, {}).
-          fetch('primitives',{}).
-          fetch(primitive, {}).
-          fetch('status', nil)
+      found_node = nil
+      nodes.each do |k, v|
+        if v.fetch("uname", {}).eql? node
+          found_node = v
+        end
+      end
+      return unless found_node
+      found_node.
+           fetch('primitives',{}).
+           fetch(primitive, {}).
+           fetch('status', nil)
     else
       statuses = []
       nodes.each do |k,v|
