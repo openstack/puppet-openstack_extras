@@ -186,8 +186,12 @@ Puppet::Type.type(:service).provide :pacemaker, :parent => Puppet::Provider::Pac
         Puppet.info "Basic service '#{extra_provider.name}' is disabled as reported by '#{extra_provider.class.name}' provider"
       end
       if extra_provider.status == :running
-        Puppet.info "Stop basic service '#{extra_provider.name}' using provider '#{extra_provider.class.name}'"
-        extra_provider.stop
+       if not ['lsb','systemd','upstart'].include?(primitive_class name)
+          Puppet.info "Stop basic service '#{extra_provider.name}' using provider '#{extra_provider.class.name}'"
+          extra_provider.stop
+        else
+          Puppet.info "Not stopping basic service '#{extra_provider.name}', since its Pacemaker primitive is using primitive_class '#{extra_provider.class.name}'"
+        end
       else
         Puppet.info "Basic service '#{extra_provider.name}' is stopped as reported by '#{extra_provider.class.name}' provider"
       end

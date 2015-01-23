@@ -296,6 +296,14 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
     primitives[primitive]['parent']['type'] == 'master'
   end
 
+  # return primitive class
+  # @param primitive [String] primitive id
+  # @return [String]
+  def primitive_class(primitive)
+    return unless primitive_exists? primitive
+    primitives[primitive]['class']
+  end
+
   # disable this primitive
   # @param primitive [String]
   def disable_primitive(primitive)
