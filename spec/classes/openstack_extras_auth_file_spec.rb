@@ -9,7 +9,7 @@ describe 'openstack_extras::auth_file' do
     end
 
     it 'should create a openrc file' do
-      verify_contents(subject, '/root/openrc', [
+      verify_contents(catalogue, '/root/openrc', [
         'export OS_NO_CACHE=\'true\'',
         'export OS_TENANT_NAME=\'openstack\'',
         'export OS_USERNAME=\'admin\'',
@@ -48,7 +48,7 @@ describe 'openstack_extras::auth_file' do
     end
 
     it 'should create a openrc file' do
-      verify_contents(subject, '/root/openrc', [
+      verify_contents(catalogue, '/root/openrc', [
         'export OS_SERVICE_TOKEN=\'servicetoken\'',
         'export OS_SERVICE_ENDPOINT=\'http://127.0.0.2:35357/v2.0/\'',
         'export OS_NO_CACHE=\'false\'',
@@ -77,7 +77,7 @@ describe 'openstack_extras::auth_file' do
     end
 
     it 'should create a openrc file' do
-      verify_contents(subject, '/root/openrc', [
+      verify_contents(catalogue, '/root/openrc', [
         'export OS_SERVICE_TOKEN=\'key\\\'stone\'',
         'export OS_PASSWORD=\'singlequote\\\'\'',
       ])
