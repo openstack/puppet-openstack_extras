@@ -105,6 +105,7 @@
 #    metadata            => $metadata,
 #    ms_metadata         => $ms_metadata,
 #    operations          => $operations,
+#    clone               => true,
 #    ocf_script_template => 'some_module/some_api_service.ocf.erb',
 #  }
 #
