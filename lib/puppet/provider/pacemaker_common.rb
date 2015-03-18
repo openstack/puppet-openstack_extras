@@ -38,28 +38,23 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
     @nodes_structure = nil
   end
 
-  # get status CIB section
-  # @return [REXML::Element] at /cib/status
-  def cib_section_status
-    REXML::XPath.match cib, '/cib/status'
-  end
-
   # get lrm_rsc_ops section from lrm_resource section CIB section
   # @param lrm_resource [REXML::Element]
   # at /cib/status/node_state/lrm[@id="node-name"]/lrm_resources/lrm_resource[@id="resource-name"]/lrm_rsc_op
   # @return [REXML::Element]
   def cib_section_lrm_rsc_ops(lrm_resource)
+    return unless lrm_resource.is_a? REXML::Element
     REXML::XPath.match lrm_resource, 'lrm_rsc_op'
   end
 
   # get node_state CIB section
   # @return [REXML::Element] at /cib/status/node_state
   def cib_section_nodes_state
-    REXML::XPath.match cib_section_status, 'node_state'
+    REXML::XPath.match cib, '//node_state'
   end
 
   # get primitives CIB section
-  # @return [REXML::Element] at /cib/configuration/resources/primitive
+  # @return [Array<REXML::Element>] at /cib/configuration/resources/primitive
   def cib_section_primitives
     REXML::XPath.match cib, '//primitive'
   end
@@ -69,6 +64,7 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   # at /cib/status/node_state/lrm[@id="node-name"]/lrm_resources/lrm_resource
   # @return [REXML::Element]
   def cib_section_lrm_resources(lrm)
+    return unless lrm.is_a? REXML::Element
     REXML::XPath.match lrm, 'lrm_resources/lrm_resource'
   end
 
@@ -76,8 +72,9 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   # @param op [Hash<String => String>]
   # @return ['start','stop','master',nil]
   def operation_status(op)
-    # skip incomplete ops
-    return unless op['op-status'] == '0'
+    # skip pending ops
+    # we should wait for status for become known
+    return if op['op-status'] == '-1'
 
     if op['operation'] == 'monitor'
       # for monitor operation status is determined by its rc-code
@@ -184,6 +181,7 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
       id = resource['id']
       next unless id
       lrm_rsc_ops = cib_section_lrm_rsc_ops lrm_resource
+      next unless lrm_rsc_ops
       ops = decode_lrm_rsc_ops lrm_rsc_ops
       resource.store 'ops', ops
       resource.store 'status', determine_primitive_status(ops)
@@ -213,13 +211,15 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
     @nodes_structure = {}
     cib_section_nodes_state.each do |node_state|
       node = attributes_to_hash node_state
-      id = node['id']
-      next unless id
+      node_name = node['uname']
+      next unless node_name
       lrm = node_state.elements['lrm']
+      next unless lrm
       lrm_resources = cib_section_lrm_resources lrm
+      next unless lrm_resources
       resources = decode_lrm_resources lrm_resources
       node.store 'primitives', resources
-      @nodes_structure.store id, node
+      @nodes_structure.store node_name, node
     end
     @nodes_structure
   end
@@ -350,9 +350,9 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
 
   # cleanup this primitive
   # @param primitive [String]
-  def cleanup_primitive(primitive, node = '')
+  def cleanup_primitive(primitive, node = nil)
     opts = ['--cleanup', "--resource=#{primitive}"]
-    opts << "--node=#{node}" if ! node.empty?
+    opts << "--node=#{node}" if node
     retry_command {
       crm_resource opts
     }
@@ -395,9 +395,22 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   # @param node [String] the node's name
   # @param score [Numeric,String] score value
   def constraint_location_add(primitive, node, score = 100)
-    id = "#{primitive}_on_#{node}"
+    id = "#{primitive}-on-#{node}"
+    xml = <<-EOF
+    <diff>
+      <diff-added>
+        <cib>
+          <configuration>
+            <constraints>
+              <rsc_location id="#{id}" node="#{node}" rsc="#{primitive}" score="#{score}" __crm_diff_marker__="added:top"/>
+            </constraints>
+          </configuration>
+        </cib>
+      </diff-added>
+    </diff>
+    EOF
     retry_command {
-      pcs 'constraint', 'location', 'add', id, primitive, node, score
+      cibadmin '--patch', '--sync-call', '--xml-text', xml
     }
   end
 
@@ -600,12 +613,13 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   # @return [TrueClass,FalseClass]
   def is_online?
     begin
-      cibadmin '-Q'
+      dc_version = crm_attribute '-q', '--type', 'crm_config', '--query', '--name', 'dc-version'
+      return false unless dc_version
+      return false if dc_version.empty?
+      return false unless cib_section_nodes_state
       true
     rescue Puppet::ExecutionFailure
       false
-    else
-      true
     end
   end
 
@@ -650,19 +664,19 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
     Puppet.debug 'Pacemaker is online'
   end
 
-  # cleanup a primitive and then wait until
-  # we can get it's status again because
-  # cleanup blocks operations sections for a while
+  # wait until we can get a known status of the primitive
   # @param primitive [String] primitive name
-  def cleanup_with_wait(primitive, node = '')
-    node_msgpart = node.empty? ? '' : " on node '#{node}'"
-    Puppet.debug "Cleanup primitive '#{primitive}'#{node_msgpart} and wait until cleanup finishes"
-    cleanup_primitive(primitive, node)
+  def wait_for_status(primitive, node = nil)
+    msg = "Wait for known status of  '#{primitive}'"
+    msg += " on node '#{node}'" if node
+    Puppet.debug msg
     retry_block_until_true do
       cib_reset
       primitive_status(primitive) != nil
     end
-    Puppet.debug "Primitive '#{primitive}' have been cleaned up#{node_msgpart} and is online again"
+    msg = "Primitive '#{primitive}' has status '#{primitive_status primitive}'"
+    msg += " on node '#{node}'" if node
+    Puppet.debug msg
   end
 
   # wait for primitive to start
@@ -672,6 +686,7 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   def wait_for_start(primitive, node = nil)
     message = "Waiting #{RETRY_COUNT * RETRY_STEP} seconds for service '#{primitive}' to start"
     message += " on node '#{node}'" if node
+    Puppet.debug get_cluster_debug_report
     Puppet.debug message
     retry_block_until_true do
       cib_reset
@@ -690,6 +705,7 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   def wait_for_master(primitive, node = nil)
     message = "Waiting #{RETRY_COUNT * RETRY_STEP} seconds for service '#{primitive}' to start master"
     message += " on node '#{node}'" if node
+    Puppet.debug get_cluster_debug_report
     Puppet.debug message
     retry_block_until_true do
       cib_reset
@@ -708,6 +724,7 @@ class Puppet::Provider::Pacemaker_common < Puppet::Provider
   def wait_for_stop(primitive, node = nil)
     message = "Waiting #{RETRY_COUNT * RETRY_STEP} seconds for service '#{primitive}' to stop"
     message += " on node '#{node}'" if node
+    Puppet.debug get_cluster_debug_report
     Puppet.debug message
     retry_block_until_true do
       cib_reset
