@@ -14,6 +14,11 @@
 #   for the RDO OpenStack repository provided by RedHat
 #   Defaults to true
 #
+# [*manage_epel*]
+#   (optional) Whether to create a predefined yumrepo resource
+#   for the EPEL repository provided by RedHat
+#   Defaults to true
+#
 # [*repo_hash*]
 #   (optional) A hash of yumrepo resources that will be passed to
 #   create_resource. See examples folder for some useful examples.
