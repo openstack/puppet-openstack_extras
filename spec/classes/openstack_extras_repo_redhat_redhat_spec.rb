@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
   let :paramclass_defaults do
     {
-      :release        => 'icehouse',
+      :release        => 'kilo',
       :repo_defaults  => { 'enabled' => '1',
                            'gpgcheck' => '1',
                            'notify' => "Exec[yum_refresh]",
@@ -38,8 +38,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       {
         :osfamily        => 'RedHat',
         :operatingsystem => 'RedHat',
-        :operatingsystemrelease => '6.5',
-        :operatingsystemmajrelease => '6'
+        :operatingsystemrelease => '7.1',
+        :operatingsystemmajrelease => '7'
       }
     end
 
@@ -49,10 +49,10 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-icehouse/epel-6/",
-        :descr      => "OpenStack Icehouse Repository",
+        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/epel-7/",
+        :descr      => "OpenStack Kilo Repository",
         :priority   => 98,
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Icehouse",
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
         :enabled    => '1',
         :gpgcheck   => '1',
         :mirrorlist => 'absent',
@@ -61,9 +61,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('epel').with(
-        :baseurl        => 'https://download.fedoraproject.org/pub/epel/6/$basearch',
-        :descr          => 'Extra Packages for Enterprise Linux 6 - $basearch',
-        :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6",
+        :baseurl        => 'https://download.fedoraproject.org/pub/epel/7/$basearch',
+        :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+        :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
         :failovermethod => 'priority',
         :enabled        => '1',
         :gpgcheck       => '1',
@@ -72,8 +72,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify         => "Exec[yum_refresh]"
       )}
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Icehouse').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Icehouse",
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
+        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Kilo",
         :owner      => 'root',
         :group      => 'root',
         :mode       => '0644',
@@ -88,7 +88,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-juno/epel-6/",
+        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-juno/epel-7/",
         :descr      => "OpenStack Juno Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno"
       )}
@@ -148,9 +148,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-icehouse/epel-6/",
-        :descr      => "OpenStack Icehouse Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Icehouse",
+        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/epel-7/",
+        :descr      => "OpenStack Kilo Repository",
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
         :proxy     => "http://my.proxy.com:8000"
       )}
     end
@@ -163,7 +163,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Icehouse').with(
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
         :owner => "steve"
       )}
     end

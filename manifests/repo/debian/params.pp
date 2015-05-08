@@ -4,7 +4,7 @@
 #
 class openstack_extras::repo::debian::params
 {
-  $release               = 'icehouse'
+  $release               = 'kilo'
 
   $uca_name              = 'ubuntu-cloud-archive'
   $uca_location          = 'http://ubuntu-cloud.archive.canonical.com/ubuntu'

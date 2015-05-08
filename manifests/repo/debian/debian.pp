@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add a
 #   Debian Wheezy apt source for.
-#   Defaults to 'icehouse'
+#   Defaults to 'kilo'
 #
 # [*manage_whz*]
 #   (optional) Whether or not to add the default

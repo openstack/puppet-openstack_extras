@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
   let :paramclass_defaults do
     {
-      :release        => 'icehouse'
+      :release        => 'kilo'
     }
   end
 
@@ -36,14 +36,14 @@ describe 'openstack_extras::repo::debian::debian' do
 
       it { should contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'icehouse',
+        :release            => 'kilo',
         :repos              => 'main',
         :required_packages  => 'gplhost-archive-keyring'
       )}
 
       it { should contain_apt__source('debian_wheezy_backports').with(
         :location => 'http://archive.gplhost.com/debian',
-        :release  => 'icehouse-backports',
+        :release  => 'kilo-backports',
         :repos    => 'main'
       )}
 
@@ -114,7 +114,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
       it { should contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'icehouse',
+        :release            => 'kilo',
         :repos              => 'main',
         :required_packages  => 'gplhost-archive-keyring',
         :include_src        => 'true'
@@ -122,7 +122,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
       it { should contain_apt__source('debian_wheezy_backports').with(
         :location       => 'http://archive.gplhost.com/debian',
-        :release        => 'icehouse-backports',
+        :release        => 'kilo-backports',
         :repos          => 'main',
         :include_src    => 'true'
       )}

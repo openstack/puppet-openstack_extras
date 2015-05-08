@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
   let :paramclass_defaults do
     {
-      :release        => 'icehouse'
+      :release        => 'kilo'
     }
   end
 
@@ -37,7 +37,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/icehouse',
+        :release            => 'trusty-updates/kilo',
         :repos              => 'main',
         :required_packages  => 'ubuntu-cloud-keyring'
       )}
@@ -104,7 +104,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :include_src        => 'true',
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/icehouse',
+        :release            => 'trusty-updates/kilo',
         :repos              => 'main',
         :required_packages  => 'ubuntu-cloud-keyring'
       )}
