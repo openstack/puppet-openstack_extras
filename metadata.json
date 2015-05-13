@@ -31,6 +31,8 @@
   ],
   "description": "Puppet module to add useful utilities for OpenStack deployments",
   "dependencies": [
-    { "name": "puppetlabs/corosync", "version_requirement": ">=0.1.0" }
+    { "name": "puppetlabs/apt", "version_requirement": ">=1.8.0 <2.0.0" },
+    { "name": "puppetlabs/corosync", "version_requirement": ">=0.1.0 <1.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.0.0 <5.0.0" }
   ]
 }
