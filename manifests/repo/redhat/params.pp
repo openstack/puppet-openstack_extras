@@ -21,8 +21,14 @@ class openstack_extras::repo::redhat::params
                       }
 
   case $::operatingsystem {
-    centos, redhat, scientific, slc: { $dist = 'epel' }
-    fedora: { $dist = 'fedora' }
+    centos, redhat, scientific, slc: {
+      $dist_full  = 'epel-'
+      $dist_short = 'el'
+    }
+    fedora: {
+      $dist_full  = 'fedora-'
+      $dist_short = 'f'
+    }
     default: {
       warning('Unrecognised operatingsystem')
     }
