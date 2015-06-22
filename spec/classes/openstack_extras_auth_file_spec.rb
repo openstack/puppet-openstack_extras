@@ -83,4 +83,16 @@ describe 'openstack_extras::auth_file' do
       ])
     end
   end
+
+  describe "when the file is in /tmp" do
+
+    let :params do
+      {
+        :password => 'secret',
+        :path     => '/tmp/openrc'
+      }
+    end
+
+   it { should contain_file('/tmp/openrc')}
+  end
 end

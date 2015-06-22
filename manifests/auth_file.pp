@@ -64,6 +64,10 @@
 #   (optional) The method to use for authentication
 #   Defaults to 'keystone'.
 #
+# [*path*]
+#   (optional) File path
+#   Defaults to '/root/openrc'.
+#
 class openstack_extras::auth_file(
   $password                 = undef,
   $auth_url                 = 'http://127.0.0.1:5000/v2.0/',
@@ -79,11 +83,12 @@ class openstack_extras::auth_file(
   $nova_endpoint_type       = 'publicURL',
   $neutron_endpoint_type    = 'publicURL',
   $auth_strategy            = 'keystone',
+  $path                     = '/root/openrc',
 ) {
   if ! $password {
     fail('You must specify a password for openstack_extras::auth_file')
   }
-  file { '/root/openrc':
+  file { $path:
     owner   => 'root',
     group   => 'root',
     mode    => '0700',
