@@ -38,17 +38,20 @@ class openstack_extras::repo::debian::ubuntu(
   $package_require = false
 ) inherits openstack_extras::repo::debian::params {
   if $manage_uca {
+    package { 'ubuntu-cloud-keyring':
+      ensure => 'present',
+      name   => $::openstack_extras::repo::debian::params::uca_required_packages,
+    } ->
     apt::source { $::openstack_extras::repo::debian::params::uca_name:
-      location          => $::openstack_extras::repo::debian::params::uca_location,
-      release           => "${::lsbdistcodename}-updates/${release}",
-      repos             => $::openstack_extras::repo::debian::params::uca_repos,
-      required_packages => $::openstack_extras::repo::debian::params::uca_required_packages
+      location => $::openstack_extras::repo::debian::params::uca_location,
+      release  => "${::lsbdistcodename}-updates/${release}",
+      repos    => $::openstack_extras::repo::debian::params::uca_repos,
     }
   }
 
   create_resources('apt::source', $source_hash, $source_defaults)
 
-  if $package_require {
+  if $package_require and ! $manage_uca {
     Exec['apt_update'] -> Package<||>
   }
 }

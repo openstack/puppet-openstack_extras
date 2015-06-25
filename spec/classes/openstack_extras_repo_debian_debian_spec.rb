@@ -38,7 +38,6 @@ describe 'openstack_extras::repo::debian::debian' do
         :location           => 'http://archive.gplhost.com/debian',
         :release            => 'kilo',
         :repos              => 'main',
-        :required_packages  => 'gplhost-archive-keyring'
       )}
 
       it { should contain_apt__source('debian_wheezy_backports').with(
@@ -47,6 +46,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :repos    => 'main'
       )}
 
+      it { should contain_package('gplhost-archive-keyring') }
     end
 
     describe 'with overridden release' do
@@ -58,7 +58,6 @@ describe 'openstack_extras::repo::debian::debian' do
         :location           => 'http://archive.gplhost.com/debian',
         :release            => 'juno',
         :repos              => 'main',
-        :required_packages  => 'gplhost-archive-keyring'
       )}
 
       it { should contain_apt__source('debian_wheezy_backports').with(
@@ -67,6 +66,15 @@ describe 'openstack_extras::repo::debian::debian' do
         :repos    => 'main'
       )}
 
+      it { should contain_package('gplhost-archive-keyring') }
+    end
+
+    describe 'when not managing wheezy repo' do
+      let :params do
+        default_params.merge!({ :manage_whz => false })
+      end
+
+      it { should_not contain_package('gplhost-archive-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -102,6 +110,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :key_server         => 'pgp.mit.edu'
       )}
 
+      it { should contain_package('gplhost-archive-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -116,7 +125,6 @@ describe 'openstack_extras::repo::debian::debian' do
         :location           => 'http://archive.gplhost.com/debian',
         :release            => 'kilo',
         :repos              => 'main',
-        :required_packages  => 'gplhost-archive-keyring',
         :include_src        => 'true'
       )}
 
@@ -127,6 +135,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :include_src    => 'true'
       )}
 
+      it { should contain_package('gplhost-archive-keyring') }
     end
   end
 end

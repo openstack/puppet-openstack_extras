@@ -39,8 +39,9 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-updates/kilo',
         :repos              => 'main',
-        :required_packages  => 'ubuntu-cloud-keyring'
       )}
+
+      it { should contain_package('ubuntu-cloud-keyring') }
 
     end
 
@@ -53,9 +54,17 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-updates/juno',
         :repos              => 'main',
-        :required_packages  => 'ubuntu-cloud-keyring'
       )}
 
+      it { should contain_package('ubuntu-cloud-keyring') }
+    end
+
+    describe 'when not managing UCA' do
+      let :params do
+        default_params.merge!({ :manage_uca => false })
+      end
+
+      it { should_not contain_package('ubuntu-cloud-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -91,6 +100,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :key_server         => 'pgp.mit.edu'
       )}
 
+      it { should contain_package('ubuntu-cloud-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -106,9 +116,9 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-updates/kilo',
         :repos              => 'main',
-        :required_packages  => 'ubuntu-cloud-keyring'
       )}
 
+      it { should contain_package('ubuntu-cloud-keyring') }
     end
   end
 end

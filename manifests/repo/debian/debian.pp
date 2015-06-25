@@ -38,22 +38,25 @@ class openstack_extras::repo::debian::debian(
   $package_require = false
 ) inherits openstack_extras::repo::debian::params {
   if $manage_whz {
+    package { 'gplhost-archive-keyring':
+      ensure => 'present',
+      name   => $::openstack_extras::repo::debian::params::whz_required_packages,
+    } ->
     apt::source { $::openstack_extras::repo::debian::params::whz_name:
-      location          => $::openstack_extras::repo::debian::params::whz_location,
-      release           => $release,
-      repos             => $::openstack_extras::repo::debian::params::whz_repos,
-      required_packages => $::openstack_extras::repo::debian::params::whz_required_packages
+      location => $::openstack_extras::repo::debian::params::whz_location,
+      release  => $release,
+      repos    => $::openstack_extras::repo::debian::params::whz_repos,
     } ->
     apt::source { "${::openstack_extras::repo::debian::params::whz_name}_backports":
-      location          => $::openstack_extras::repo::debian::params::whz_location,
-      release           => "${release}-backports",
-      repos             => $::openstack_extras::repo::debian::params::whz_repos,
+      location => $::openstack_extras::repo::debian::params::whz_location,
+      release  => "${release}-backports",
+      repos    => $::openstack_extras::repo::debian::params::whz_repos,
     }
   }
 
   create_resources('apt::source', $source_hash, $source_defaults)
 
-  if $package_require {
+  if $package_require and ! $manage_whz {
     Exec['apt_update'] -> Package<||>
   }
 }
