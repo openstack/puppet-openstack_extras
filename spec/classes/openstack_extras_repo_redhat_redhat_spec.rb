@@ -49,7 +49,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/epel-7/",
+        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
         :descr      => "OpenStack Kilo Repository",
         :priority   => 98,
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
@@ -148,7 +148,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/epel-7/",
+        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
         :descr      => "OpenStack Kilo Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
         :proxy     => "http://my.proxy.com:8000"

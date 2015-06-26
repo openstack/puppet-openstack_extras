@@ -78,10 +78,15 @@ class openstack_extras::repo::redhat::redhat(
 
   if $manage_rdo {
     $release_cap = capitalize($release)
-    $_dist = $::openstack_extras::repo::redhat::params::dist
+    # In kilo the URL pattern changed
+    if $release < 'kilo' { # Lexicographically before 'k' release
+      $_dist = $::openstack_extras::repo::redhat::params::dist_full
+    } else {
+      $_dist = $::openstack_extras::repo::redhat::params::dist_short
+    }
 
     $rdo_hash = { 'rdo-release' => {
-        'baseurl'  => "http://repos.fedorapeople.org/repos/openstack/openstack-${release}/${_dist}-${::operatingsystemmajrelease}/",
+        'baseurl'  => "http://repos.fedorapeople.org/repos/openstack/openstack-${release}/${_dist}${::operatingsystemmajrelease}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'priority' => $::openstack_extras::repo::redhat::params::rdo_priority,
         'gpgkey'   => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-${release_cap}",
