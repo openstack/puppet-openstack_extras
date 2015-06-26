@@ -105,16 +105,24 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     describe 'with overridden source default' do
       let :params do
+        default_params.merge!({ :source_hash => {
+                                   'local_mirror' => {
+                                       'location' => 'http://mymirror/ubuntu/',
+                                       'repos'    => 'main',
+                                       'release'  => 'trusty'
+                                   }
+                                 }
+                             })
         default_params.merge!({ :source_defaults => {
                                    'include_src' => 'true'
                                 }
                               })
       end
 
-      it { should contain_apt__source('ubuntu-cloud-archive').with(
+      it { should contain_apt__source('local_mirror').with(
         :include_src        => 'true',
-        :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/kilo',
+        :location           => 'http://mymirror/ubuntu/',
+        :release            => 'trusty',
         :repos              => 'main',
       )}
 
