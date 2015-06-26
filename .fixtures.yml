@@ -1,9 +1,7 @@
 fixtures:
   repositories:
     'corosync': 'https://github.com/puppetlabs/puppetlabs-corosync'
-    'apt':
-      'repo': 'git://github.com/puppetlabs/puppetlabs-apt'
-      'ref': '1.8.0'
+    'apt': 'git://github.com/puppetlabs/puppetlabs-apt'
     'stdlib' : 'git://github.com/puppetlabs/puppetlabs-stdlib'
   symlinks:
     'openstack_extras': "#{source_dir}"
