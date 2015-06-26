@@ -38,10 +38,15 @@ class openstack_extras::repo::debian::debian(
   $package_require = false
 ) inherits openstack_extras::repo::debian::params {
   if $manage_whz {
-    package { 'gplhost-archive-keyring':
-      ensure => 'present',
-      name   => $::openstack_extras::repo::debian::params::whz_required_packages,
-    } ->
+    exec { 'installing gplhost-archive-keyring':
+      command     => '/usr/bin/apt-get -y install gplhost-archive-keyring',
+      logoutput   => 'on_failure',
+      tries       => 3,
+      try_sleep   => 1,
+      refreshonly => true,
+      subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::whz_name}.list"],
+      notify      => Exec['apt_update'],
+    }
     apt::source { $::openstack_extras::repo::debian::params::whz_name:
       location => $::openstack_extras::repo::debian::params::whz_location,
       release  => $release,
@@ -56,7 +61,7 @@ class openstack_extras::repo::debian::debian(
 
   create_resources('apt::source', $source_hash, $source_defaults)
 
-  if $package_require and ! $manage_whz {
+  if $package_require {
     Exec['apt_update'] -> Package<||>
   }
 }

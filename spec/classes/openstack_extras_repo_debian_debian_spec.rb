@@ -46,7 +46,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :repos    => 'main'
       )}
 
-      it { should contain_package('gplhost-archive-keyring') }
+      it { should contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden release' do
@@ -66,7 +66,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :repos    => 'main'
       )}
 
-      it { should contain_package('gplhost-archive-keyring') }
+      it { should contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'when not managing wheezy repo' do
@@ -74,7 +74,7 @@ describe 'openstack_extras::repo::debian::debian' do
         default_params.merge!({ :manage_whz => false })
       end
 
-      it { should_not contain_package('gplhost-archive-keyring') }
+      it { should_not contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -110,7 +110,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :key_server         => 'pgp.mit.edu'
       )}
 
-      it { should contain_package('gplhost-archive-keyring') }
+      it { should contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -135,7 +135,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :include_src    => 'true'
       )}
 
-      it { should contain_package('gplhost-archive-keyring') }
+      it { should contain_exec('installing gplhost-archive-keyring') }
     end
   end
 end
