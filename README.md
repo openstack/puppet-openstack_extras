@@ -139,10 +139,3 @@ Puppet Module :: OpenStack Version :: OpenStack Codename
 4.0.0         -> 2014.1.0          -> Icehouse
 5.0.0         -> 2014.2.0          -> Juno
 ```
-
-Release Notes
--------------
-
-**5.0.0**
-
-* This is the initial release of this module.
