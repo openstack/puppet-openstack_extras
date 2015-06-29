@@ -1,12 +1,12 @@
 {
   "name": "stackforge-openstack_extras",
   "version": "5.0.0",
-  "author": "StackForge Contributors",
+  "author": "OpenStack Contributors",
   "summary": "Puppet OpenStack Extras Module",
-  "license": "Apache License 2.0",
-  "source": "git://github.com/stackforge/puppet-openstack_extras.git",
-  "project_page": "https://launchpad.net/puppet-openstack_extras",
-  "issues_url": "https://bugs.launchpad.net/puppet-openstack_extras",
+  "license": "Apache-2.0",
+  "source": "git://github.com/openstack/puppet-openstack_extras.git",
+  "project_page": "https://launchpad.net/puppet-openstack-extras",
+  "issues_url": "https://bugs.launchpad.net/puppet-openstack-extras",
   "requirements": [
     { "name": "pe","version_requirement": "3.x" },
     { "name": "puppet","version_requirement": "3.x" }
