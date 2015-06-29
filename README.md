@@ -17,11 +17,11 @@ openstack_extras
 Overview
 --------
 
-The openstack_extras module is a part of [Stackforge](https://github.com/stackforge),
+The openstack_extras module is a part of [OpenStack](https://github.com/openstack),
 an effort by the Openstack infrastructure team to provide continuous integration
-testing and code review for Openstack and Openstack community projects not part
+testing and code review for Openstack and Openstack community projects as part
 of the core software.  The module itself is used to add useful utilities for
-composing and deploying OpenStack with the Stackforge Openstack modules.
+composing and deploying OpenStack with the Openstack puppet modules.
 
 Module Description
 ------------------
@@ -124,7 +124,7 @@ Developer documentation for the entire puppet-openstack project.
 Contributors
 ------------
 
-* https://github.com/stackforge/puppet-openstack_extras/graphs/contributors
+* https://github.com/openstack/puppet-openstack_extras/graphs/contributors
 
 Versioning
 ----------
