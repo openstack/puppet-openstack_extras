@@ -39,7 +39,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :osfamily        => 'RedHat',
         :operatingsystem => 'RedHat',
         :operatingsystemrelease => '7.1',
-        :operatingsystemmajrelease => '7'
+        :operatingsystemmajrelease => '7',
+        :puppetversion => Puppet.version,
       }
     end
 
@@ -60,17 +61,32 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify     => "Exec[yum_refresh]"
       )}
 
-      it { should contain_yumrepo('epel').with(
-        :baseurl        => 'https://download.fedoraproject.org/pub/epel/7/$basearch',
-        :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-        :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
-        :failovermethod => 'priority',
-        :enabled        => '1',
-        :gpgcheck       => '1',
-        :mirrorlist     => 'absent',
-        :require        => "Anchor[openstack_extras_redhat]",
-        :notify         => "Exec[yum_refresh]"
-      )}
+      # 'metalink' property is supported from Puppet 3.5
+      if Puppet.version.to_f >= 3.5
+        it { should contain_yumrepo('epel').with(
+          :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearch",
+          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+          :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
+          :failovermethod => 'priority',
+          :enabled        => '1',
+          :gpgcheck       => '1',
+          :mirrorlist     => 'absent',
+          :require        => "Anchor[openstack_extras_redhat]",
+          :notify         => "Exec[yum_refresh]"
+        )}
+      else
+        it { should contain_yumrepo('epel').with(
+          :baseurl        => "https://download.fedoraproject.org/pub/epel/7/\$basearch",
+          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+          :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
+          :failovermethod => 'priority',
+          :enabled        => '1',
+          :gpgcheck       => '1',
+          :mirrorlist     => 'absent',
+          :require        => "Anchor[openstack_extras_redhat]",
+          :notify         => "Exec[yum_refresh]"
+        )}
+      end
 
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
         :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Kilo",
