@@ -1,6 +1,6 @@
 {
-  "name": "stackforge-openstack_extras",
-  "version": "5.0.0",
+  "name": "openstack-openstack_extras",
+  "version": "6.0.0",
   "author": "OpenStack Contributors",
   "summary": "Puppet OpenStack Extras Module",
   "license": "Apache-2.0",

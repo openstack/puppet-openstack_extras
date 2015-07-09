@@ -1,7 +1,7 @@
 openstack_extras
 ============
 
-5.0.0 - 2014.2.0 - Juno
+6.0.0 - 2015.1.0 - Kilo
 
 #### Table of Contents
 
