@@ -9,23 +9,23 @@ class openstack_extras::repo::redhat::params
 
   $repo_defaults    = { 'enabled'    => '1',
                         'gpgcheck'   => '1',
-                        'notify'     => "Exec[yum_refresh]",
+                        'notify'     => 'Exec[yum_refresh]',
                         'mirrorlist' => 'absent',
-                        'require'    => "Anchor[openstack_extras_redhat]"
+                        'require'    => 'Anchor[openstack_extras_redhat]',
                       }
 
   $gpgkey_defaults  = { 'owner' => 'root',
                         'group' => 'root',
                         'mode' => '0644',
-                        'before' => "Anchor[openstack_extras_redhat]"
+                        'before' => 'Anchor[openstack_extras_redhat]',
                       }
 
   case $::operatingsystem {
-    centos, redhat, scientific, slc: {
+    'centos', 'redhat', 'scientific', 'slc': {
       $dist_full  = 'epel-'
       $dist_short = 'el'
     }
-    fedora: {
+    'fedora': {
       $dist_full  = 'fedora-'
       $dist_short = 'f'
     }

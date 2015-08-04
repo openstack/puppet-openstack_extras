@@ -174,11 +174,11 @@ define openstack_extras::pacemaker::service (
 
   if $ocf_script_template or $ocf_script_file {
     file { $ocf_script_name :
-      ensure  => $ensure,
-      path    => $ocf_script_path,
-      mode    => '0755',
-      owner   => 'root',
-      group   => 'root',
+      ensure => $ensure,
+      path   => $ocf_script_path,
+      mode   => '0755',
+      owner  => 'root',
+      group  => 'root',
     }
 
     if $ocf_script_template {
