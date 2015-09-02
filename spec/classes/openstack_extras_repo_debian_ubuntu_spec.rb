@@ -128,5 +128,18 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_exec('installing ubuntu-cloud-keyring') }
     end
+
+    describe 'with overridden uca repo name' do
+      let :params do
+        default_params.merge!({ :repo => 'proposed' })
+      end
+
+      it { should contain_apt__source('ubuntu-cloud-archive').with(
+        :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+        :release            => 'trusty-proposed/kilo',
+        :repos              => 'main',
+      )}
+    end
+
   end
 end
