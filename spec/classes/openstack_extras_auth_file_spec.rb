@@ -93,6 +93,6 @@ describe 'openstack_extras::auth_file' do
       }
     end
 
-   it { should contain_file('/tmp/openrc')}
+   it { is_expected.to contain_file('/tmp/openrc')}
   end
 end

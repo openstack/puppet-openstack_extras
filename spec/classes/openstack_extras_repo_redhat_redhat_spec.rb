@@ -49,7 +49,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         {}.merge!(default_params)
       end
 
-      it { should contain_yumrepo('rdo-release').with(
+      it { is_expected.to contain_yumrepo('rdo-release').with(
         :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
         :descr      => "OpenStack Kilo Repository",
         :priority   => 98,
@@ -63,7 +63,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       # 'metalink' property is supported from Puppet 3.5
       if Puppet.version.to_f >= 3.5
-        it { should contain_yumrepo('epel').with(
+        it { is_expected.to contain_yumrepo('epel').with(
           :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearch",
           :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
           :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
@@ -75,7 +75,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
           :notify         => "Exec[yum_refresh]"
         )}
       else
-        it { should contain_yumrepo('epel').with(
+        it { is_expected.to contain_yumrepo('epel').with(
           :baseurl        => "https://download.fedoraproject.org/pub/epel/7/\$basearch",
           :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
           :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
@@ -88,7 +88,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         )}
       end
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
         :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Kilo",
         :owner      => 'root',
         :group      => 'root',
@@ -103,13 +103,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
         default_params.merge!({ :release => 'juno' })
       end
 
-      it { should contain_yumrepo('rdo-release').with(
+      it { is_expected.to contain_yumrepo('rdo-release').with(
         :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-juno/epel-7/",
         :descr      => "OpenStack Juno Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno"
       )}
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno').with(
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno').with(
         :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Juno"
       )}
     end
@@ -131,7 +131,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { should contain_yumrepo('CentOS-Base').with(
+      it { is_expected.to contain_yumrepo('CentOS-Base').with(
         :baseurl    => "http://mymirror/$releasever/os/$basearch/",
         :descr      => "CentOS-$releasever - Base",
         :enabled    => '1',
@@ -142,7 +142,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify     => "Exec[yum_refresh]"
       )}
 
-      it { should contain_yumrepo('CentOS-Updates').with(
+      it { is_expected.to contain_yumrepo('CentOS-Updates').with(
         :baseurl    => "http://mymirror/$releasever/updates/$basearch/",
         :descr      => "CentOS-$releasever - Updates",
         :enabled    => '1',
@@ -163,7 +163,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { should contain_yumrepo('rdo-release').with(
+      it { is_expected.to contain_yumrepo('rdo-release').with(
         :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
         :descr      => "OpenStack Kilo Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
@@ -179,7 +179,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
         :owner => "steve"
       )}
     end
@@ -189,7 +189,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         default_params.merge!({ :manage_epel => false })
       end
 
-      it { should_not contain_yumrepo('epel') }
+      it { is_expected.to_not contain_yumrepo('epel') }
     end
 
     describe 'with rdo management disabled' do
@@ -197,7 +197,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         default_params.merge!({ :manage_rdo => false })
       end
 
-      it { should_not contain_yumrepo('rdo-release') }
+      it { is_expected.to_not contain_yumrepo('rdo-release') }
     end
   end
 end

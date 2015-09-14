@@ -30,18 +30,18 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
 
   context 'with defaults' do
     it 'should contain openstack_extras::pacemaker::service definition' do
-      should contain_openstack_extras__pacemaker__service(title).with(default_params)
+      is_expected.to contain_openstack_extras__pacemaker__service(title).with(default_params)
     end
 
     it 'should override existing service provider' do
-      should contain_service('foo-api').with(
+      is_expected.to contain_service('foo-api').with(
                  {
                      :provider => 'pacemaker'
                  })
     end
 
     it 'should create a pacemaker primitive' do
-      should contain_cs_primitive('p_foo-api').with(
+      is_expected.to contain_cs_primitive('p_foo-api').with(
                  {
                      'ensure' => default_params[:ensure],
                      'primitive_class' => default_params[:primitive_class],
@@ -54,7 +54,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
                  })
     end
     it 'should not create a cloned resource' do
-      should contain_cs_clone('p_foo-api-clone').with(
+      is_expected.to contain_cs_clone('p_foo-api-clone').with(
                  {
                      'ensure' => 'absent',
                  })
@@ -75,7 +75,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     let (:ocf_handler_path) { "#{params[:handler_root_path]}/#{ocf_handler_name}" }
 
     it 'should create an OCF file' do
-      should contain_file("#{title}-ocf-file").with(
+      is_expected.to contain_file("#{title}-ocf-file").with(
                  {
                      'ensure' => 'present',
                      'path' => ocf_script_path,
@@ -87,7 +87,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     end
 
     it 'should create a handler file' do
-      should contain_file("#{ocf_handler_name}").with(
+      is_expected.to contain_file("#{ocf_handler_name}").with(
                  {
                      'ensure' => 'present',
                      'path' => ocf_handler_path,
@@ -115,7 +115,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     }
 
     it 'should create an OCF file from template' do
-      should contain_file("#{title}-ocf-file").with(
+      is_expected.to contain_file("#{title}-ocf-file").with(
                  {
                      'path' => ocf_script_path,
                      'mode' => '0755',
@@ -125,11 +125,11 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     end
 
     it 'should not create a handler file' do
-      should_not contain_file("#{params[:ocf_handler_name]}")
+      is_expected.to_not contain_file("#{params[:ocf_handler_name]}")
     end
 
     it 'should create a pacemaker primitive' do
-      should contain_cs_primitive('p_foo-api').with(
+      is_expected.to contain_cs_primitive('p_foo-api').with(
                  {
                      'ensure' => params[:ensure],
                      'primitive_class' => params[:primitive_class],
@@ -151,7 +151,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
           })
     end
     it 'should create a cloned resource' do
-      should contain_cs_clone('p_foo-api-clone').with(
+      is_expected.to contain_cs_clone('p_foo-api-clone').with(
                  {
                      'ensure'    => 'present',
                      'primitive' => 'p_foo-api',

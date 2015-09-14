@@ -35,13 +35,13 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         {}.merge!(default_params)
       end
 
-      it { should contain_apt__source('ubuntu-cloud-archive').with(
+      it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-updates/kilo',
         :repos              => 'main',
       )}
 
-      it { should contain_exec('installing ubuntu-cloud-keyring') }
+      it { is_expected.to contain_exec('installing ubuntu-cloud-keyring') }
 
     end
 
@@ -50,13 +50,13 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         default_params.merge!({ :release => 'juno' })
       end
 
-      it { should contain_apt__source('ubuntu-cloud-archive').with(
+      it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-updates/juno',
         :repos              => 'main',
       )}
 
-      it { should contain_exec('installing ubuntu-cloud-keyring') }
+      it { is_expected.to contain_exec('installing ubuntu-cloud-keyring') }
     end
 
     describe 'when not managing UCA' do
@@ -64,7 +64,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         default_params.merge!({ :manage_uca => false })
       end
 
-      it { should_not contain_exec('installing ubuntu-cloud-keyring') }
+      it { is_expected.to_not contain_exec('installing ubuntu-cloud-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -86,13 +86,13 @@ describe 'openstack_extras::repo::debian::ubuntu' do
                               })
       end
 
-      it { should contain_apt__source('local_mirror').with(
+      it { is_expected.to contain_apt__source('local_mirror').with(
         :location           => 'http://mymirror/ubuntu/',
         :release            => 'trusty',
         :repos              => 'main'
       )}
 
-      it { should contain_apt__source('puppetlabs').with(
+      it { is_expected.to contain_apt__source('puppetlabs').with(
         :location           => 'http://apt.puppetlabs.com',
         :release            => 'trusty',
         :repos              => 'main',
@@ -100,7 +100,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :key_server         => 'pgp.mit.edu'
       )}
 
-      it { should contain_exec('installing ubuntu-cloud-keyring') }
+      it { is_expected.to contain_exec('installing ubuntu-cloud-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -119,14 +119,14 @@ describe 'openstack_extras::repo::debian::ubuntu' do
                               })
       end
 
-      it { should contain_apt__source('local_mirror').with(
+      it { is_expected.to contain_apt__source('local_mirror').with(
         :include_src        => 'true',
         :location           => 'http://mymirror/ubuntu/',
         :release            => 'trusty',
         :repos              => 'main',
       )}
 
-      it { should contain_exec('installing ubuntu-cloud-keyring') }
+      it { is_expected.to contain_exec('installing ubuntu-cloud-keyring') }
     end
 
     describe 'with overridden uca repo name' do
@@ -134,7 +134,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         default_params.merge!({ :repo => 'proposed' })
       end
 
-      it { should contain_apt__source('ubuntu-cloud-archive').with(
+      it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
         :release            => 'trusty-proposed/kilo',
         :repos              => 'main',

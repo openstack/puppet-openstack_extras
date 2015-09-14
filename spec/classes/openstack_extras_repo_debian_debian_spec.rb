@@ -34,19 +34,19 @@ describe 'openstack_extras::repo::debian::debian' do
         {}.merge!(default_params)
       end
 
-      it { should contain_apt__source('debian_wheezy').with(
+      it { is_expected.to contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
         :release            => 'kilo',
         :repos              => 'main',
       )}
 
-      it { should contain_apt__source('debian_wheezy_backports').with(
+      it { is_expected.to contain_apt__source('debian_wheezy_backports').with(
         :location => 'http://archive.gplhost.com/debian',
         :release  => 'kilo-backports',
         :repos    => 'main'
       )}
 
-      it { should contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden release' do
@@ -54,19 +54,19 @@ describe 'openstack_extras::repo::debian::debian' do
         default_params.merge!({ :release => 'juno' })
       end
 
-      it { should contain_apt__source('debian_wheezy').with(
+      it { is_expected.to contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
         :release            => 'juno',
         :repos              => 'main',
       )}
 
-      it { should contain_apt__source('debian_wheezy_backports').with(
+      it { is_expected.to contain_apt__source('debian_wheezy_backports').with(
         :location => 'http://archive.gplhost.com/debian',
         :release  => 'juno-backports',
         :repos    => 'main'
       )}
 
-      it { should contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'when not managing wheezy repo' do
@@ -74,7 +74,7 @@ describe 'openstack_extras::repo::debian::debian' do
         default_params.merge!({ :manage_whz => false })
       end
 
-      it { should_not contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to_not contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -96,13 +96,13 @@ describe 'openstack_extras::repo::debian::debian' do
                               })
       end
 
-      it { should contain_apt__source('debian_unstable').with(
+      it { is_expected.to contain_apt__source('debian_unstable').with(
         :location           => 'http://mymirror/debian/',
         :release            => 'unstable',
         :repos              => 'main'
       )}
 
-      it { should contain_apt__source('puppetlabs').with(
+      it { is_expected.to contain_apt__source('puppetlabs').with(
         :location           => 'http://apt.puppetlabs.com',
         :repos              => 'main',
         :release            => 'wheezy',
@@ -110,7 +110,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :key_server         => 'pgp.mit.edu'
       )}
 
-      it { should contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -129,14 +129,14 @@ describe 'openstack_extras::repo::debian::debian' do
                               })
       end
 
-      it { should contain_apt__source('debian_unstable').with(
+      it { is_expected.to contain_apt__source('debian_unstable').with(
         :location           => 'http://mymirror/debian/',
         :release            => 'unstable',
         :repos              => 'main',
         :include_src        => 'true'
       )}
 
-      it { should contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
     end
   end
 end
