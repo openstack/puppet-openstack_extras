@@ -1,7 +1,7 @@
 openstack_extras
 ============
 
-5.0.0 - 2014.2.0 - Juno
+5.1.0 - 2014.2.0 - Juno
 
 #### Table of Contents
 
@@ -86,6 +86,10 @@ Puppet Module :: OpenStack Version :: OpenStack Codename
 
 Release Notes
 -------------
+
+**5.1.0**
+
+* Update .gitreview file for project rename
 
 **5.0.0**
 
