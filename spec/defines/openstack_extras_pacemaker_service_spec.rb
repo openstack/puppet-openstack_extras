@@ -3,10 +3,18 @@ require 'spec_helper'
 describe 'openstack_extras::pacemaker::service', :type => :define do
 
   let :pre_condition do
-    "class { 'foo': }"
+    "class { '::glance::registry':
+       keystone_password => 'secrete',
+     }"
   end
 
-  let (:title) { 'foo-api' }
+  let :facts do
+    { :osfamily        => 'Debian',
+      :operatingsystem => 'Debian'
+    }
+  end
+
+  let (:title) { 'glance-registry' }
 
   let :default_params do
     {
@@ -34,14 +42,14 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     end
 
     it 'should override existing service provider' do
-      is_expected.to contain_service('foo-api').with(
+      is_expected.to contain_service('glance-registry').with(
                  {
                      :provider => 'pacemaker'
                  })
     end
 
     it 'should create a pacemaker primitive' do
-      is_expected.to contain_cs_primitive('p_foo-api').with(
+      is_expected.to contain_cs_primitive('p_glance-registry').with(
                  {
                      'ensure' => default_params[:ensure],
                      'primitive_class' => default_params[:primitive_class],
@@ -54,7 +62,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
                  })
     end
     it 'should not create a cloned resource' do
-      is_expected.to contain_cs_clone('p_foo-api-clone').with(
+      is_expected.to contain_cs_clone('p_glance-registry-clone').with(
                  {
                      'ensure' => 'absent',
                  })
@@ -103,7 +111,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     let(:params) do
       default_params.merge(
           {
-              :ocf_script_template => 'foo/foo.ocf.erb',
+              :ocf_script_template => 'openstack_extras/ocf_handler.erb',
               :use_handler => false,
               :primitive_provider => 'some_provider',
               :ocf_root_path => '/usr/lib/some_path',
@@ -121,7 +129,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
                      'mode' => '0755',
                      'owner' => 'root',
                      'group' => 'root'
-                 }).with_content(/erb/)
+                 }).with_content(/monitor/)
     end
 
     it 'should not create a handler file' do
@@ -129,7 +137,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     end
 
     it 'should create a pacemaker primitive' do
-      is_expected.to contain_cs_primitive('p_foo-api').with(
+      is_expected.to contain_cs_primitive('p_glance-registry').with(
                  {
                      'ensure' => params[:ensure],
                      'primitive_class' => params[:primitive_class],
@@ -151,10 +159,10 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
           })
     end
     it 'should create a cloned resource' do
-      is_expected.to contain_cs_clone('p_foo-api-clone').with(
+      is_expected.to contain_cs_clone('p_glance-registry-clone').with(
                  {
                      'ensure'    => 'present',
-                     'primitive' => 'p_foo-api',
+                     'primitive' => 'p_glance-registry',
                  })
     end
   end
