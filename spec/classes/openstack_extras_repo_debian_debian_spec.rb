@@ -51,18 +51,18 @@ describe 'openstack_extras::repo::debian::debian' do
 
     describe 'with overridden release' do
       let :params do
-        default_params.merge!({ :release => 'juno' })
+        default_params.merge!({ :release => 'liberty' })
       end
 
       it { should contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'juno',
+        :release            => 'liberty',
         :repos              => 'main',
       )}
 
       it { should contain_apt__source('debian_wheezy_backports').with(
         :location => 'http://archive.gplhost.com/debian',
-        :release  => 'juno-backports',
+        :release  => 'liberty-backports',
         :repos    => 'main'
       )}
 

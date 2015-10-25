@@ -47,12 +47,12 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     describe 'with overridden release' do
       let :params do
-        default_params.merge!({ :release => 'juno' })
+        default_params.merge!({ :release => 'liberty' })
       end
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/juno',
+        :release            => 'trusty-updates/liberty',
         :repos              => 'main',
       )}
 
@@ -128,5 +128,6 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_exec('installing ubuntu-cloud-keyring') }
     end
+
   end
 end
