@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add an
 #   Ubuntu Cloud Archive APT source for.
-#   Defaults to 'kilo'
+#   Defaults to 'liberty'
 #
 # [*manage_uca*]
 #   (optional) Whether or not to add the default

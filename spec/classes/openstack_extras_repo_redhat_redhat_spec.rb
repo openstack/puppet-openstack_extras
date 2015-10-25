@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
   let :paramclass_defaults do
     {
-      :release        => 'kilo',
+      :release        => 'liberty',
       :repo_defaults  => { 'enabled' => '1',
                            'gpgcheck' => '1',
                            'notify' => "Exec[yum_refresh]",
@@ -50,10 +50,10 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
-        :descr      => "OpenStack Kilo Repository",
+        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-liberty/",
+        :descr      => "OpenStack Liberty Repository",
         :priority   => 98,
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :enabled    => '1',
         :gpgcheck   => '1',
         :mirrorlist => 'absent',
@@ -88,8 +88,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         )}
       end
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Kilo",
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :owner      => 'root',
         :group      => 'root',
         :mode       => '0644',
@@ -104,13 +104,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-juno/epel-7/",
+        :baseurl    => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-juno/",
         :descr      => "OpenStack Juno Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno"
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud"
       )}
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Juno').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-Juno"
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud"
       )}
     end
 
@@ -164,9 +164,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://repos.fedorapeople.org/repos/openstack/openstack-kilo/el7/",
-        :descr      => "OpenStack Kilo Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo",
+        :baseurl    => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-liberty/",
+        :descr      => "OpenStack Liberty Repository",
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :proxy     => "http://my.proxy.com:8000"
       )}
     end
@@ -179,7 +179,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Kilo').with(
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
         :owner => "steve"
       )}
     end

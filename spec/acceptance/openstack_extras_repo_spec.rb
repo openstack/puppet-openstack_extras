@@ -4,7 +4,7 @@ describe 'openstack_extras::repo::*' do
 
   context 'default parameters' do
 
-    release = 'kilo'
+    release = 'liberty'
     it 'should work with no errors' do
       if fact('operatingsystem') == 'CentOS'
         operatingsystem = 'redhat'

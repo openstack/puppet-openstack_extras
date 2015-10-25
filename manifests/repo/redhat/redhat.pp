@@ -78,23 +78,18 @@ class openstack_extras::repo::redhat::redhat(
 
   if $manage_rdo {
     $release_cap = capitalize($release)
-    # In kilo the URL pattern changed
-    if $release < 'kilo' { # Lexicographically before 'k' release
-      $_dist = $::openstack_extras::repo::redhat::params::dist_full
-    } else {
-      $_dist = $::openstack_extras::repo::redhat::params::dist_short
-    }
 
-    $rdo_hash = { 'rdo-release' => {
-        'baseurl'  => "http://repos.fedorapeople.org/repos/openstack/openstack-${release}/${_dist}${::operatingsystemmajrelease}/",
+    $rdo_hash = {
+      'rdo-release' => {
+        'baseurl'  => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-${release}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'priority' => $::openstack_extras::repo::redhat::params::rdo_priority,
-        'gpgkey'   => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-${release_cap}",
+        'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
       }
     }
 
-    $rdokey_hash = { "/etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-${release_cap}" => {
-        'source' => "puppet:///modules/openstack_extras/RPM-GPG-KEY-RDO-${release_cap}"
+    $rdokey_hash = { '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud' => {
+        'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud'
       }
     }
 

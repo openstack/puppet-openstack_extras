@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
   let :paramclass_defaults do
     {
-      :release        => 'kilo'
+      :release        => 'liberty'
     }
   end
 
@@ -36,13 +36,13 @@ describe 'openstack_extras::repo::debian::debian' do
 
       it { is_expected.to contain_apt__source('debian_wheezy').with(
         :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'kilo',
+        :release            => 'liberty',
         :repos              => 'main',
       )}
 
       it { is_expected.to contain_apt__source('debian_wheezy_backports').with(
         :location => 'http://archive.gplhost.com/debian',
-        :release  => 'kilo-backports',
+        :release  => 'liberty-backports',
         :repos    => 'main'
       )}
 

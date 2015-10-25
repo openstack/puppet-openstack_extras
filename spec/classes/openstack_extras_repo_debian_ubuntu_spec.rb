@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
   let :paramclass_defaults do
     {
-      :release        => 'kilo'
+      :release        => 'liberty'
     }
   end
 
@@ -37,7 +37,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/kilo',
+        :release            => 'trusty-updates/liberty',
         :repos              => 'main',
       )}
 
@@ -136,7 +136,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-proposed/kilo',
+        :release            => 'trusty-proposed/liberty',
         :repos              => 'main',
       )}
     end
