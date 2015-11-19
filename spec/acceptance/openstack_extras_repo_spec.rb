@@ -6,15 +6,9 @@ describe 'openstack_extras::repo::*' do
 
     release = 'liberty'
     it 'should work with no errors' do
-      if fact('operatingsystem') == 'CentOS'
-        operatingsystem = 'redhat'
-      else
-        operatingsystem = fact('operatingsystem').downcase
-      end
       pp= <<-EOS
-        class { '::openstack_extras::repo::#{fact('osfamily').downcase}::#{operatingsystem}':
-          release => #{release}
-        }
+        include ::openstack_integration
+        include ::openstack_integration::repos
       EOS
 
 
