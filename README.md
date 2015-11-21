@@ -39,7 +39,7 @@ Setup
 
 ### Installing openstack_extras
 
-    example% puppet module install puppetlabs/openstack_extras
+    example% puppet module install openstack/openstack_extras
 
 ### Beginning with openstack_extras
 
