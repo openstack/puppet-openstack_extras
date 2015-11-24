@@ -1,3 +1,22 @@
+##2015-11-24 - 7.0.0
+###Summary
+
+This is a backwards-incompatible major release for OpenStack Liberty.
+
+####Backwards-incompatible changes
+- repo: bump to Liberty by default
+
+####Features
+- repo/ubuntu: allow to change uca repo name
+
+####Maintenance
+- implement acceptance tests
+- try to use zuul-cloner to prepare fixtures
+- remove class_parameter_defaults puppet-lint check
+- acceptance: use common bits from puppet-openstack-integration
+- fix RSpec 3.x syntax
+- initial msync run for all Puppet OpenStack modules
+
 ##2015-07-08 - 6.0.0
 ###Summary
 
