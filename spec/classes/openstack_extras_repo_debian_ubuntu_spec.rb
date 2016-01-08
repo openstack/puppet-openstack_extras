@@ -22,12 +22,12 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
   context 'on Debian platforms' do
     let :facts do
-      {
+      @default_facts.merge({
         :osfamily        => 'Debian',
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :lsbdistcodename => 'trusty'
-      }
+      })
     end
 
     describe 'with default parameters' do

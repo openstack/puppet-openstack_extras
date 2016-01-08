@@ -9,9 +9,10 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
   end
 
   let :facts do
-    { :osfamily        => 'Debian',
+    @default_facts.merge({
+      :osfamily        => 'Debian',
       :operatingsystem => 'Debian'
-    }
+    })
   end
 
   let (:title) { 'glance-registry' }

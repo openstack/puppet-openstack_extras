@@ -35,13 +35,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
   context 'on RedHat platforms' do
     let :facts do
-      {
+      @default_facts.merge({
         :osfamily        => 'RedHat',
         :operatingsystem => 'RedHat',
         :operatingsystemrelease => '7.1',
         :operatingsystemmajrelease => '7',
         :puppetversion => Puppet.version,
-      }
+      })
     end
 
     describe 'with default parameters' do
