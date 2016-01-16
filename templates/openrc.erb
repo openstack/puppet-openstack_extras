@@ -13,6 +13,12 @@ export OS_PASSWORD='<%= @password.gsub(/'/){ %q(\') } %>'
 export OS_AUTH_URL='<%= @auth_url %>'
 export OS_AUTH_STRATEGY='<%= @auth_strategy %>'
 export OS_REGION_NAME='<%= @region_name %>'
+<% if @project_domain -%>
+export OS_PROJECT_DOMAIN_NAME='<%= @project_domain %>'
+<% end -%>
+<% if @user_domain -%>
+export OS_USER_DOMAIN_NAME='<%= @user_domain %>'
+<% end -%>
 export CINDER_ENDPOINT_TYPE='<%= @cinder_endpoint_type %>'
 export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
 export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'

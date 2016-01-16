@@ -45,6 +45,8 @@ describe 'openstack_extras::auth_file' do
         :nova_endpoint_type       => 'internalURL',
         :neutron_endpoint_type    => 'internalURL',
         :auth_strategy            => 'no_auth',
+        :user_domain              => 'Default',
+        :project_domain           => 'Default'
       }
     end
 
@@ -60,6 +62,8 @@ describe 'openstack_extras::auth_file' do
         'export OS_AUTH_URL=\'http://127.0.0.2:5000/v2.0/\'',
         'export OS_AUTH_STRATEGY=\'no_auth\'',
         'export OS_REGION_NAME=\'myregion\'',
+        'export OS_PROJECT_DOMAIN_NAME=\'Default\'',
+        'export OS_USER_DOMAIN_NAME=\'Default\'',
         'export CINDER_ENDPOINT_TYPE=\'internalURL\'',
         'export GLANCE_ENDPOINT_TYPE=\'internalURL\'',
         'export KEYSTONE_ENDPOINT_TYPE=\'internalURL\'',
