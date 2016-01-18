@@ -4,7 +4,7 @@ describe 'openstack_extras::repo::*' do
 
   context 'default parameters' do
 
-    release = 'liberty'
+    release = 'mitaka'
     it 'should work with no errors' do
       pp= <<-EOS
         include ::openstack_integration
