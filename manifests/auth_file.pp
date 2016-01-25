@@ -68,6 +68,15 @@
 #   (optional) File path
 #   Defaults to '/root/openrc'.
 #
+# [*project_domain*]
+#   (optional) Project domain in v3 api.
+#   Defaults to false
+#
+# [*user_domain*]
+#   (optional) User domain in v3 api.
+#   Defaults to false
+#
+
 class openstack_extras::auth_file(
   $password                 = undef,
   $auth_url                 = 'http://127.0.0.1:5000/v2.0/',
@@ -77,6 +86,8 @@ class openstack_extras::auth_file(
   $tenant_name              = 'openstack',
   $region_name              = 'RegionOne',
   $use_no_cache             = true,
+  $project_domain           = false,
+  $user_domain              = false,
   $cinder_endpoint_type     = 'publicURL',
   $glance_endpoint_type     = 'publicURL',
   $keystone_endpoint_type   = 'publicURL',
