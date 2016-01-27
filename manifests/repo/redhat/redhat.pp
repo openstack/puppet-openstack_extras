@@ -49,16 +49,22 @@
 #   yumrepos be set.
 #   Defaults to false
 #
+# [*manage_priorities*]
+#   (optional) Whether to install yum-plugin-priorities package so
+#   'priority' value in yumrepo will be effective.
+#   Defaults to true
+#
 class openstack_extras::repo::redhat::redhat(
-  $release          = $::openstack_extras::repo::redhat::params::release,
-  $manage_rdo       = true,
-  $manage_epel      = true,
-  $repo_hash        = {},
-  $repo_defaults    = {},
-  $gpgkey_hash      = {},
-  $gpgkey_defaults  = {},
-  $purge_unmanaged  = false,
-  $package_require  = false
+  $release           = $::openstack_extras::repo::redhat::params::release,
+  $manage_rdo        = true,
+  $manage_epel       = true,
+  $repo_hash         = {},
+  $repo_defaults     = {},
+  $gpgkey_hash       = {},
+  $gpgkey_defaults   = {},
+  $purge_unmanaged   = false,
+  $package_require   = false,
+  $manage_priorities = true,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_string($release)
@@ -75,6 +81,12 @@ class openstack_extras::repo::redhat::redhat(
   $_gpgkey_defaults = merge($::openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
 
   anchor { 'openstack_extras_redhat': }
+
+  if $manage_priorities {
+    package { 'yum-plugin-priorities':
+        ensure => 'present',
+    }
+  }
 
   if $manage_rdo {
     $release_cap = capitalize($release)

@@ -61,6 +61,10 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify     => "Exec[yum_refresh]"
       )}
 
+      it { is_expected.to contain_package('yum-plugin-priorities').with(
+        :ensure => 'present',
+      )}
+
       # 'metalink' property is supported from Puppet 3.5
       if Puppet.version.to_f >= 3.5
         it { is_expected.to contain_yumrepo('epel').with(
@@ -198,6 +202,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to_not contain_yumrepo('rdo-release') }
+    end
+    describe 'with manage_priorities disabled' do
+      let :params do
+        default_params.merge!({ :manage_priorities => false })
+      end
+
+      it { is_expected.to_not contain_package('yum-plugin-priorities') }
     end
   end
 end
