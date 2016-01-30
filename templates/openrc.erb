@@ -5,6 +5,9 @@ export OS_SERVICE_ENDPOINT='<%= @service_endpoint %>'
 <% end -%>
 export OS_NO_CACHE='<%= @use_no_cache %>'
 export OS_TENANT_NAME='<%= @tenant_name %>'
+<% if @project_name -%>
+export OS_PROJECT_NAME='<%= @project_name %>'
+<% end -%>
 export OS_USERNAME='<%= @username %>'
 export OS_PASSWORD='<%= @password.gsub(/'/){ %q(\') } %>'
 export OS_AUTH_URL='<%= @auth_url %>'
