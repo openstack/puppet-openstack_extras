@@ -11,7 +11,7 @@
 #
 # [*auth_url*]
 #   (optional) URL to authenticate against
-#   Defaults to 'http://127.0.0.1:5000/v2.0/'
+#   Defaults to 'http://127.0.0.1:5000/v3/'
 #
 # [*service_token*]
 #   (optional) Keystone service token
@@ -22,7 +22,7 @@
 #
 # [*service_endpoint*]
 #   (optional) Keystone service endpoint
-#   Defaults to 'http://127.0.0.1:35357/v2.0/'
+#   Defaults to 'http://127.0.0.1:35357/v3/'
 #
 # [*username*]
 #   (optional) Username for this account as defined in keystone
@@ -30,12 +30,12 @@
 #
 # [*tenant_name*]
 #   (optional) Tenant for this account as defined in keystone
-#   Defaults to 'openstack'.
+#   Defaults to undef.
 #
 # [*project_name*]
 #   (optional) Project for this account as defined in keystone
 #   Use instead of tenant_name for when using identity v3.
-#   Defaults to undef.
+#   Defaults to 'openstack'.
 #
 # [*region_name*]
 #   (optional) Openstack region to use
@@ -75,25 +75,29 @@
 #
 # [*project_domain*]
 #   (optional) Project domain in v3 api.
-#   Defaults to false
+#   Defaults to 'default'.
 #
 # [*user_domain*]
 #   (optional) User domain in v3 api.
-#   Defaults to false
+#   Defaults to 'default'.
+#
+# [*identity_api_version*]
+#   (optional) Identity API version to use.
+#   Defaults to '3'.
 #
 
 class openstack_extras::auth_file(
   $password                 = undef,
-  $auth_url                 = 'http://127.0.0.1:5000/v2.0/',
+  $auth_url                 = 'http://127.0.0.1:5000/v3/',
   $service_token            = undef,
-  $service_endpoint         = 'http://127.0.0.1:35357/v2.0/',
+  $service_endpoint         = 'http://127.0.0.1:35357/v3/',
   $username                 = 'admin',
-  $tenant_name              = 'openstack',
-  $project_name             = undef,
+  $tenant_name              = undef,
+  $project_name             = 'openstack',
   $region_name              = 'RegionOne',
   $use_no_cache             = true,
-  $project_domain           = false,
-  $user_domain              = false,
+  $project_domain           = 'default',
+  $user_domain              = 'default',
   $cinder_endpoint_type     = 'publicURL',
   $glance_endpoint_type     = 'publicURL',
   $keystone_endpoint_type   = 'publicURL',
@@ -101,6 +105,7 @@ class openstack_extras::auth_file(
   $neutron_endpoint_type    = 'publicURL',
   $auth_strategy            = 'keystone',
   $path                     = '/root/openrc',
+  $identity_api_version     = '3',
 ) {
   if ! $password {
     fail('You must specify a password for openstack_extras::auth_file')

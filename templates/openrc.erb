@@ -4,7 +4,9 @@ export OS_SERVICE_TOKEN='<%= @service_token.gsub(/'/){ %q(\') } %>'
 export OS_SERVICE_ENDPOINT='<%= @service_endpoint %>'
 <% end -%>
 export OS_NO_CACHE='<%= @use_no_cache %>'
+<% if @tenant_name -%>
 export OS_TENANT_NAME='<%= @tenant_name %>'
+<% end -%>
 <% if @project_name -%>
 export OS_PROJECT_NAME='<%= @project_name %>'
 <% end -%>
@@ -24,3 +26,4 @@ export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
 export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'
 export NOVA_ENDPOINT_TYPE='<%= @nova_endpoint_type %>'
 export NEUTRON_ENDPOINT_TYPE='<%= @neutron_endpoint_type %>'
+export IDENTITY_API_VERSION='<%= @identity_api_version %>'
