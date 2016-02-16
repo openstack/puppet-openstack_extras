@@ -24,7 +24,7 @@ describe 'openstack_extras::auth_file' do
         'export KEYSTONE_ENDPOINT_TYPE=\'publicURL\'',
         'export NOVA_ENDPOINT_TYPE=\'publicURL\'',
         'export NEUTRON_ENDPOINT_TYPE=\'publicURL\'',
-        'export IDENTITY_API_VERSION=\'3\'',
+        'export OS_IDENTITY_API_VERSION=\'3\'',
       ])
     end
   end
@@ -73,7 +73,7 @@ describe 'openstack_extras::auth_file' do
         'export KEYSTONE_ENDPOINT_TYPE=\'internalURL\'',
         'export NOVA_ENDPOINT_TYPE=\'internalURL\'',
         'export NEUTRON_ENDPOINT_TYPE=\'internalURL\'',
-        'export IDENTITY_API_VERSION=\'3.1\'',
+        'export OS_IDENTITY_API_VERSION=\'3.1\'',
       ])
     end
   end
