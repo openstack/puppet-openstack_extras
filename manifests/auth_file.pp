@@ -114,6 +114,7 @@ class openstack_extras::auth_file(
     owner   => 'root',
     group   => 'root',
     mode    => '0700',
+    tag     => ['openrc'],
     content => template('openstack_extras/openrc.erb')
   }
 }
