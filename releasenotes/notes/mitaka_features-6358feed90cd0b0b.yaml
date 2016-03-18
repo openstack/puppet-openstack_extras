@@ -1,0 +1,3 @@
+---
+features:
+  - Keystone v3 support and enabled by default in openrc file.

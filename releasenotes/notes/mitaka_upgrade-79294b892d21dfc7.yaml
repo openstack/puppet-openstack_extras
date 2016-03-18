@@ -1,0 +1,3 @@
+---
+upgrade:
+  - Bump to Mitaka repositories by default.
