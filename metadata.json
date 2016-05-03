@@ -1,6 +1,6 @@
 {
   "name": "openstack-openstack_extras",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "author": "OpenStack Contributors",
   "summary": "Puppet OpenStack Extras Module",
   "license": "Apache-2.0",
@@ -8,31 +8,23 @@
   "project_page": "https://launchpad.net/puppet-openstack-extras",
   "issues_url": "https://bugs.launchpad.net/puppet-openstack-extras",
   "requirements": [
-    { "name": "pe","version_requirement": "3.x" },
-    { "name": "puppet","version_requirement": "3.x" }
+    { "name": "pe", "version_requirement": ">= 3.2.0 <= 2016.1.0" },
+    { "name": "puppet", "version_requirement": ">= 3.0.0 < 5.0.0" }
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Debian",
+      "operatingsystem": "RedHat",
       "operatingsystemrelease": ["7"]
     },
     {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": ["20"]
-    },
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": ["6.5","7"]
-    },
-    {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": ["12.04","14.04"]
+      "operatingsystemrelease": ["14.04"]
     }
   ],
   "description": "Puppet module to add useful utilities for OpenStack deployments",
   "dependencies": [
-    { "name": "puppetlabs/apt", "version_requirement": ">=1.8.0 <3.0.0" },
-    { "name": "puppetlabs/corosync", "version_requirement": ">=0.1.0 <1.0.0" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.0.0 <5.0.0" }
+    { "name": "puppetlabs/apt", "version_requirement": ">=2.2.0 <3.0.0" },
+    { "name": "puppetlabs/corosync", "version_requirement": ">=0.8.0 <1.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.9.0 <5.0.0" }
   ]
 }
