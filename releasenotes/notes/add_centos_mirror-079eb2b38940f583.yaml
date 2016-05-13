@@ -1,0 +1,3 @@
+---
+features:
+  - Allow to change CentOS mirror URL with a new parameter, centos_mirror_url.

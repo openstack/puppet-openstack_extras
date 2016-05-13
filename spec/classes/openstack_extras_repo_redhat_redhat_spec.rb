@@ -163,12 +163,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
       let :params do
         default_params.merge!({ :repo_defaults => {
                                    'proxy' => 'http://my.proxy.com:8000'
-                                }
+                                },
+                                :centos_mirror_url => 'http://mirror.dfw.rax.openstack.org',
                               })
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-mitaka/",
+        :baseurl    => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-mitaka/",
         :descr      => "OpenStack Mitaka Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :proxy     => "http://my.proxy.com:8000"

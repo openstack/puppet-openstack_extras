@@ -54,6 +54,10 @@
 #   'priority' value in yumrepo will be effective.
 #   Defaults to true
 #
+# [*centos_mirror_url*]
+#   (optional) URL of CentOS mirror.
+#   Defaults to 'http://mirror.centos.org'
+#
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
@@ -65,6 +69,7 @@ class openstack_extras::repo::redhat::redhat(
   $purge_unmanaged   = false,
   $package_require   = false,
   $manage_priorities = true,
+  $centos_mirror_url = 'http://mirror.centos.org',
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_string($release)
@@ -93,7 +98,7 @@ class openstack_extras::repo::redhat::redhat(
 
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-${release}/",
+        'baseurl'  => "${centos_mirror_url}/centos/7/cloud/\$basearch/openstack-${release}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'priority' => $::openstack_extras::repo::redhat::params::rdo_priority,
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
