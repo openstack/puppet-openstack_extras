@@ -49,16 +49,21 @@
 #   yumrepos be set.
 #   Defaults to false
 #
+# [*centos_mirror_url*]
+#   (optional) URL of CentOS mirror.
+#   Defaults to 'http://mirror.centos.org'
+#
 class openstack_extras::repo::redhat::redhat(
-  $release          = $::openstack_extras::repo::redhat::params::release,
-  $manage_rdo       = true,
-  $manage_epel      = true,
-  $repo_hash        = {},
-  $repo_defaults    = {},
-  $gpgkey_hash      = {},
-  $gpgkey_defaults  = {},
-  $purge_unmanaged  = false,
-  $package_require  = false
+  $release           = $::openstack_extras::repo::redhat::params::release,
+  $manage_rdo        = true,
+  $manage_epel       = true,
+  $repo_hash         = {},
+  $repo_defaults     = {},
+  $gpgkey_hash       = {},
+  $gpgkey_defaults   = {},
+  $purge_unmanaged   = false,
+  $package_require   = false,
+  $centos_mirror_url = 'http://mirror.centos.org',
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_string($release)
@@ -81,7 +86,7 @@ class openstack_extras::repo::redhat::redhat(
 
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-${release}/",
+        'baseurl'  => "${centos_mirror_url}/centos/7/cloud/\$basearch/openstack-${release}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'priority' => $::openstack_extras::repo::redhat::params::rdo_priority,
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
