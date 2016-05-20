@@ -1,7 +1,7 @@
 openstack_extras
 ============
 
-7.0.0 - 2015.2.0 - Liberty
+7.1.0 - 2015.2.0 - Liberty
 
 #### Table of Contents
 

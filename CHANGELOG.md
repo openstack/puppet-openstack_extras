@@ -1,3 +1,20 @@
+##2016-05-20 - 7.1.0
+
+###Summary
+
+This is a feature and bugfix release in the Liberty series.
+
+####Features
+
+- Allow to change CentOS mirror URL
+- Add missing v3 parameters in openrc file
+
+
+####Bugfixes
+
+####Maintenance
+
+
 ##2015-11-24 - 7.0.0
 ###Summary
 

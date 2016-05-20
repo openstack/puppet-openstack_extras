@@ -1,6 +1,6 @@
 {
   "name": "openstack-openstack_extras",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "author": "OpenStack Contributors",
   "summary": "Puppet OpenStack Extras Module",
   "license": "Apache-2.0",
