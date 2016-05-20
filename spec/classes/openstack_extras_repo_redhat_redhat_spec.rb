@@ -61,9 +61,13 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify     => "Exec[yum_refresh]"
       )}
 
-      it { is_expected.to contain_package('yum-plugin-priorities').with(
-        :ensure => 'present',
-      )}
+      it { is_expected.to contain_exec('installing_yum-plugin-priorities').with(
+        :command   => '/usr/bin/yum install -y yum-plugin-priorities',
+        :logoutput => 'on_failure',
+        :tries     => 3,
+        :try_sleep => 1,
+        :unless    => '/usr/bin/rpm -qa | /usr/bin/grep -q yum-plugin-priorities',
+      ) }
 
       # 'metalink' property is supported from Puppet 3.5
       if Puppet.version.to_f >= 3.5
@@ -209,7 +213,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         default_params.merge!({ :manage_priorities => false })
       end
 
-      it { is_expected.to_not contain_package('yum-plugin-priorities') }
+      it { is_expected.to_not contain_exec('installing_yum-plugin-priorities') }
     end
   end
 end

@@ -87,12 +87,6 @@ class openstack_extras::repo::redhat::redhat(
 
   anchor { 'openstack_extras_redhat': }
 
-  if $manage_priorities {
-    package { 'yum-plugin-priorities':
-        ensure => 'present',
-    }
-  }
-
   if $manage_rdo {
     $release_cap = capitalize($release)
 
@@ -153,6 +147,17 @@ class openstack_extras::repo::redhat::redhat(
 
   if ((versioncmp($::puppetversion, '3.5') > 0) and $purge_unmanaged) {
       resources { 'yumrepo': purge => true }
+  }
+
+  if $manage_priorities {
+    exec { 'installing_yum-plugin-priorities':
+      command   => '/usr/bin/yum install -y yum-plugin-priorities',
+      logoutput => 'on_failure',
+      tries     => 3,
+      try_sleep => 1,
+      unless    => '/usr/bin/rpm -qa | /usr/bin/grep -q yum-plugin-priorities',
+    }
+    Exec['installing_yum-plugin-priorities'] -> Yumrepo<||>
   }
 
   if $package_require {
