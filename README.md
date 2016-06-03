@@ -39,7 +39,7 @@ Setup
 
 ### Installing openstack_extras
 
-    example% puppet module install openstack/openstack_extras
+    puppet module install openstack/openstack_extras
 
 ### Beginning with openstack_extras
 
@@ -119,7 +119,7 @@ Development
 
 Developer documentation for the entire puppet-openstack project.
 
-* https://wiki.openstack.org/wiki/Puppet-openstack#Developer_documentation
+* http://docs.openstack.org/developer/puppet-openstack-guide/
 
 Contributors
 ------------
