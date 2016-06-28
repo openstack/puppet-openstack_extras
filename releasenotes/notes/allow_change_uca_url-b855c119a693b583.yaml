@@ -1,0 +1,3 @@
+---
+features:
+  - When deploying UCA repositories, allow to customize the URL.
