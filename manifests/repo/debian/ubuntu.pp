@@ -37,13 +37,18 @@
 #   installing any packages.
 #   Defaults to false
 #
+# [*uca_location*]
+#   (optional) Ubuntu Cloud Archives repository location.
+#   Defaults to $::openstack_extras::repo::debian::params::uca_location
+#
 class openstack_extras::repo::debian::ubuntu(
   $release         = $::openstack_extras::repo::debian::params::release,
   $manage_uca      = true,
   $repo            = 'updates',
   $source_hash     = {},
   $source_defaults = {},
-  $package_require = false
+  $package_require = false,
+  $uca_location    = $::openstack_extras::repo::debian::params::uca_location,
 ) inherits openstack_extras::repo::debian::params {
   if $manage_uca {
     exec { 'installing ubuntu-cloud-keyring':
@@ -56,7 +61,7 @@ class openstack_extras::repo::debian::ubuntu(
       notify      => Exec['apt_update'],
     }
     apt::source { $::openstack_extras::repo::debian::params::uca_name:
-      location => $::openstack_extras::repo::debian::params::uca_location,
+      location => $uca_location,
       release  => "${::lsbdistcodename}-${repo}/${release}",
       repos    => $::openstack_extras::repo::debian::params::uca_repos,
     }
