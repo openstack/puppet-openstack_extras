@@ -18,11 +18,10 @@ describe 'openstack_extras::repo::*' do
     end
 
     it 'should be able to install openstack packages' do
-      case fact('osfamily')
-      when 'Debian'
+      if os[:family] == 'Debian'
         expect(shell('apt-get install -y python-openstackclient').exit_code).to be_zero
         expect(shell('apt-cache policy python-openstackclient | grep -A 1 \*\*\*').stdout).to match(/#{release}/)
-      when 'Redhat'
+      elsif os[:family] == 'RedHat'
         expect(shell('yum install -y python-openstackclient').exit_code).to be_zero
         expect(shell('yum list python-openstackclient | grep -A 1 "Installed Packages"').stdout).to match(/@rdo-release/)
       end
