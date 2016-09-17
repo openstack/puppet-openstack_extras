@@ -5,7 +5,7 @@
 #
 class openstack_extras::repo::redhat::params
 {
-  $release          = 'mitaka'
+  $release          = 'newton'
 
   $repo_defaults    = { 'enabled'    => '1',
                         'gpgcheck'   => '1',

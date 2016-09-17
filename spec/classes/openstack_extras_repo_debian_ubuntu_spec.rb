@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
   let :paramclass_defaults do
     {
-      :release        => 'mitaka'
+      :release        => 'newton'
     }
   end
 
@@ -37,7 +37,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/mitaka',
+        :release            => 'trusty-updates/newton',
         :repos              => 'main',
       )}
 
@@ -137,7 +137,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release            => 'trusty-proposed/mitaka',
+        :release            => 'trusty-proposed/newton',
         :repos              => 'main',
       )}
     end
