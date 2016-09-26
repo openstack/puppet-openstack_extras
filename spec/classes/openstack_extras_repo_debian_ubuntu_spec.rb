@@ -26,7 +26,8 @@ describe 'openstack_extras::repo::debian::ubuntu' do
         :osfamily        => 'Debian',
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
-        :lsbdistcodename => 'trusty'
+        :lsbdistcodename => 'trusty',
+        :lsbdistrelease  => '14.04'
       })
     end
 

@@ -25,7 +25,8 @@ describe 'openstack_extras::repo::debian::debian' do
       @default_facts.merge({
         :osfamily        => 'Debian',
         :operatingsystem => 'Debian',
-        :lsbdistid       => 'Debian'
+        :lsbdistid       => 'Debian',
+        :lsbdistrelease  => '8'
       })
     end
 
