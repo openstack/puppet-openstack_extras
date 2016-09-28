@@ -14,6 +14,12 @@
 #   for the RDO OpenStack repository provided by RedHat
 #   Defaults to true
 #
+# [*manage_virt*]
+#   (optional) Whether to create a predefined yumrepo resource
+#   for the RDO CentOS QEMU EV epository provided by RedHat.
+#   This repository has been required starting from Newton.
+#   Defaults to true
+#
 # [*manage_epel*]
 #   (optional) Whether to create a predefined yumrepo resource
 #   for the EPEL repository provided by RedHat
@@ -62,6 +68,7 @@
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
+  $manage_virt       = true,
   $manage_epel       = false,
   $repo_hash         = {},
   $repo_defaults     = {},
@@ -107,6 +114,24 @@ class openstack_extras::repo::redhat::redhat(
 
     create_resources('file', $rdokey_hash, $_gpgkey_defaults)
     create_resources('yumrepo', $rdo_hash, $_repo_defaults)
+  }
+
+  if $manage_virt {
+    $virt_hash = {
+      'rdo-qemu-ev' => {
+        'baseurl'  => "${centos_mirror_url}/centos/7/virt/\$basearch/kvm-common/",
+        'descr'    => 'RDO CentOS-7 - QEMU EV',
+        'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+      }
+    }
+
+    $virtkey_hash = { '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization' => {
+        'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization'
+      }
+    }
+
+    create_resources('file', $virtkey_hash, $_gpgkey_defaults)
+    create_resources('yumrepo', $virt_hash, $_repo_defaults)
   }
 
   if $manage_epel {

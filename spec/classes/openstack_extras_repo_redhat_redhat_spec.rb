@@ -61,6 +61,17 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :notify     => "Exec[yum_refresh]"
       )}
 
+      it { is_expected.to contain_yumrepo('rdo-qemu-ev').with(
+        :baseurl    => "http://mirror.centos.org/centos/7/virt/$basearch/kvm-common/",
+        :descr      => "RDO CentOS-7 - QEMU EV",
+        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization",
+        :enabled    => '1',
+        :gpgcheck   => '1',
+        :mirrorlist => 'absent',
+        :require    => "Anchor[openstack_extras_redhat]",
+        :notify     => "Exec[yum_refresh]"
+      )}
+
       it { is_expected.to contain_exec('installing_yum-plugin-priorities').with(
         :command   => '/usr/bin/yum install -y yum-plugin-priorities',
         :logoutput => 'on_failure',
@@ -98,6 +109,14 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
         :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud",
+        :owner      => 'root',
+        :group      => 'root',
+        :mode       => '0644',
+        :before     => "Anchor[openstack_extras_redhat]"
+      )}
+
+      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
+        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization",
         :owner      => 'root',
         :group      => 'root',
         :mode       => '0644',
@@ -208,6 +227,15 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       it { is_expected.to_not contain_yumrepo('rdo-release') }
     end
+
+    describe 'with rdo-virt management disabled' do
+      let :params do
+        default_params.merge!({ :manage_virt => false })
+      end
+
+      it { is_expected.to_not contain_yumrepo('rdo-qemu-ev') }
+    end
+
     describe 'with manage_priorities disabled' do
       let :params do
         default_params.merge!({ :manage_priorities => false })
