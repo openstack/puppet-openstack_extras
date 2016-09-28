@@ -1,0 +1,6 @@
+---
+features:
+  - With a new boolean called manage_virt, allow to whether or not activate
+    RDO CentOS QEMU EV repository that is required when deploying OpenStack
+    Newton with RDO packaging. It's enabled by default to make deployments
+    working out of the box, but can be disabled.
