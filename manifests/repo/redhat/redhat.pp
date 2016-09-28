@@ -17,7 +17,8 @@
 # [*manage_epel*]
 #   (optional) Whether to create a predefined yumrepo resource
 #   for the EPEL repository provided by RedHat
-#   Defaults to true
+#   Note: EPEL is not required when deploying OpenStack with RDO.
+#   Defaults to false
 #
 # [*repo_hash*]
 #   (optional) A hash of yumrepo resources that will be passed to
@@ -61,7 +62,7 @@
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
-  $manage_epel       = true,
+  $manage_epel       = false,
   $repo_hash         = {},
   $repo_defaults     = {},
   $gpgkey_hash       = {},

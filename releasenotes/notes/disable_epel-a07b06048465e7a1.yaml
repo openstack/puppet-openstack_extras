@@ -1,0 +1,5 @@
+---
+other:
+  - Disable EPEL repository setup by default. Keep the boolean if users
+    want it, but add a note that EPEL is not required when deploying
+    OpenStack with RDO repositories.
