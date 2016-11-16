@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add an
 #   Ubuntu Cloud Archive APT source for.
-#   Defaults to 'liberty'
+#   Defaults to $::openstack_extras::repo::debian::params::release
 #
 # [*manage_uca*]
 #   (optional) Whether or not to add the default
