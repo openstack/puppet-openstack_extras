@@ -3,9 +3,10 @@ require 'spec_helper'
 describe 'openstack_extras::pacemaker::service', :type => :define do
 
   let :pre_condition do
-    "class { '::glance::registry':
-       keystone_password => 'secrete',
-     }"
+   [
+     "class { '::glance::registry::authtoken': password => 'password', }",
+     "include ::glance::registry",
+   ]
   end
 
   let :facts do
