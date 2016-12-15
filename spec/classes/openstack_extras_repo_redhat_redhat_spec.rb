@@ -52,7 +52,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { is_expected.to contain_yumrepo('rdo-release').with(
         :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-mitaka/",
         :descr      => "OpenStack Mitaka Repository",
-        :priority   => 98,
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :enabled    => '1',
         :gpgcheck   => '1',
