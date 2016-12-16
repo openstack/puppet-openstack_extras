@@ -33,6 +33,4 @@ class openstack_extras::repo::redhat::params
       warning('Unrecognised operatingsystem')
     }
   }
-
-  $rdo_priority = 98
 }
