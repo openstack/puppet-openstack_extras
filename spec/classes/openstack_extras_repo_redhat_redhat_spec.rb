@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
   let :paramclass_defaults do
     {
-      :release        => 'newton',
+      :release        => 'ocata',
       :repo_defaults  => { 'enabled' => '1',
                            'gpgcheck' => '1',
                            'notify' => "Exec[yum_refresh]",
@@ -50,8 +50,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-newton/",
-        :descr      => "OpenStack Newton Repository",
+        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-ocata/",
+        :descr      => "OpenStack Ocata Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :enabled    => '1',
         :gpgcheck   => '1',
@@ -191,8 +191,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-newton/",
-        :descr      => "OpenStack Newton Repository",
+        :baseurl    => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-ocata/",
+        :descr      => "OpenStack Ocata Repository",
         :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
         :proxy     => "http://my.proxy.com:8000"
       )}
