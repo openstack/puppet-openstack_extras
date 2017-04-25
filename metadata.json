@@ -1,30 +1,49 @@
 {
-  "name": "openstack-openstack_extras",
-  "version": "8.2.0",
-  "author": "OpenStack Contributors",
-  "summary": "Puppet OpenStack Extras Module",
-  "license": "Apache-2.0",
-  "source": "git://github.com/openstack/puppet-openstack_extras.git",
-  "project_page": "https://launchpad.net/puppet-openstack-extras",
-  "issues_url": "https://bugs.launchpad.net/puppet-openstack-extras",
-  "requirements": [
-    { "name": "pe", "version_requirement": ">= 3.2.0 <= 2016.1.0" },
-    { "name": "puppet", "version_requirement": ">= 3.0.0 < 5.0.0" }
-  ],
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": ["7"]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": ["14.04"]
-    }
-  ],
-  "description": "Puppet module to add useful utilities for OpenStack deployments",
-  "dependencies": [
-    { "name": "puppetlabs/apt", "version_requirement": ">=2.2.0 <3.0.0" },
-    { "name": "puppetlabs/corosync", "version_requirement": ">=0.8.0 <1.0.0" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.9.0 <5.0.0" }
-  ]
+    "author": "OpenStack Contributors",
+    "dependencies": [
+        {
+            "name": "puppetlabs/apt",
+            "version_requirement": ">=2.2.0 <3.0.0"
+        },
+        {
+            "name": "puppetlabs/corosync",
+            "version_requirement": ">=0.8.0 <1.0.0"
+        },
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">=4.9.0 <5.0.0"
+        }
+    ],
+    "description": "Puppet module to add useful utilities for OpenStack deployments",
+    "issues_url": "https://bugs.launchpad.net/puppet-openstack-extras",
+    "license": "Apache-2.0",
+    "name": "openstack-openstack_extras",
+    "operatingsystem_support": [
+        {
+            "operatingsystem": "RedHat",
+            "operatingsystemrelease": [
+                "7"
+            ]
+        },
+        {
+            "operatingsystem": "Ubuntu",
+            "operatingsystemrelease": [
+                "14.04"
+            ]
+        }
+    ],
+    "project_page": "https://launchpad.net/puppet-openstack-extras",
+    "requirements": [
+        {
+            "name": "pe",
+            "version_requirement": ">= 3.2.0 <= 2016.1.0"
+        },
+        {
+            "name": "puppet",
+            "version_requirement": ">= 3.0.0 < 5.0.0"
+        }
+    ],
+    "source": "git://github.com/openstack/puppet-openstack_extras.git",
+    "summary": "Puppet OpenStack Extras Module",
+    "version": "8.3.0"
 }
