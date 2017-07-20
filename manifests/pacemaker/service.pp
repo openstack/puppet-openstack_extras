@@ -204,8 +204,8 @@ define openstack_extras::pacemaker::service (
     }
   }
 
-  File<| title == $ocf_script_name |> ->
-  Cs_primitive<| title == $primitive_name |>
+  File<| title == $ocf_script_name |>
+  -> Cs_primitive<| title == $primitive_name |>
   File<| title == $ocf_script_name |> ~> Service[$service_name]
   Cs_primitive<| title == $primitive_name |> -> Service[$service_name]
   File<| title == $ocf_handler_name |> -> Service[$service_name]

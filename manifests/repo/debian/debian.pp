@@ -51,8 +51,8 @@ class openstack_extras::repo::debian::debian(
       location => $::openstack_extras::repo::debian::params::whz_location,
       release  => $release,
       repos    => $::openstack_extras::repo::debian::params::whz_repos,
-    } ->
-    apt::source { "${::openstack_extras::repo::debian::params::whz_name}_backports":
+    }
+    -> apt::source { "${::openstack_extras::repo::debian::params::whz_name}_backports":
       location => $::openstack_extras::repo::debian::params::whz_location,
       release  => "${release}-backports",
       repos    => $::openstack_extras::repo::debian::params::whz_repos,
