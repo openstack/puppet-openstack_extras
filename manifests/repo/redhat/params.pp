@@ -5,7 +5,7 @@
 #
 class openstack_extras::repo::redhat::params
 {
-  $release          = 'ocata'
+  $release          = 'pike'
 
   $repo_defaults    = { 'enabled'    => '1',
                         'gpgcheck'   => '1',
