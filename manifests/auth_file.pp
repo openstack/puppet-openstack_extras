@@ -81,6 +81,10 @@
 #   (optional) User domain in v3 api.
 #   Defaults to 'default'.
 #
+# [*auth_type*]
+#   (optional) Authentication type to load.
+#   Default to undef.
+#
 # [*identity_api_version*]
 #   (optional) Identity API version to use.
 #   Defaults to '3'.
@@ -98,6 +102,7 @@ class openstack_extras::auth_file(
   $use_no_cache             = true,
   $project_domain           = 'default',
   $user_domain              = 'default',
+  $auth_type                = undef,
   $cinder_endpoint_type     = 'publicURL',
   $glance_endpoint_type     = 'publicURL',
   $keystone_endpoint_type   = 'publicURL',

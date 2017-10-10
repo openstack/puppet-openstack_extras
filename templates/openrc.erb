@@ -21,6 +21,9 @@ export OS_PROJECT_DOMAIN_NAME='<%= @project_domain %>'
 <% if @user_domain -%>
 export OS_USER_DOMAIN_NAME='<%= @user_domain %>'
 <% end -%>
+<% if @auth_type -%>
+export OS_AUTH_TYPE='<%= @auth_type %>'
+<% end -%>
 export CINDER_ENDPOINT_TYPE='<%= @cinder_endpoint_type %>'
 export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
 export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'
