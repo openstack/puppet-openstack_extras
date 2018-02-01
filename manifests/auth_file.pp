@@ -45,6 +45,14 @@
 #   (optional) Do not use the auth token cache.
 #   Defaults to true.
 #
+# [*os_interface*]
+#   (optional) The common endpoint to use with OSC
+#   Defaults to 'public'.
+#
+# [*os_endpoint_type*]
+#   (optional) The common endpoint to use with service-specific clients
+#   Defaults to 'publicURL'.
+#
 # [*cinder_endpoint_type*]
 #   (optional) The Cinder endpoint to use
 #   Defaults to 'publicURL'.
@@ -103,6 +111,8 @@ class openstack_extras::auth_file(
   $project_domain           = 'default',
   $user_domain              = 'default',
   $auth_type                = undef,
+  $os_interface             = 'public',
+  $os_endpoint_type         = 'publicURL',
   $cinder_endpoint_type     = 'publicURL',
   $glance_endpoint_type     = 'publicURL',
   $keystone_endpoint_type   = 'publicURL',

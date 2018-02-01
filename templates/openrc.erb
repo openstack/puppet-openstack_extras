@@ -24,6 +24,8 @@ export OS_USER_DOMAIN_NAME='<%= @user_domain %>'
 <% if @auth_type -%>
 export OS_AUTH_TYPE='<%= @auth_type %>'
 <% end -%>
+export OS_INTERFACE='<%= @os_interface %>'
+export OS_ENDPOINT_TYPE='<%= @os_endpoint_type %>'
 export CINDER_ENDPOINT_TYPE='<%= @cinder_endpoint_type %>'
 export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
 export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'
