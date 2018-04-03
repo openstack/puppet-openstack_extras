@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    ```openstack_extras::repo::debian::debian::manage_whz``` has been drepcated.
+    Use ```openstack_extras::repo::debian::debian::manage_deb``` instead.
+

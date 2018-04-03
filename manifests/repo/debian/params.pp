@@ -4,15 +4,15 @@
 #
 class openstack_extras::repo::debian::params
 {
-  $release               = 'pike'
+  $release               = 'queens'
 
   $uca_name              = 'ubuntu-cloud-archive'
   $uca_location          = 'http://ubuntu-cloud.archive.canonical.com/ubuntu'
   $uca_repos             = 'main'
   $uca_required_packages = 'ubuntu-cloud-keyring'
 
-  $whz_name              = 'debian_wheezy'
-  $whz_location          = 'http://archive.gplhost.com/debian'
-  $whz_repos             = 'main'
-  $whz_required_packages = 'gplhost-archive-keyring'
+  $deb_name              = 'debian-openstack-backports'
+  $deb_location          = "http://${::lsbdistcodename}-${release}.debian.net/debian"
+  $deb_repos             = 'main'
+  $deb_required_packages = 'openstack-backports-archive-keyring'
 }

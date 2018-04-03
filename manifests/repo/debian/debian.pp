@@ -7,12 +7,12 @@
 #
 # [*release*]
 #   (optional) The OpenStack release to add a
-#   Debian Wheezy apt source for.
-#   Defaults to 'kilo'
+#   Debian Stretch apt source for.
+#   Defaults to 'queens'
 #
-# [*manage_whz*]
+# [*manage_deb*]
 #   (optional) Whether or not to add the default
-#   Debian Wheezy APT source
+#   Debian Stretch APT source
 #   Defaults to true
 #
 # [*source_hash*]
@@ -30,32 +30,48 @@
 #   installing any packages.
 #   Defaults to false
 #
+# [*deb_location*]
+#   (optional) Debian package repository location.
+#   Defaults to $::openstack_extras::repo::debian::params::deb_location
+#
+# === DEPRECATED
+#
+# [*manage_whz*]
+#   (optional) Whether or not to add the default Debian Stretch APT source
+#   Replaced by $manage_deb instead.
+#   Defaults to true
+#
 class openstack_extras::repo::debian::debian(
   $release         = $::openstack_extras::repo::debian::params::release,
-  $manage_whz      = true,
+  $manage_deb      = true,
   $source_hash     = {},
   $source_defaults = {},
-  $package_require = false
+  $package_require = false,
+  $deb_location    = "http://${::lsbdistcodename}-${release}.debian.net/debian",
+  # DEPRECATED
+  $manage_whz      = undef,
 ) inherits openstack_extras::repo::debian::params {
-  if $manage_whz {
-    exec { 'installing gplhost-archive-keyring':
-      command     => '/usr/bin/apt-get -y install gplhost-archive-keyring',
+  # handle deprecation
+  $deb_manage = pick($manage_whz, $manage_deb)
+  if $deb_manage {
+    exec { 'installing openstack-backports-archive-keyring':
+      command     => "/usr/bin/apt-get -y ${::openstack_extras::repo::debian::params::deb_required_packages}",
       logoutput   => 'on_failure',
       tries       => 3,
       try_sleep   => 1,
       refreshonly => true,
-      subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::whz_name}.list"],
+      subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::deb_name}.list"],
       notify      => Exec['apt_update'],
     }
-    apt::source { $::openstack_extras::repo::debian::params::whz_name:
-      location => $::openstack_extras::repo::debian::params::whz_location,
-      release  => $release,
-      repos    => $::openstack_extras::repo::debian::params::whz_repos,
+    apt::source { $::openstack_extras::repo::debian::params::deb_name:
+      location => $deb_location,
+      release  => "${::lsbdistcodename}-${release}-backports",
+      repos    => $::openstack_extras::repo::debian::params::deb_repos,
     }
-    -> apt::source { "${::openstack_extras::repo::debian::params::whz_name}_backports":
-      location => $::openstack_extras::repo::debian::params::whz_location,
-      release  => "${release}-backports",
-      repos    => $::openstack_extras::repo::debian::params::whz_repos,
+    -> apt::source { "${::openstack_extras::repo::debian::params::deb_name}-nochange":
+      location => $deb_location,
+      release  => "${::lsbdistcodename}-${release}-backports-nochange",
+      repos    => $::openstack_extras::repo::debian::params::deb_repos,
     }
   }
 

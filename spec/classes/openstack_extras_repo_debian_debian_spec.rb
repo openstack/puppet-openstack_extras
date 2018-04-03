@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'openstack_extras::repo::debian::debian' do
   let :class_params do
     {
-      :manage_whz       => true,
+      :manage_deb       => true,
       :source_hash      => {},
       :source_defaults  => {},
       :package_require  => false
@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
   let :paramclass_defaults do
     {
-      :release        => 'pike'
+      :release        => 'queens'
     }
   end
 
@@ -26,7 +26,8 @@ describe 'openstack_extras::repo::debian::debian' do
         :osfamily        => 'Debian',
         :operatingsystem => 'Debian',
         :lsbdistid       => 'Debian',
-        :lsbdistrelease  => '8'
+        :lsbdistcodename => 'stretch',
+        :lsbdistrelease  => '9'
       })
     end
 
@@ -35,47 +36,47 @@ describe 'openstack_extras::repo::debian::debian' do
         {}.merge!(default_params)
       end
 
-      it { is_expected.to contain_apt__source('debian_wheezy').with(
-        :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'pike',
+      it { is_expected.to contain_apt__source('debian-openstack-backports').with(
+        :location           => 'http://stretch-queens.debian.net/debian',
+        :release            => 'stretch-queens-backports',
         :repos              => 'main',
       )}
 
-      it { is_expected.to contain_apt__source('debian_wheezy_backports').with(
-        :location => 'http://archive.gplhost.com/debian',
-        :release  => 'pike-backports',
+      it { is_expected.to contain_apt__source('debian-openstack-backports-nochange').with(
+        :location => 'http://stretch-queens.debian.net/debian',
+        :release  => 'stretch-queens-backports-nochange',
         :repos    => 'main'
       )}
 
-      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing openstack-backports-archive-keyring') }
     end
 
     describe 'with overridden release' do
       let :params do
-        default_params.merge!({ :release => 'juno' })
+        default_params.merge!({ :release => 'pike' })
       end
 
-      it { is_expected.to contain_apt__source('debian_wheezy').with(
-        :location           => 'http://archive.gplhost.com/debian',
-        :release            => 'juno',
+      it { is_expected.to contain_apt__source('debian-openstack-backports').with(
+        :location           => 'http://stretch-pike.debian.net/debian',
+        :release            => 'stretch-pike-backports',
         :repos              => 'main',
       )}
 
-      it { is_expected.to contain_apt__source('debian_wheezy_backports').with(
-        :location => 'http://archive.gplhost.com/debian',
-        :release  => 'juno-backports',
+      it { is_expected.to contain_apt__source('debian-openstack-backports-nochange').with(
+        :location => 'http://stretch-pike.debian.net/debian',
+        :release  => 'stretch-pike-backports-nochange',
         :repos    => 'main'
       )}
 
-      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing openstack-backports-archive-keyring') }
     end
 
-    describe 'when not managing wheezy repo' do
+    describe 'when not managing stretch repo' do
       let :params do
-        default_params.merge!({ :manage_whz => false })
+        default_params.merge!({ :manage_deb => false })
       end
 
-      it { is_expected.to_not contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to_not contain_exec('installing openstack-backports-archive-keyring') }
     end
 
     describe 'with overridden source hash' do
@@ -89,7 +90,7 @@ describe 'openstack_extras::repo::debian::debian' do
                                    'puppetlabs' => {
                                        'location'   => 'http://apt.puppetlabs.com',
                                        'repos'      => 'main',
-                                       'release'    => 'wheezy',
+                                       'release'    => 'stretch',
                                        'key'        => '4BD6EC30',
                                        'key_server' => 'pgp.mit.edu'
                                    }
@@ -106,12 +107,12 @@ describe 'openstack_extras::repo::debian::debian' do
       it { is_expected.to contain_apt__source('puppetlabs').with(
         :location           => 'http://apt.puppetlabs.com',
         :repos              => 'main',
-        :release            => 'wheezy',
+        :release            => 'stretch',
         :key                => '4BD6EC30',
         :key_server         => 'pgp.mit.edu'
       )}
 
-      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing openstack-backports-archive-keyring') }
     end
 
     describe 'with overridden source default' do
@@ -137,7 +138,7 @@ describe 'openstack_extras::repo::debian::debian' do
         :include_src        => 'true'
       )}
 
-      it { is_expected.to contain_exec('installing gplhost-archive-keyring') }
+      it { is_expected.to contain_exec('installing openstack-backports-archive-keyring') }
     end
   end
 end
