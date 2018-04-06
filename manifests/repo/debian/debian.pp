@@ -32,14 +32,13 @@
 #
 # [*deb_location*]
 #   (optional) Debian package repository location.
-#   Defaults to $::openstack_extras::repo::debian::params::deb_location
+#   Defaults to "http://${::lsbdistcodename}-${release}.debian.net/debian"
 #
 # === DEPRECATED
 #
 # [*manage_whz*]
 #   (optional) Whether or not to add the default Debian Stretch APT source
-#   Replaced by $manage_deb instead.
-#   Defaults to true
+#   Replaced by $manage_deb.
 #
 class openstack_extras::repo::debian::debian(
   $release         = $::openstack_extras::repo::debian::params::release,

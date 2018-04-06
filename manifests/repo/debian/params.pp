@@ -12,7 +12,6 @@ class openstack_extras::repo::debian::params
   $uca_required_packages = 'ubuntu-cloud-keyring'
 
   $deb_name              = 'debian-openstack-backports'
-  $deb_location          = "http://${::lsbdistcodename}-${release}.debian.net/debian"
   $deb_repos             = 'main'
   $deb_required_packages = 'openstack-backports-archive-keyring'
 }
