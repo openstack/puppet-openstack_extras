@@ -135,7 +135,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
     end
 
     it 'should not create a handler file' do
-      is_expected.to_not contain_file("#{params[:ocf_handler_name]}")
+      is_expected.to_not contain_file("ocf_handler_glance_registry")
     end
 
     it 'should create a pacemaker primitive' do
