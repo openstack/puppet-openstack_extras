@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
   let :paramclass_defaults do
     {
-      :release        => 'queens'
+      :release        => 'rocky'
     }
   end
 
@@ -37,14 +37,14 @@ describe 'openstack_extras::repo::debian::debian' do
       end
 
       it { is_expected.to contain_apt__source('debian-openstack-backports').with(
-        :location           => 'http://stretch-queens.debian.net/debian',
-        :release            => 'stretch-queens-backports',
+        :location           => 'http://stretch-rocky.debian.net/debian',
+        :release            => 'stretch-rocky-backports',
         :repos              => 'main',
       )}
 
       it { is_expected.to contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-queens.debian.net/debian',
-        :release  => 'stretch-queens-backports-nochange',
+        :location => 'http://stretch-rocky.debian.net/debian',
+        :release  => 'stretch-rocky-backports-nochange',
         :repos    => 'main'
       )}
 
