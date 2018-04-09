@@ -12,7 +12,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
   let :paramclass_defaults do
     {
-      :release        => 'pike'
+      :release        => 'queens'
     }
   end
 
@@ -38,7 +38,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release            => 'trusty-updates/pike',
+        :release            => 'trusty-updates/queens',
         :repos              => 'main',
       )}
 
@@ -138,7 +138,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { is_expected.to contain_apt__source('ubuntu-cloud-archive').with(
         :location           => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release            => 'trusty-proposed/pike',
+        :release            => 'trusty-proposed/queens',
         :repos              => 'main',
       )}
     end
