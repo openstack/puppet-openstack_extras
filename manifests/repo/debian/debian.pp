@@ -54,7 +54,8 @@ class openstack_extras::repo::debian::debian(
   $deb_manage = pick($manage_whz, $manage_deb)
   if $deb_manage {
     exec { 'installing openstack-backports-archive-keyring':
-      command     => "/usr/bin/apt-get -y --allow-unauthenticated ${::openstack_extras::repo::debian::params::deb_required_packages}",
+      command     => "/usr/bin/apt-get update ; \
+                   /usr/bin/apt-get -y --allow-unauthenticated install ${::openstack_extras::repo::debian::params::deb_required_packages}",
       logoutput   => 'on_failure',
       tries       => 3,
       try_sleep   => 1,
