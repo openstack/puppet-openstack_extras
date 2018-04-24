@@ -93,9 +93,29 @@
 #   (optional) Authentication type to load.
 #   Default to undef.
 #
+# [*compute_api_version*]
+#   (optional) Compute API version to use.
+#   Defaults to undef.
+#
+# [*network_api_version*]
+#   (optional) Network API version to use.
+#   Defaults to undef.
+#
+# [*image_api_version*]
+#   (optional) Image API version to use.
+#   Defaults to undef.
+#
+# [*volume_api_version*]
+#   (optional) Volume API version to use.
+#   Defaults to undef.
+#
 # [*identity_api_version*]
 #   (optional) Identity API version to use.
-#   Defaults to '3'.
+#   Defaults to undef.
+#
+# [*object_api_version*]
+#   (optional) Object API version to use.
+#   Defaults to undef.
 #
 
 class openstack_extras::auth_file(
@@ -120,7 +140,13 @@ class openstack_extras::auth_file(
   $neutron_endpoint_type    = 'publicURL',
   $auth_strategy            = 'keystone',
   $path                     = '/root/openrc',
-  $identity_api_version     = '3',
+  $compute_api_version      = undef,
+  $network_api_version      = undef,
+  $image_api_version        = undef,
+  $volume_api_version       = undef,
+  $identity_api_version     = undef,
+  $object_api_version       = undef,
+
 ) {
   if ! $password {
     fail('You must specify a password for openstack_extras::auth_file')

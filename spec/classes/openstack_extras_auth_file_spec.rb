@@ -26,7 +26,6 @@ describe 'openstack_extras::auth_file' do
         'export KEYSTONE_ENDPOINT_TYPE=\'publicURL\'',
         'export NOVA_ENDPOINT_TYPE=\'publicURL\'',
         'export NEUTRON_ENDPOINT_TYPE=\'publicURL\'',
-        'export OS_IDENTITY_API_VERSION=\'3\'',
       ])
     end
   end
@@ -54,7 +53,12 @@ describe 'openstack_extras::auth_file' do
         :auth_strategy            => 'no_auth',
         :user_domain              => 'anotherdomain',
         :project_domain           => 'anotherdomain',
-        :identity_api_version     => '3.1',
+        :compute_api_version      => '2.1',
+        :network_api_version      => '2.0',
+        :image_api_version        => '2',
+        :volume_api_version       => '2',
+        :identity_api_version     => '3',
+        :object_api_version       => '1',
       }
     end
 
@@ -79,7 +83,12 @@ describe 'openstack_extras::auth_file' do
         'export KEYSTONE_ENDPOINT_TYPE=\'internalURL\'',
         'export NOVA_ENDPOINT_TYPE=\'internalURL\'',
         'export NEUTRON_ENDPOINT_TYPE=\'internalURL\'',
-        'export OS_IDENTITY_API_VERSION=\'3.1\'',
+        'export OS_COMPUTE_API_VERSION=\'2.1\'',
+        'export OS_NETWORK_API_VERSION=\'2.0\'',
+        'export OS_IMAGE_API_VERSION=\'2\'',
+        'export OS_VOLUME_API_VERSION=\'2\'',
+        'export OS_IDENTITY_API_VERSION=\'3\'',
+        'export OS_OBJECT_API_VERSION=\'1\'',
       ])
     end
   end

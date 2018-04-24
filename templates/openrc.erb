@@ -31,4 +31,21 @@ export GLANCE_ENDPOINT_TYPE='<%= @glance_endpoint_type %>'
 export KEYSTONE_ENDPOINT_TYPE='<%= @keystone_endpoint_type %>'
 export NOVA_ENDPOINT_TYPE='<%= @nova_endpoint_type %>'
 export NEUTRON_ENDPOINT_TYPE='<%= @neutron_endpoint_type %>'
+<% if @compute_api_version -%>
+export OS_COMPUTE_API_VERSION='<%= @compute_api_version %>'
+<% end -%>
+<% if @network_api_version -%>
+export OS_NETWORK_API_VERSION='<%= @network_api_version %>'
+<% end -%>
+<% if @image_api_version -%>
+export OS_IMAGE_API_VERSION='<%= @image_api_version %>'
+<% end -%>
+<% if @volume_api_version -%>
+export OS_VOLUME_API_VERSION='<%= @volume_api_version %>'
+<% end -%>
+<% if @identity_api_version -%>
 export OS_IDENTITY_API_VERSION='<%= @identity_api_version %>'
+<% end -%>
+<% if @object_api_version -%>
+export OS_OBJECT_API_VERSION='<%= @object_api_version %>'
+<% end -%>
