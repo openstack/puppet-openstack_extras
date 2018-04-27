@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add a
 #   Debian Stretch apt source for.
-#   Defaults to 'queens'
+#   Defaults to $::openstack_extras::repo::debian::params::release
 #
 # [*manage_deb*]
 #   (optional) Whether or not to add the default
