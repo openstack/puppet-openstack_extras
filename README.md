@@ -60,7 +60,7 @@ configuration and extra functionality through types and providers.
 
 **HA configuration for Openstack services**
 
-This module allows to configure Openstack services in HA. Please refer to the [ha-guide](http://docs.openstack.org/high-availability-guide/content/index.html) for details.
+This module allows to configure Openstack services in HA. Please refer to the [ha-guide](https://docs.openstack.org/ha-guide/) for details.
 If you have a Corosync with Pacemaker cluster with several nodes joined, you may want to use an HA service provider which allows you to create the pacemaker resources for Openstack services and run them in HA mode.
 The example HA service configuration for keystone service:
 
