@@ -111,7 +111,7 @@
 #
 # [*identity_api_version*]
 #   (optional) Identity API version to use.
-#   Defaults to undef.
+#   Defaults to '3'.
 #
 # [*object_api_version*]
 #   (optional) Object API version to use.
@@ -144,7 +144,7 @@ class openstack_extras::auth_file(
   $network_api_version      = undef,
   $image_api_version        = undef,
   $volume_api_version       = undef,
-  $identity_api_version     = undef,
+  $identity_api_version     = '3',
   $object_api_version       = undef,
 
 ) {
