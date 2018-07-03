@@ -115,7 +115,7 @@ class openstack_extras::repo::redhat::redhat(
     create_resources('yumrepo', $rdo_hash, $_repo_defaults)
   }
 
-  if $manage_virt {
+  if $manage_virt and ($::operatingsystem != 'Fedora') {
     $virt_hash = {
       'rdo-qemu-ev' => {
         'baseurl'  => "${centos_mirror_url}/centos/7/virt/\$basearch/kvm-common/",
@@ -174,7 +174,7 @@ class openstack_extras::repo::redhat::redhat(
       resources { 'yumrepo': purge => true }
   }
 
-  if $manage_priorities {
+  if $manage_priorities and ($::operatingsystem != 'Fedora') {
     exec { 'installing_yum-plugin-priorities':
       command   => '/usr/bin/yum install -y yum-plugin-priorities',
       logoutput => 'on_failure',
@@ -189,9 +189,16 @@ class openstack_extras::repo::redhat::redhat(
       Yumrepo<||> -> Package<||>
   }
 
-  exec { 'yum_refresh':
-    command     => '/usr/bin/yum clean all',
-    refreshonly => true,
-  } -> Package <||>
+  if ($::operatingsystem == 'Fedora') {
+    exec { 'yum_refresh':
+      command     => '/usr/bin/dnf clean all',
+      refreshonly => true,
+    } -> Package <||>
+    } else {
+    exec { 'yum_refresh':
+      command     => '/usr/bin/yum clean all',
+      refreshonly => true,
+    } -> Package <||>
+  }
 }
 
