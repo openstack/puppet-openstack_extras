@@ -136,7 +136,7 @@
       </clone>
       <primitive class="ocf" id="p_neutron-dhcp-agent" provider="pacemaker" type="neutron-agent-dhcp">
         <instance_attributes id="p_neutron-dhcp-agent-instance_attributes">
-          <nvpair id="p_neutron-dhcp-agent-instance_attributes-os_auth_url" name="os_auth_url" value="http://10.108.2.2:35357/v2.0"/>
+          <nvpair id="p_neutron-dhcp-agent-instance_attributes-os_auth_url" name="os_auth_url" value="http://10.108.2.2:5000/v2.0"/>
           <nvpair id="p_neutron-dhcp-agent-instance_attributes-amqp_server_port" name="amqp_server_port" value="5673"/>
           <nvpair id="p_neutron-dhcp-agent-instance_attributes-multiple_agents" name="multiple_agents" value="false"/>
           <nvpair id="p_neutron-dhcp-agent-instance_attributes-password" name="password" value="7BqMhboS"/>
@@ -180,7 +180,7 @@
         </meta_attributes>
         <primitive class="ocf" id="p_neutron-l3-agent" provider="pacemaker" type="neutron-agent-l3">
           <instance_attributes id="p_neutron-l3-agent-instance_attributes">
-            <nvpair id="p_neutron-l3-agent-instance_attributes-os_auth_url" name="os_auth_url" value="http://10.108.2.2:35357/v2.0"/>
+            <nvpair id="p_neutron-l3-agent-instance_attributes-os_auth_url" name="os_auth_url" value="http://10.108.2.2:5000/v2.0"/>
             <nvpair id="p_neutron-l3-agent-instance_attributes-multiple_agents" name="multiple_agents" value="true"/>
             <nvpair id="p_neutron-l3-agent-instance_attributes-syslog" name="syslog" value="true"/>
             <nvpair id="p_neutron-l3-agent-instance_attributes-password" name="password" value="7BqMhboS"/>

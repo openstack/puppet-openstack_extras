@@ -22,7 +22,7 @@
 #
 # [*service_endpoint*]
 #   (optional) Keystone service endpoint
-#   Defaults to 'http://127.0.0.1:35357/v3/'
+#   Defaults to 'http://127.0.0.1:5000/v3/'
 #
 # [*username*]
 #   (optional) Username for this account as defined in keystone
@@ -122,7 +122,7 @@ class openstack_extras::auth_file(
   $password                 = undef,
   $auth_url                 = 'http://127.0.0.1:5000/v3/',
   $service_token            = undef,
-  $service_endpoint         = 'http://127.0.0.1:35357/v3/',
+  $service_endpoint         = 'http://127.0.0.1:5000/v3/',
   $username                 = 'admin',
   $tenant_name              = undef,
   $project_name             = 'openstack',

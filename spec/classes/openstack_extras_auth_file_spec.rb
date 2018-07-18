@@ -38,7 +38,7 @@ describe 'openstack_extras::auth_file' do
         :password                 => 'admin',
         :auth_url                 => 'http://127.0.0.2:5000/v3/',
         :service_token            => 'servicetoken',
-        :service_endpoint         => 'http://127.0.0.2:35357/v3/',
+        :service_endpoint         => 'http://127.0.0.2:5000/v3/',
         :username                 => 'myuser',
         :tenant_name              => 'mytenant',
         :project_name             => 'myproject',
@@ -66,7 +66,7 @@ describe 'openstack_extras::auth_file' do
     it 'should create a openrc file' do
       verify_contents(catalogue, '/root/openrc', [
         'export OS_SERVICE_TOKEN=\'servicetoken\'',
-        'export OS_SERVICE_ENDPOINT=\'http://127.0.0.2:35357/v3/\'',
+        'export OS_SERVICE_ENDPOINT=\'http://127.0.0.2:5000/v3/\'',
         'export OS_NO_CACHE=\'false\'',
         'export OS_TENANT_NAME=\'mytenant\'',
         'export OS_PROJECT_NAME=\'myproject\'',
