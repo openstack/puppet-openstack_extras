@@ -134,6 +134,11 @@ Contributors
 
 * https://github.com/openstack/puppet-openstack_extras/graphs/contributors
 
+Repository
+-------------
+
+* https://git.openstack.org/cgit/openstack/puppet-openstack_extras
+
 Versioning
 ----------
 
