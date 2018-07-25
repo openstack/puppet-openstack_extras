@@ -6,7 +6,7 @@ Team and repository tags
 <!-- Change things from this point on -->
 
 openstack_extras
-============
+================
 
 #### Table of Contents
 
@@ -135,7 +135,7 @@ Contributors
 * https://github.com/openstack/puppet-openstack_extras/graphs/contributors
 
 Repository
--------------
+----------
 
 * https://git.openstack.org/cgit/openstack/puppet-openstack_extras
 
