@@ -58,5 +58,5 @@
     ],
     "source": "git://github.com/openstack/puppet-openstack_extras.git",
     "summary": "Puppet OpenStack Extras Module",
-    "version": "13.2.0"
+    "version": "13.3.0"
 }
