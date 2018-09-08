@@ -16,8 +16,10 @@ openstack_extras
 4. [Implementation - An under-the-hood peek at what the module is doing](#implementation)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
-7. [Contributors - Those with commits](#contributors)
-8. [Versioning - Notes on the version numbering scheme](#versioning)
+7. [Release Notes - Release notes for the project](#release-notes)
+8. [Contributors - Those with commits](#contributors)
+9. [Repository - The project source code repository](#repository)
+10. [Versioning - Notes on the version numbering scheme](#versioning)
 
 Overview
 --------
