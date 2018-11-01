@@ -1,77 +1,67 @@
 require 'spec_helper'
 
 describe 'openstack_extras::repo::redhat::redhat' do
-  let :class_params do
-    {
-      :manage_rdo       => true,
-      :manage_epel      => true,
-      :repo_hash        => {},
-      :gpgkey_hash      => {},
-      :purge_unmanaged  => false,
-      :package_require  => false
-    }
-  end
-
-  let :paramclass_defaults do
-    {
-      :release        => 'rocky',
-      :repo_defaults  => { 'enabled' => '1',
-                           'gpgcheck' => '1',
-                           'notify' => "Exec[yum_refresh]",
-                           'mirrorlist' => 'absent',
-                           'require' => "Anchor[openstack_extras_redhat]"
-                         },
-      :gpgkey_defaults => { 'owner' => 'root',
-                            'group' => 'root',
-                            'mode' => '0644',
-                            'before' => "Anchor[openstack_extras_redhat]"
-                          }
-    }
-  end
-
-  let :default_params do
-    class_params.merge!(paramclass_defaults)
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      @default_facts.merge({
-        :osfamily        => 'RedHat',
-        :operatingsystem => 'RedHat',
-        :operatingsystemrelease => '7.1',
-        :operatingsystemmajrelease => '7',
-        :puppetversion => Puppet.version,
-      })
+  shared_examples 'openstack_extras::repo::redhat::redhat' do
+    let :class_params do
+      {
+        :manage_rdo      => true,
+        :manage_epel     => true,
+        :repo_hash       => {},
+        :gpgkey_hash     => {},
+        :purge_unmanaged => false,
+        :package_require => false
+      }
     end
 
-    describe 'with default parameters' do
+    let :paramclass_defaults do
+      {
+        :release        => 'rocky',
+        :repo_defaults  => { 'enabled' => '1',
+                             'gpgcheck' => '1',
+                             'notify' => 'Exec[yum_refresh]',
+                             'mirrorlist' => 'absent',
+                             'require' => 'Anchor[openstack_extras_redhat]'
+                           },
+        :gpgkey_defaults => { 'owner' => 'root',
+                              'group' => 'root',
+                              'mode' => '0644',
+                              'before' => 'Anchor[openstack_extras_redhat]'
+                            }
+      }
+    end
+
+    let :default_params do
+      class_params.merge!(paramclass_defaults)
+    end
+
+    context 'with default parameters' do
       let :params do
-        {}.merge!(default_params)
+        default_params
       end
 
-      it { is_expected.to contain_yumrepo('rdo-release').with(
+      it { should contain_yumrepo('rdo-release').with(
         :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-rocky/",
-        :descr      => "OpenStack Rocky Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
+        :descr      => 'OpenStack Rocky Repository',
+        :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled    => '1',
         :gpgcheck   => '1',
         :mirrorlist => 'absent',
-        :require    => "Anchor[openstack_extras_redhat]",
-        :notify     => "Exec[yum_refresh]"
+        :require    => 'Anchor[openstack_extras_redhat]',
+        :notify     => 'Exec[yum_refresh]'
       )}
 
-      it { is_expected.to contain_yumrepo('rdo-qemu-ev').with(
+      it { should contain_yumrepo('rdo-qemu-ev').with(
         :baseurl    => "http://mirror.centos.org/centos/7/virt/$basearch/kvm-common/",
-        :descr      => "RDO CentOS-7 - QEMU EV",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization",
+        :descr      => 'RDO CentOS-7 - QEMU EV',
+        :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :enabled    => '1',
         :gpgcheck   => '1',
         :mirrorlist => 'absent',
-        :require    => "Anchor[openstack_extras_redhat]",
-        :notify     => "Exec[yum_refresh]"
+        :require    => 'Anchor[openstack_extras_redhat]',
+        :notify     => 'Exec[yum_refresh]'
       )}
 
-      it { is_expected.to contain_exec('installing_yum-plugin-priorities').with(
+      it { should contain_exec('installing_yum-plugin-priorities').with(
         :command   => '/usr/bin/yum install -y yum-plugin-priorities',
         :logoutput => 'on_failure',
         :tries     => 3,
@@ -81,66 +71,65 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       # 'metalink' property is supported from Puppet 3.5
       if Puppet.version.to_f >= 3.5
-        it { is_expected.to contain_yumrepo('epel').with(
+        it { should contain_yumrepo('epel').with(
           :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearch",
           :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-          :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
+          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
           :failovermethod => 'priority',
           :enabled        => '1',
           :gpgcheck       => '1',
           :mirrorlist     => 'absent',
-          :require        => "Anchor[openstack_extras_redhat]",
-          :notify         => "Exec[yum_refresh]"
+          :require        => 'Anchor[openstack_extras_redhat]',
+          :notify         => 'Exec[yum_refresh]'
         )}
       else
-        it { is_expected.to contain_yumrepo('epel').with(
+        it { should contain_yumrepo('epel').with(
           :baseurl        => "https://download.fedoraproject.org/pub/epel/7/\$basearch",
           :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-          :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7",
+          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
           :failovermethod => 'priority',
           :enabled        => '1',
           :gpgcheck       => '1',
           :mirrorlist     => 'absent',
-          :require        => "Anchor[openstack_extras_redhat]",
-          :notify         => "Exec[yum_refresh]"
+          :require        => 'Anchor[openstack_extras_redhat]',
+          :notify         => 'Exec[yum_refresh]'
         )}
       end
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud",
-        :owner      => 'root',
-        :group      => 'root',
-        :mode       => '0644',
-        :before     => "Anchor[openstack_extras_redhat]"
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0644',
+        :before => 'Anchor[openstack_extras_redhat]'
       )}
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization",
-        :owner      => 'root',
-        :group      => 'root',
-        :mode       => '0644',
-        :before     => "Anchor[openstack_extras_redhat]"
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
+        :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0644',
+        :before => 'Anchor[openstack_extras_redhat]'
       )}
-
     end
 
-    describe 'with overridden release' do
+    context 'with overridden release' do
       let :params do
         default_params.merge!({ :release => 'juno' })
       end
 
-      it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-juno/",
-        :descr      => "OpenStack Juno Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud"
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-juno/",
+        :descr   => 'OpenStack Juno Repository',
+        :gpgkey  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud'
       )}
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
-        :source     => "puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud"
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud'
       )}
     end
 
-    describe 'with overridden repo hash' do
+    context 'with overridden repo hash' do
       let :params do
         default_params.merge!({ :repo_hash => {
                                    'CentOS-Base' => {
@@ -157,31 +146,31 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { is_expected.to contain_yumrepo('CentOS-Base').with(
+      it { should contain_yumrepo('CentOS-Base').with(
         :baseurl    => "http://mymirror/$releasever/os/$basearch/",
         :descr      => "CentOS-$releasever - Base",
         :enabled    => '1',
         :gpgcheck   => '1',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
         :mirrorlist => 'absent',
-        :require    => "Anchor[openstack_extras_redhat]",
-        :notify     => "Exec[yum_refresh]"
+        :require    => 'Anchor[openstack_extras_redhat]',
+        :notify     => 'Exec[yum_refresh]'
       )}
 
-      it { is_expected.to contain_yumrepo('CentOS-Updates').with(
+      it { should contain_yumrepo('CentOS-Updates').with(
         :baseurl    => "http://mymirror/$releasever/updates/$basearch/",
         :descr      => "CentOS-$releasever - Updates",
         :enabled    => '1',
         :gpgcheck   => '1',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
         :mirrorlist => 'absent',
-        :require    => "Anchor[openstack_extras_redhat]",
-        :notify     => "Exec[yum_refresh]"
+        :require    => 'Anchor[openstack_extras_redhat]',
+        :notify     => 'Exec[yum_refresh]'
       )}
 
     end
 
-    describe 'with overridden repo default' do
+    context 'with overridden repo default' do
       let :params do
         default_params.merge!({ :repo_defaults => {
                                    'proxy' => 'http://my.proxy.com:8000'
@@ -190,15 +179,15 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { is_expected.to contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-rocky/",
-        :descr      => "OpenStack Rocky Repository",
-        :gpgkey     => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud",
-        :proxy     => "http://my.proxy.com:8000"
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-rocky/",
+        :descr   => 'OpenStack Rocky Repository',
+        :gpgkey  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        :proxy   => 'http://my.proxy.com:8000'
       )}
     end
 
-    describe 'with overridden gpgkey default' do
+    context 'with overridden gpgkey default' do
       let :params do
         default_params.merge!({ :gpgkey_defaults => {
                                    'owner' => 'steve'
@@ -206,41 +195,58 @@ describe 'openstack_extras::repo::redhat::redhat' do
                               })
       end
 
-      it { is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
-        :owner => "steve"
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :owner => 'steve'
       )}
     end
 
-    describe 'with epel management disabled' do
+    context 'with epel management disabled' do
       let :params do
         default_params.merge!({ :manage_epel => false })
       end
 
-      it { is_expected.to_not contain_yumrepo('epel') }
+      it { should_not contain_yumrepo('epel') }
     end
 
-    describe 'with rdo management disabled' do
+    context 'with rdo management disabled' do
       let :params do
         default_params.merge!({ :manage_rdo => false })
       end
 
-      it { is_expected.to_not contain_yumrepo('rdo-release') }
+      it { should_not contain_yumrepo('rdo-release') }
     end
 
-    describe 'with rdo-virt management disabled' do
+    context 'with rdo-virt management disabled' do
       let :params do
         default_params.merge!({ :manage_virt => false })
       end
 
-      it { is_expected.to_not contain_yumrepo('rdo-qemu-ev') }
+      it { should_not contain_yumrepo('rdo-qemu-ev') }
     end
 
-    describe 'with manage_priorities disabled' do
+    context 'with manage_priorities disabled' do
       let :params do
         default_params.merge!({ :manage_priorities => false })
       end
 
-      it { is_expected.to_not contain_exec('installing_yum-plugin-priorities') }
+      it { should_not contain_exec('installing_yum-plugin-priorities') }
+    end
+  end
+
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts({ :operatingsystem           => 'RedHat',
+                                            :operatingsystemrelease    => '7.1',
+                                            :operatingsystemmajrelease => '7',
+                                            :puppetversion             => Puppet.version }))
+      end
+
+      if facts[:osfamily] == 'RedHat'
+        it_behaves_like 'openstack_extras::repo::redhat::redhat'
+      end
     end
   end
 end
