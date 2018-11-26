@@ -5,7 +5,7 @@
 #
 class openstack_extras::repo::redhat::params
 {
-  $release          = 'rocky'
+  $release          = 'stein'
 
   $repo_defaults    = { 'enabled'    => '1',
                         'gpgcheck'   => '1',
