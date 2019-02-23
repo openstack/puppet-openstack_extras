@@ -80,15 +80,15 @@ class openstack_extras::repo::redhat::redhat(
   $centos_mirror_url = 'http://mirror.centos.org',
 ) inherits openstack_extras::repo::redhat::params {
 
-  validate_string($release)
-  validate_bool($manage_rdo)
-  validate_bool($manage_epel)
-  validate_hash($repo_hash)
-  validate_hash($repo_defaults)
-  validate_hash($gpgkey_hash)
-  validate_hash($gpgkey_defaults)
-  validate_bool($purge_unmanaged)
-  validate_bool($package_require)
+  validate_legacy(String, 'validate_string', $release)
+  validate_legacy(Boolean, 'validate_bool', $manage_rdo)
+  validate_legacy(Boolean, 'validate_bool', $manage_epel)
+  validate_legacy(Hash, 'validate_hash', $repo_hash)
+  validate_legacy(Hash, 'validate_hash', $repo_defaults)
+  validate_legacy(Hash, 'validate_hash', $gpgkey_hash)
+  validate_legacy(Hash, 'validate_hash', $gpgkey_defaults)
+  validate_legacy(Boolean, 'validate_bool', $purge_unmanaged)
+  validate_legacy(Boolean, 'validate_bool', $package_require)
 
   $_repo_defaults = merge($::openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
   $_gpgkey_defaults = merge($::openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
