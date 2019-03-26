@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'stein'
+        :release => 'train'
       }
     end
 
@@ -27,14 +27,14 @@ describe 'openstack_extras::repo::debian::debian' do
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-stein.debian.net/debian',
-        :release  => 'stretch-stein-backports',
+        :location => 'http://stretch-train.debian.net/debian',
+        :release  => 'stretch-train-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-stein.debian.net/debian',
-        :release  => 'stretch-stein-backports-nochange',
+        :location => 'http://stretch-train.debian.net/debian',
+        :release  => 'stretch-train-backports-nochange',
         :repos    => 'main'
       )}
 
