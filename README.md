@@ -24,7 +24,7 @@ openstack_extras
 Overview
 --------
 
-The openstack_extras module is a part of [OpenStack](https://git.openstack.org),
+The openstack_extras module is a part of [OpenStack](https://opendev.org/openstack),
 an effort by the Openstack infrastructure team to provide continuous integration
 testing and code review for Openstack and Openstack community projects as part
 of the core software.  The module itself is used to add useful utilities for
