@@ -55,7 +55,9 @@ class openstack_extras::repo::debian::debian(
   if $deb_manage {
     exec { 'installing openstack-backports-archive-keyring':
       command     => "/usr/bin/apt-get update ; \
-                   /usr/bin/apt-get -y --allow-unauthenticated install ${::openstack_extras::repo::debian::params::deb_required_packages}",
+                   wget ${deb_location}/dists/pubkey.gpg ; \
+                   apt-key add pubkey.gpg ; \
+                   rm pubkey.gpg",
       logoutput   => 'on_failure',
       tries       => 3,
       try_sleep   => 1,
