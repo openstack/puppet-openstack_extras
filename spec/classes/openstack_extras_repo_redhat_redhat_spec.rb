@@ -36,12 +36,12 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
     context 'with default parameters' do
       let :params do
-        default_params
+        {}
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-train/",
-        :descr      => 'OpenStack Train Repository',
+        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-ussuri/",
+        :descr      => 'OpenStack Ussuri Repository',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled    => '1',
         :gpgcheck   => '1',
@@ -69,33 +69,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :unless    => '/usr/bin/rpm -qa | /usr/bin/grep -q yum-plugin-priorities',
       ) }
 
-      # 'metalink' property is supported from Puppet 3.5
-      if Puppet.version.to_f >= 3.5
-        it { should contain_yumrepo('epel').with(
-          :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearch",
-          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
-          :failovermethod => 'priority',
-          :enabled        => '1',
-          :gpgcheck       => '1',
-          :mirrorlist     => 'absent',
-          :require        => 'Anchor[openstack_extras_redhat]',
-          :notify         => 'Exec[yum_refresh]'
-        )}
-      else
-        it { should contain_yumrepo('epel').with(
-          :baseurl        => "https://download.fedoraproject.org/pub/epel/7/\$basearch",
-          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
-          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
-          :failovermethod => 'priority',
-          :enabled        => '1',
-          :gpgcheck       => '1',
-          :mirrorlist     => 'absent',
-          :require        => 'Anchor[openstack_extras_redhat]',
-          :notify         => 'Exec[yum_refresh]'
-        )}
-      end
-
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
         :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :owner  => 'root',
@@ -111,6 +84,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :mode   => '0644',
         :before => 'Anchor[openstack_extras_redhat]'
       )}
+
+      it { should_not contain_yumrepo('epel') }
     end
 
     context 'with overridden release' do
@@ -167,7 +142,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require    => 'Anchor[openstack_extras_redhat]',
         :notify     => 'Exec[yum_refresh]'
       )}
-
     end
 
     context 'with overridden repo default' do
@@ -198,6 +172,39 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
         :owner => 'steve'
       )}
+    end
+
+    context 'with epel management enabled' do
+      let :params do
+        default_params.merge!({ :manage_epel => true })
+      end
+
+      # 'metalink' property is supported from Puppet 3.5
+      if Puppet.version.to_f >= 3.5
+        it { should contain_yumrepo('epel').with(
+          :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearch",
+          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
+          :failovermethod => 'priority',
+          :enabled        => '1',
+          :gpgcheck       => '1',
+          :mirrorlist     => 'absent',
+          :require        => 'Anchor[openstack_extras_redhat]',
+          :notify         => 'Exec[yum_refresh]'
+        )}
+      else
+        it { should contain_yumrepo('epel').with(
+          :baseurl        => "https://download.fedoraproject.org/pub/epel/7/\$basearch",
+          :descr          => 'Extra Packages for Enterprise Linux 7 - $basearch',
+          :gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7',
+          :failovermethod => 'priority',
+          :enabled        => '1',
+          :gpgcheck       => '1',
+          :mirrorlist     => 'absent',
+          :require        => 'Anchor[openstack_extras_redhat]',
+          :notify         => 'Exec[yum_refresh]'
+        )}
+      end
     end
 
     context 'with epel management disabled' do
