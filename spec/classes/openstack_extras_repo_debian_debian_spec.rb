@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'train'
+        :release => 'ussuri'
       }
     end
 
@@ -23,18 +23,18 @@ describe 'openstack_extras::repo::debian::debian' do
 
     context 'with default parameters' do
       let :params do
-        default_params
+        {}
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-train.debian.net/debian',
-        :release  => 'stretch-train-backports',
+        :location => 'http://stretch-ussuri.debian.net/debian',
+        :release  => 'stretch-ussuri-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-train.debian.net/debian',
-        :release  => 'stretch-train-backports-nochange',
+        :location => 'http://stretch-ussuri.debian.net/debian',
+        :release  => 'stretch-ussuri-backports-nochange',
         :repos    => 'main'
       )}
 

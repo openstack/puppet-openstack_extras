@@ -201,4 +201,3 @@ class openstack_extras::repo::redhat::redhat(
     } -> Package <||>
   }
 }
-
