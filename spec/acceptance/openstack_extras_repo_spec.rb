@@ -7,8 +7,8 @@ describe 'openstack_extras::repo::*' do
     release = 'mitaka'
     it 'should work with no errors' do
       pp= <<-EOS
-        include ::openstack_integration
-        include ::openstack_integration::repos
+        include openstack_integration
+        include openstack_integration::repos
       EOS
 
 

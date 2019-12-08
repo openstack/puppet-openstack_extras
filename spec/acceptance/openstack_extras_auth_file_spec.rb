@@ -6,7 +6,7 @@ describe 'openstack_extras::auth_file' do
 
     it 'should work with no errors' do
       pp= <<-EOS
-        class { '::openstack_extras::auth_file':
+        class { 'openstack_extras::auth_file':
           password => 'secret',
         }
       EOS

@@ -4,8 +4,8 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
   shared_examples 'openstack_extras::pacemaker::service' do
     let :pre_condition do
       [
-        "class { '::glance::registry::authtoken': password => 'password', }",
-        "include ::glance::registry",
+        "class { 'glance::registry::authtoken': password => 'password', }",
+        "include glance::registry",
       ]
     end
 
