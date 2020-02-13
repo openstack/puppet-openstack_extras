@@ -126,10 +126,11 @@ class openstack_extras::auth_file(
     fail('You must specify a password for openstack_extras::auth_file')
   }
   file { $path:
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0700',
-    tag     => ['openrc'],
-    content => template('openstack_extras/openrc.erb')
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0700',
+    show_diff => false,
+    tag       => ['openrc'],
+    content   => template('openstack_extras/openrc.erb')
   }
 }
