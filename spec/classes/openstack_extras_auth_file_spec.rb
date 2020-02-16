@@ -9,6 +9,14 @@ describe 'openstack_extras::auth_file' do
         }
       end
 
+      it { is_expected.to contain_file('/root/openrc').with(
+        :owner     => 'root',
+        :group     => 'root',
+        :mode      => '0700',
+        :show_diff => false,
+        :tag       => ['openrc'],
+      )}
+
       it {
         verify_contents(catalogue, '/root/openrc', [
           'export OS_NO_CACHE=\'true\'',
@@ -52,6 +60,7 @@ describe 'openstack_extras::auth_file' do
           :nova_endpoint_type       => 'internalURL',
           :neutron_endpoint_type    => 'internalURL',
           :auth_strategy            => 'no_auth',
+          :path                     => '/path/to/file',
           :user_domain              => 'anotherdomain',
           :project_domain           => 'anotherdomain',
           :compute_api_version      => '2.1',
@@ -63,8 +72,16 @@ describe 'openstack_extras::auth_file' do
         }
       end
 
+      it { is_expected.to contain_file('/path/to/file').with(
+        :owner     => 'root',
+        :group     => 'root',
+        :mode      => '0700',
+        :show_diff => false,
+        :tag       => ['openrc'],
+      )}
+
       it {
-        verify_contents(catalogue, '/root/openrc', [
+        verify_contents(catalogue, '/path/to/file', [
           'export OS_SERVICE_TOKEN=\'servicetoken\'',
           'export OS_SERVICE_ENDPOINT=\'http://127.0.0.2:5000/v3/\'',
           'export OS_NO_CACHE=\'false\'',
