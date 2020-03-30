@@ -100,7 +100,7 @@ class openstack_extras::repo::redhat::redhat(
 
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => "${centos_mirror_url}/centos/7/cloud/\$basearch/openstack-${release}/",
+        'baseurl'  => "${centos_mirror_url}/centos/${::os['release']['major']}/cloud/\$basearch/openstack-${release}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
       }
@@ -116,10 +116,18 @@ class openstack_extras::repo::redhat::redhat(
   }
 
   if $manage_virt and ($::operatingsystem != 'Fedora') {
+    $os_major = $::os['release']['major']
+
+    if Integer.new($os_major) >= 8 {
+      $virt_baseurl = "${centos_mirror_url}/centos/${os_major}/virt/\$basearch/advanced-virtualization/"
+    } else {
+      $virt_baseurl = "${centos_mirror_url}/centos/${os_major}/virt/\$basearch/kvm-common/"
+    }
+
     $virt_hash = {
       'rdo-qemu-ev' => {
-        'baseurl'  => "${centos_mirror_url}/centos/7/virt/\$basearch/kvm-common/",
-        'descr'    => 'RDO CentOS-7 - QEMU EV',
+        'baseurl'  => $virt_baseurl,
+        'descr'    => "RDO CentOS-${$os_major} - QEMU EV",
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
       }
     }

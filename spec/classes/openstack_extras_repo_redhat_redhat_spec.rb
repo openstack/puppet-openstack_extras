@@ -113,6 +113,27 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
     end
 
+    context 'with major release 8 or later and virt repo enabled' do
+      let :params do
+        default_params.merge!( :manage_virt => true )
+      end
+
+      before do
+        facts.merge!( :os => {'release' => {'major' => 8}} )
+      end
+
+      it { should contain_yumrepo('rdo-qemu-ev').with(
+        :baseurl    => "http://mirror.centos.org/centos/8/virt/$basearch/advanced-virtualization/",
+        :descr      => 'RDO CentOS-8 - QEMU EV',
+        :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+        :enabled    => '1',
+        :gpgcheck   => '1',
+        :mirrorlist => 'absent',
+        :require    => 'Anchor[openstack_extras_redhat]',
+        :notify     => 'Exec[yum_refresh]'
+      )}
+    end
+
     context 'with overridden release' do
       let :params do
         default_params.merge!({ :release => 'juno' })
@@ -241,6 +262,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         facts.merge!(OSDefaults.get_facts({ :operatingsystem           => 'RedHat',
                                             :operatingsystemrelease    => '7.1',
                                             :operatingsystemmajrelease => '7',
+                                            :os                        => {'release' => {'major' => '7'}},
                                             :puppetversion             => Puppet.version }))
       end
 
