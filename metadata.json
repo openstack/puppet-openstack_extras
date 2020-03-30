@@ -34,7 +34,13 @@
         {
             "operatingsystem": "RedHat",
             "operatingsystemrelease": [
-                "7"
+                "8"
+            ]
+        },
+        {
+            "operatingsystem": "CentOS",
+            "operatingsystemrelease": [
+                "8"
             ]
         },
         {
@@ -49,6 +55,10 @@
         {
             "name": "puppet",
             "version_requirement": "5.x"
+        },
+        {
+            "name": "puppet",
+            "version_requirement": "6.x"
         }
     ],
     "source": "git://github.com/openstack/puppet-openstack_extras.git",
