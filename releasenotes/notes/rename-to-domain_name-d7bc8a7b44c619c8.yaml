@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The following parameters in ``openstack_extras::auth_file`` class has been
+    deprecated and will be removed in a future release. Use new parameters
+    instead.
+
+    - ``user_domain`` (now renamed to ``user_domain_name``)
+    - ``project_domain`` (now renamed to ``project_domain_name``)

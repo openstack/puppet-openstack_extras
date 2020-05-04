@@ -81,13 +81,13 @@
 #   (Optional) File path
 #   Defaults to '/root/openrc'.
 #
-# [*project_domain*]
+# [*project_domain_name*]
 #   (Optional) Project domain in v3 api.
-#   Defaults to 'default'.
+#   Defaults to 'Default'.
 #
-# [*user_domain*]
+# [*user_domain_name*]
 #   (Optional) User domain in v3 api.
-#   Defaults to 'default'.
+#   Defaults to 'Default'.
 #
 # [*auth_type*]
 #   (Optional) Authentication type to load.
@@ -117,6 +117,16 @@
 #   (Optional) Object API version to use.
 #   Defaults to undef.
 #
+# DEPRECATED PARAMETERS
+#
+# [*project_domain*]
+#   (Optional) Project domain in v3 api.
+#   Defaults to 'Default'.
+#
+# [*user_domain*]
+#   (Optional) User domain in v3 api.
+#   Defaults to 'Default'.
+#
 class openstack_extras::auth_file (
   $password,
   $auth_url               = 'http://127.0.0.1:5000/v3/',
@@ -127,8 +137,8 @@ class openstack_extras::auth_file (
   $project_name           = 'openstack',
   $region_name            = 'RegionOne',
   $use_no_cache           = true,
-  $project_domain         = 'default',
-  $user_domain            = 'default',
+  $project_domain_name    = 'Default',
+  $user_domain_name       = 'Default',
   $auth_type              = undef,
   $os_interface           = 'public',
   $os_endpoint_type       = 'publicURL',
@@ -145,7 +155,26 @@ class openstack_extras::auth_file (
   $volume_api_version     = undef,
   $identity_api_version   = '3',
   $object_api_version     = undef,
+  # DEPRECATED PARAMETERS
+  $project_domain         = undef,
+  $user_domain            = undef,
 ) {
+
+  if $project_domain != undef {
+    warning('project_domain is deprecated and will be removed in a future release. \
+Use project_domain_name instead')
+    $project_domain_name_real = $project_domain
+  } else {
+    $project_domain_name_real = $project_domain_name
+  }
+
+  if $user_domain != undef {
+    warning('user_domain is deprecated and will be removed in a future release. \
+Use user_domain_name instead')
+    $user_domain_name_real = $user_domain
+  } else {
+    $user_domain_name_real = $user_domain_name
+  }
 
   file { $path:
     owner     => 'root',
