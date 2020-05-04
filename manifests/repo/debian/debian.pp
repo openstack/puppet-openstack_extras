@@ -7,12 +7,12 @@
 #
 # [*release*]
 #   (optional) The OpenStack release to add a
-#   Debian Stretch apt source for.
+#   Debian apt source for.
 #   Defaults to $::openstack_extras::repo::debian::params::release
 #
 # [*manage_deb*]
 #   (optional) Whether or not to add the default
-#   Debian Stretch APT source
+#   Debian APT source
 #   Defaults to true
 #
 # [*source_hash*]
