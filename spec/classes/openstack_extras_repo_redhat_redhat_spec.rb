@@ -134,6 +134,14 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
     end
 
+    context 'with major release 8' do
+      before do
+        facts.merge!( :os => {'release' => {'major' => 8}} )
+      end
+
+      it { should_not contain_exec('installing_yum-plugin-priorities') }
+    end
+
     context 'with overridden release' do
       let :params do
         default_params.merge!({ :release => 'juno' })
