@@ -93,6 +93,8 @@ class openstack_extras::repo::redhat::redhat(
   $_repo_defaults = merge($::openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
   $_gpgkey_defaults = merge($::openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
 
+  $os_major = $::os['release']['major']
+
   anchor { 'openstack_extras_redhat': }
 
   if $manage_rdo {
@@ -116,7 +118,6 @@ class openstack_extras::repo::redhat::redhat(
   }
 
   if $manage_virt and ($::operatingsystem != 'Fedora') {
-    $os_major = $::os['release']['major']
 
     if Integer.new($os_major) >= 8 {
       $virt_baseurl = "${centos_mirror_url}/centos/${os_major}/virt/\$basearch/advanced-virtualization/"
@@ -172,21 +173,24 @@ class openstack_extras::repo::redhat::redhat(
   }
 
   if $manage_priorities and ($::operatingsystem != 'Fedora') {
-    exec { 'installing_yum-plugin-priorities':
-      command   => '/usr/bin/yum install -y yum-plugin-priorities',
-      logoutput => 'on_failure',
-      tries     => 3,
-      try_sleep => 1,
-      unless    => '/usr/bin/rpm -qa | /usr/bin/grep -q yum-plugin-priorities',
+    if Integer.new($os_major) < 8 {
+      # yum-plugin-priorities is unavailable since RHEL/CentOS8
+      exec { 'installing_yum-plugin-priorities':
+        command   => '/usr/bin/yum install -y yum-plugin-priorities',
+        logoutput => 'on_failure',
+        tries     => 3,
+        try_sleep => 1,
+        unless    => '/usr/bin/rpm -qa | /usr/bin/grep -q yum-plugin-priorities',
+      }
+      Exec['installing_yum-plugin-priorities'] -> Yumrepo<||>
     }
-    Exec['installing_yum-plugin-priorities'] -> Yumrepo<||>
   }
 
   if $package_require {
       Yumrepo<||> -> Package<||>
   }
 
-  if ($::operatingsystem == 'Fedora') {
+  if ($::operatingsystem == 'Fedora') or (Integer.new($os_major) >= 8) {
     exec { 'yum_refresh':
       command     => '/usr/bin/dnf clean all',
       refreshonly => true,
