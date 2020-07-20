@@ -31,6 +31,10 @@
 #   create_resource. See examples folder for some useful examples.
 #   Defaults to {}
 #
+# [*repo_source_hash*]
+#   (optional) A hash of repo files
+#   Defaults to {}
+#
 # [*repo_defaults*]
 #   (optional) The defaults for the yumrepo resources that will be
 #   created using create_resource.
@@ -71,6 +75,7 @@ class openstack_extras::repo::redhat::redhat(
   $manage_virt       = true,
   $manage_epel       = false,
   $repo_hash         = {},
+  $repo_source_hash  = {},
   $repo_defaults     = {},
   $gpgkey_hash       = {},
   $gpgkey_defaults   = {},
@@ -84,6 +89,7 @@ class openstack_extras::repo::redhat::redhat(
   validate_legacy(Boolean, 'validate_bool', $manage_rdo)
   validate_legacy(Boolean, 'validate_bool', $manage_epel)
   validate_legacy(Hash, 'validate_hash', $repo_hash)
+  validate_legacy(Hash, 'validate_hash', $repo_source_hash)
   validate_legacy(Hash, 'validate_hash', $repo_defaults)
   validate_legacy(Hash, 'validate_hash', $gpgkey_hash)
   validate_legacy(Hash, 'validate_hash', $gpgkey_defaults)
@@ -167,6 +173,13 @@ class openstack_extras::repo::redhat::redhat(
   validate_yum_hash($repo_hash)
   create_resources('yumrepo', $repo_hash, $_repo_defaults)
   create_resources('file', $gpgkey_hash, $_gpgkey_defaults)
+
+  $repo_source_hash.each | $filename, $url | {
+    file { $filename:
+      path   => "/etc/yum.repos.d/${filename}",
+      source => $url,
+    }
+  }
 
   if ((versioncmp($::puppetversion, '3.5') > 0) and $purge_unmanaged) {
       resources { 'yumrepo': purge => true }

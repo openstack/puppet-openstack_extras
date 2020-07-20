@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The new ``repo::redhat::redhat::repo_source_hash`` parameter has been
+    added, so that repo file can be passed directly to configure yum
+    repogitories on CentOS or RHEL nodes.

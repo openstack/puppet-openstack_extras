@@ -252,6 +252,26 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       it { should_not contain_exec('installing_yum-plugin-priorities') }
     end
+
+    context 'with repo_source_hash' do
+      let :params do
+        default_params.merge!({
+          :repo_source_hash => {
+            'delorean.repo'      => 'https://trunk.rdoproject.org/centos8-master/puppet-passed-ci/delorean.repo',
+            'delorean-deps.repo' => 'https://trunk.rdoproject.org/centos8-master/delorean-deps.repo'}})
+      end
+
+      it {
+        should contain_file('delorean.repo').with(
+          :path   => '/etc/yum.repos.d/delorean.repo',
+          :source => 'https://trunk.rdoproject.org/centos8-master/puppet-passed-ci/delorean.repo'
+        )
+        should contain_file('delorean-deps.repo').with(
+          :path   => '/etc/yum.repos.d/delorean-deps.repo',
+          :source => 'https://trunk.rdoproject.org/centos8-master/delorean-deps.repo'
+        )
+      }
+    end
   end
 
   on_supported_os({
