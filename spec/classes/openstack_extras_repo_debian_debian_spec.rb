@@ -73,16 +73,17 @@ describe 'openstack_extras::repo::debian::debian' do
       let :params do
         default_params.merge!({ :source_hash => {
                                    'debian_unstable' => {
-                                       'location' => 'http://mymirror/debian/',
-                                       'repos'    => 'main',
-                                       'release'  => 'unstable'
+                                     'location' => 'http://mymirror/debian/',
+                                     'repos'    => 'main',
+                                     'release'  => 'unstable'
                                    },
                                    'puppetlabs' => {
-                                       'location'   => 'http://apt.puppetlabs.com',
-                                       'repos'      => 'main',
-                                       'release'    => 'stretch',
-                                       'key'        => '4BD6EC30',
-                                       'key_server' => 'pgp.mit.edu'
+                                     'location' => 'http://apt.puppetlabs.com',
+                                     'repos'    => 'main',
+                                     'release'  => 'stretch',
+                                     'key'      => {
+                                       'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
+                                     }
                                    }
                                 }
                               })
@@ -95,11 +96,10 @@ describe 'openstack_extras::repo::debian::debian' do
       )}
 
       it { should contain_apt__source('puppetlabs').with(
-        :location   => 'http://apt.puppetlabs.com',
-        :repos      => 'main',
-        :release    => 'stretch',
-        :key        => '4BD6EC30',
-        :key_server => 'pgp.mit.edu'
+        :location => 'http://apt.puppetlabs.com',
+        :repos    => 'main',
+        :release  => 'stretch',
+        :key      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }
@@ -109,23 +109,23 @@ describe 'openstack_extras::repo::debian::debian' do
       let :params do
         default_params.merge!({ :source_hash => {
                                    'debian_unstable' => {
-                                       'location' => 'http://mymirror/debian/',
-                                       'repos'    => 'main',
-                                       'release'  => 'unstable'
+                                     'location' => 'http://mymirror/debian/',
+                                     'repos'    => 'main',
+                                     'release'  => 'unstable'
                                    },
                                 }
                               })
         default_params.merge!({ :source_defaults => {
-                                   'include_src' => 'true'
+                                   'include' => { 'src' => true }
                                 }
                               })
       end
 
       it { should contain_apt__source('debian_unstable').with(
-        :location    => 'http://mymirror/debian/',
-        :release     => 'unstable',
-        :repos       => 'main',
-        :include_src => 'true'
+        :include  => { 'src' => true },
+        :location => 'http://mymirror/debian/',
+        :release  => 'unstable',
+        :repos    => 'main',
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }

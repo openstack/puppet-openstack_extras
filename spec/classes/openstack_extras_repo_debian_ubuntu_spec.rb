@@ -61,16 +61,17 @@ describe 'openstack_extras::repo::debian::ubuntu' do
       let :params do
         default_params.merge!({ :source_hash => {
                                    'local_mirror' => {
-                                       'location' => 'http://mymirror/ubuntu/',
-                                       'repos'    => 'main',
-                                       'release'  => 'trusty'
+                                     'location' => 'http://mymirror/ubuntu/',
+                                     'repos'    => 'main',
+                                     'release'  => 'trusty'
                                    },
                                    'puppetlabs' => {
-                                       'location'   => 'http://apt.puppetlabs.com',
-                                       'repos'      => 'main',
-                                       'release'    => 'trusty',
-                                       'key'        => '4BD6EC30',
-                                       'key_server' => 'pgp.mit.edu'
+                                     'location' => 'http://apt.puppetlabs.com',
+                                     'repos'    => 'main',
+                                     'release'  => 'trusty',
+                                     'key'      => {
+                                       'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
+                                     }
                                    }
                                 }
                               })
@@ -83,11 +84,10 @@ describe 'openstack_extras::repo::debian::ubuntu' do
       )}
 
       it { should contain_apt__source('puppetlabs').with(
-        :location   => 'http://apt.puppetlabs.com',
-        :release    => 'trusty',
-        :repos      => 'main',
-        :key        => '4BD6EC30',
-        :key_server => 'pgp.mit.edu'
+        :location => 'http://apt.puppetlabs.com',
+        :release  => 'trusty',
+        :repos    => 'main',
+        :key      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
       )}
 
       it { should contain_exec('installing ubuntu-cloud-keyring') }
@@ -97,23 +97,23 @@ describe 'openstack_extras::repo::debian::ubuntu' do
       let :params do
         default_params.merge!({ :source_hash => {
                                    'local_mirror' => {
-                                       'location' => 'http://mymirror/ubuntu/',
-                                       'repos'    => 'main',
-                                       'release'  => 'trusty'
+                                     'location' => 'http://mymirror/ubuntu/',
+                                     'repos'    => 'main',
+                                     'release'  => 'trusty'
                                    }
                                  }
                              })
         default_params.merge!({ :source_defaults => {
-                                   'include_src' => 'true'
+                                   'include' => { 'src' => true }
                                 }
                               })
       end
 
       it { should contain_apt__source('local_mirror').with(
-        :include_src => 'true',
-        :location    => 'http://mymirror/ubuntu/',
-        :release     => 'trusty',
-        :repos       => 'main',
+        :include  => { 'src' => true },
+        :location => 'http://mymirror/ubuntu/',
+        :release  => 'trusty',
+        :repos    => 'main',
       )}
 
       it { should contain_exec('installing ubuntu-cloud-keyring') }
