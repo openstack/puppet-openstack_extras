@@ -178,6 +178,7 @@ class openstack_extras::repo::redhat::redhat(
     file { $filename:
       path   => "/etc/yum.repos.d/${filename}",
       source => $url,
+      notify => Exec['yum_refresh'],
     }
   }
 
@@ -208,7 +209,7 @@ class openstack_extras::repo::redhat::redhat(
       command     => '/usr/bin/dnf clean all',
       refreshonly => true,
     } -> Package <||>
-    } else {
+  } else {
     exec { 'yum_refresh':
       command     => '/usr/bin/yum clean all',
       refreshonly => true,
