@@ -4,12 +4,12 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
   shared_examples 'openstack_extras::pacemaker::service' do
     let :pre_condition do
       [
-        "class { 'glance::registry::authtoken': password => 'password', }",
-        "include glance::registry",
+        "class { 'glance::api::authtoken': password => 'password', }",
+        "include glance::api",
       ]
     end
 
-    let (:title) { 'glance-registry' }
+    let (:title) { 'glance-api' }
 
     let :default_params do
       {
@@ -33,9 +33,9 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
 
     context 'with defaults' do
       it { should contain_openstack_extras__pacemaker__service(title).with(default_params) }
-      it { should contain_service('glance-registry').with_provider('pacemaker') }
+      it { should contain_service('glance-api').with_provider('pacemaker') }
 
-      it { should contain_cs_primitive('p_glance-registry').with(
+      it { should contain_cs_primitive('p_glance-api').with(
         :ensure          => default_params[:ensure],
         :primitive_class => default_params[:primitive_class],
         :primitive_type  => default_params[:primitive_type],
@@ -46,7 +46,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
         :ms_metadata     => default_params[:ms_metadata],
       )}
 
-      it { should contain_cs_clone('p_glance-registry-clone').with_ensure('absent') }
+      it { should contain_cs_clone('p_glance-api-clone').with_ensure('absent') }
     end
 
     context 'with custom OCF file' do
@@ -99,9 +99,9 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
         :content => /monitor/
       )}
 
-      it { should_not contain_file('ocf_handler_glance_registry') }
+      it { should_not contain_file('ocf_handler_glance_api') }
 
-      it { should contain_cs_primitive('p_glance-registry').with(
+      it { should contain_cs_primitive('p_glance-api').with(
         :ensure          => params[:ensure],
         :primitive_class => params[:primitive_class],
         :primitive_type  => params[:primitive_type],
@@ -118,9 +118,9 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
         default_params.merge( :clone => true )
       end
 
-      it { should contain_cs_clone('p_glance-registry-clone').with(
+      it { should contain_cs_clone('p_glance-api-clone').with(
         :ensure    => 'present',
-        :primitive => 'p_glance-registry',
+        :primitive => 'p_glance-api',
       )}
     end
   end
