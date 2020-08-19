@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The new ``update_package`` parameter has been added to the
+    ``openstack_extras::repo::redhat::redhat`` class. This parameter is set to
+    false by default, but when it is set to true then all packages are updated
+    once dnf/yum repositories are configured.
