@@ -69,6 +69,11 @@
 #   (optional) URL of CentOS mirror.
 #   Defaults to 'http://mirror.centos.org'
 #
+# [*update_packages*]
+#   (optional) Whether to update all packages after yum repositories are
+#   configured.
+#   Defaults to false
+#
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
@@ -83,6 +88,7 @@ class openstack_extras::repo::redhat::redhat(
   $package_require   = false,
   $manage_priorities = true,
   $centos_mirror_url = 'http://mirror.centos.org',
+  $update_packages   = false,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -205,14 +211,24 @@ class openstack_extras::repo::redhat::redhat(
   }
 
   if ($::operatingsystem == 'Fedora') or (Integer.new($os_major) >= 8) {
-    exec { 'yum_refresh':
-      command     => '/usr/bin/dnf clean all',
-      refreshonly => true,
-    } -> Package <||>
+    $yum_command = 'dnf'
   } else {
-    exec { 'yum_refresh':
-      command     => '/usr/bin/yum clean all',
+    $yum_command = 'yum'
+  }
+
+  exec { 'yum_refresh':
+    command     => "/usr/bin/${yum_command} clean all",
+    refreshonly => true,
+  }
+
+  if $update_packages {
+    exec { 'yum_update':
+      command     => "/usr/bin/${yum_command} update -y",
       refreshonly => true,
-    } -> Package <||>
+    }
+    Exec['yum_refresh'] -> Exec['yum_update'] -> Package <||>
+  }
+  else {
+    Exec['yum_refresh'] -> Package <||>
   }
 }
