@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The new ``openstack_extras::repo::redhat::redhat::repo_replace`` parameter
+    has been added to enable or disable file replacement when original repo
+    files are updated.
