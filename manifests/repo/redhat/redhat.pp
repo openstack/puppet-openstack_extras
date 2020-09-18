@@ -35,6 +35,10 @@
 #   (optional) A hash of repo files
 #   Defaults to {}
 #
+# [*repo_replace*]
+#   (optional) Replace repo files when their contents are changed
+#   Defaults to true
+#
 # [*repo_defaults*]
 #   (optional) The defaults for the yumrepo resources that will be
 #   created using create_resource.
@@ -81,6 +85,7 @@ class openstack_extras::repo::redhat::redhat(
   $manage_epel       = false,
   $repo_hash         = {},
   $repo_source_hash  = {},
+  $repo_replace      = true,
   $repo_defaults     = {},
   $gpgkey_hash       = {},
   $gpgkey_defaults   = {},
@@ -182,9 +187,10 @@ class openstack_extras::repo::redhat::redhat(
 
   $repo_source_hash.each | $filename, $url | {
     file { $filename:
-      path   => "/etc/yum.repos.d/${filename}",
-      source => $url,
-      notify => Exec['yum_refresh'],
+      path    => "/etc/yum.repos.d/${filename}",
+      source  => $url,
+      notify  => Exec['yum_refresh'],
+      replace => $repo_replace,
     }
   }
 
