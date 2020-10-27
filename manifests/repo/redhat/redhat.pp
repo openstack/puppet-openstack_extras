@@ -231,6 +231,7 @@ class openstack_extras::repo::redhat::redhat(
     exec { 'yum_update':
       command     => "/usr/bin/${yum_command} update -y",
       refreshonly => true,
+      timeout     => 600,
     }
     Exec['yum_refresh'] ~> Exec['yum_update'] -> Package <||>
   }
