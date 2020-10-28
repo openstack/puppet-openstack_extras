@@ -57,7 +57,7 @@
             "version_requirement": ">= 6.0.0 < 7.0.0"
         }
     ],
-    "source": "git://github.com/openstack/puppet-openstack_extras.git",
+    "source": "https://opendev.org/openstack/puppet-openstack_extras.git",
     "summary": "Puppet OpenStack Extras Module",
     "version": "18.0.0"
 }
