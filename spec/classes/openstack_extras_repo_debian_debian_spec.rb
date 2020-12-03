@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'ussuri'
+        :release => 'victoria'
       }
     end
 
@@ -27,14 +27,14 @@ describe 'openstack_extras::repo::debian::debian' do
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-ussuri.debian.net/debian',
-        :release  => 'stretch-ussuri-backports',
+        :location => 'http://stretch-victoria.debian.net/debian',
+        :release  => 'stretch-victoria-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-ussuri.debian.net/debian',
-        :release  => 'stretch-ussuri-backports-nochange',
+        :location => 'http://stretch-victoria.debian.net/debian',
+        :release  => 'stretch-victoria-backports-nochange',
         :repos    => 'main'
       )}
 
