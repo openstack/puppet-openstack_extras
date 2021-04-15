@@ -117,6 +117,24 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_exec('installing_yum-plugin-priorities') }
     end
 
+    context 'with major release 8 and stream set to true' do
+      let :params do
+        default_params.merge!( :stream => true )
+      end
+
+      before do
+        facts.merge!( :os => {'release' => {'major' => 8}} )
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.centos.org/centos/8-stream/cloud/$basearch/openstack-train/",
+      )}
+
+      it { should contain_yumrepo('rdo-qemu-ev').with(
+        :baseurl => "http://mirror.centos.org/centos/8-stream/virt/$basearch/advancedvirt-common/",
+      )}
+    end
+
     context 'with overridden release' do
       let :params do
         default_params.merge!({ :release => 'juno' })
