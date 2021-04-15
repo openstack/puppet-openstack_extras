@@ -78,6 +78,10 @@
 #   configured.
 #   Defaults to false
 #
+# [*stream*]
+#   (optional) Is this CentOS Stream and we should adjust mirrors thereafter.
+#   Defaults to false
+#
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
@@ -94,6 +98,7 @@ class openstack_extras::repo::redhat::redhat(
   $manage_priorities = true,
   $centos_mirror_url = 'http://mirror.centos.org',
   $update_packages   = false,
+  $stream            = false,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -111,6 +116,10 @@ class openstack_extras::repo::redhat::redhat(
   $_gpgkey_defaults = merge($::openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
 
   $os_major = $::os['release']['major']
+  $centos_major = $stream ? {
+    true    => "${os_major}-stream",
+    default => $os_major
+  }
 
   anchor { 'openstack_extras_redhat': }
 
@@ -119,7 +128,7 @@ class openstack_extras::repo::redhat::redhat(
 
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => "${centos_mirror_url}/centos/${::os['release']['major']}/cloud/\$basearch/openstack-${release}/",
+        'baseurl'  => "${centos_mirror_url}/centos/${centos_major}/cloud/\$basearch/openstack-${release}/",
         'descr'    => "OpenStack ${release_cap} Repository",
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
       }
@@ -137,15 +146,19 @@ class openstack_extras::repo::redhat::redhat(
   if $manage_virt and ($::operatingsystem != 'Fedora') {
 
     if Integer.new($os_major) >= 8 {
-      $virt_baseurl = "${centos_mirror_url}/centos/${os_major}/virt/\$basearch/advanced-virtualization/"
+      if $stream {
+        $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advancedvirt-common/"
+      } else {
+        $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advanced-virtualization/"
+      }
     } else {
-      $virt_baseurl = "${centos_mirror_url}/centos/${os_major}/virt/\$basearch/kvm-common/"
+      $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/kvm-common/"
     }
 
     $virt_hash = {
       'rdo-qemu-ev' => {
         'baseurl'  => $virt_baseurl,
-        'descr'    => "RDO CentOS-${$os_major} - QEMU EV",
+        'descr'    => "RDO CentOS-${$centos_major} - QEMU EV",
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
       }
     }
