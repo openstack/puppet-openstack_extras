@@ -1,5 +1,5 @@
 ---
 features:
   - |
-    Added ``stream`` parameter (defaulting to false) to the openstack_extras::repo::redhat::redhat
-    class that if set to true instructs Puppet to create repositories for CentOS Stream.
+    Added ``stream`` parameter (defaulting to true) to the openstack_extras::repo::redhat::redhat
+    class that instructs Puppet to create repositories for CentOS Stream.

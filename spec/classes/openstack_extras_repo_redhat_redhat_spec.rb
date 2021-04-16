@@ -40,7 +40,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/cloud/$basearch/openstack-victoria/",
+        :baseurl    => "http://mirror.centos.org/centos/7-stream/cloud/$basearch/openstack-victoria/",
         :descr      => 'OpenStack Victoria Repository',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled    => '1',
@@ -51,8 +51,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('rdo-qemu-ev').with(
-        :baseurl    => "http://mirror.centos.org/centos/7/virt/$basearch/kvm-common/",
-        :descr      => 'RDO CentOS-7 - QEMU EV',
+        :baseurl    => "http://mirror.centos.org/centos/7-stream/virt/$basearch/kvm-common/",
+        :descr      => 'RDO CentOS-7-stream - QEMU EV',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :enabled    => '1',
         :gpgcheck   => '1',
@@ -98,8 +98,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-qemu-ev').with(
-        :baseurl    => "http://mirror.centos.org/centos/8/virt/$basearch/advanced-virtualization/",
-        :descr      => 'RDO CentOS-8 - QEMU EV',
+        :baseurl    => "http://mirror.centos.org/centos/8-stream/virt/$basearch/advancedvirt-common/",
+        :descr      => 'RDO CentOS-8-stream - QEMU EV',
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :enabled    => '1',
         :gpgcheck   => '1',
@@ -117,9 +117,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_exec('installing_yum-plugin-priorities') }
     end
 
-    context 'with major release 8 and stream set to true' do
+    context 'with major release 8 and stream is false' do
       let :params do
-        default_params.merge!( :stream => true )
+        default_params.merge!( :stream => false )
       end
 
       before do
@@ -127,11 +127,11 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/8-stream/cloud/$basearch/openstack-victoria/",
+        :baseurl => "http://mirror.centos.org/centos/8/cloud/$basearch/openstack-victoria/",
       )}
 
       it { should contain_yumrepo('rdo-qemu-ev').with(
-        :baseurl => "http://mirror.centos.org/centos/8-stream/virt/$basearch/advancedvirt-common/",
+        :baseurl => "http://mirror.centos.org/centos/8/virt/$basearch/advanced-virtualization/",
       )}
     end
 
@@ -141,7 +141,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/7/cloud/\$basearch/openstack-juno/",
+        :baseurl => "http://mirror.centos.org/centos/7-stream/cloud/\$basearch/openstack-juno/",
         :descr   => 'OpenStack Juno Repository',
         :gpgkey  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud'
       )}
@@ -201,7 +201,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.dfw.rax.openstack.org/centos/7/cloud/\$basearch/openstack-victoria/",
+        :baseurl => "http://mirror.dfw.rax.openstack.org/centos/7-stream/cloud/\$basearch/openstack-victoria/",
         :descr   => 'OpenStack Victoria Repository',
         :gpgkey  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :proxy   => 'http://my.proxy.com:8000'

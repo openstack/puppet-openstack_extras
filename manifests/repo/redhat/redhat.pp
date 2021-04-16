@@ -80,7 +80,7 @@
 #
 # [*stream*]
 #   (optional) Is this CentOS Stream and we should adjust mirrors thereafter.
-#   Defaults to false
+#   Defaults to true
 #
 class openstack_extras::repo::redhat::redhat(
   $release           = $::openstack_extras::repo::redhat::params::release,
@@ -98,7 +98,7 @@ class openstack_extras::repo::redhat::redhat(
   $manage_priorities = true,
   $centos_mirror_url = 'http://mirror.centos.org',
   $update_packages   = false,
-  $stream            = false,
+  $stream            = true,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
