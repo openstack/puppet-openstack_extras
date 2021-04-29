@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The class openstack_extras::repo::debian::debian has now a new parameter
+    use_extrepo, which is true by default. If true, extrepo will be used for
+    setting-up the OpenStack apt sources.list, and the parameters source_hash,
+    source_defaults and deb_location are ignored. Beware that this is now
+    the new default!

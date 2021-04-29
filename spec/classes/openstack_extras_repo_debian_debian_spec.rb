@@ -7,7 +7,8 @@ describe 'openstack_extras::repo::debian::debian' do
         :manage_deb      => true,
         :source_hash     => {},
         :source_defaults => {},
-        :package_require => false
+        :package_require => false,
+        :use_extrepo     => false,
       }
     end
 
@@ -21,9 +22,37 @@ describe 'openstack_extras::repo::debian::debian' do
       class_params.merge!(paramclass_defaults)
     end
 
-    context 'with default parameters' do
+    context 'with default params' do
+      it { should contain_exec('extrepo enable openstack_victoria').with(
+        :command => 'extrepo enable openstack_victoria',
+      )}
+      it { should contain_package('extrepo').with(
+        :ensure => 'present',
+        :name   => 'extrepo',
+      )}
+    end
+
+    context 'wallaby with extrepo' do
       let :params do
-        {}
+        {
+          :release     => 'wallaby',
+          :use_extrepo => true,
+        }
+      end
+      it { should contain_exec('extrepo enable openstack_wallaby').with(
+        :command => 'extrepo enable openstack_wallaby',
+      )}
+      it { should contain_package('extrepo').with(
+        :ensure => 'present',
+        :name   => 'extrepo',
+      )}
+    end
+
+    context 'with extrepo set to false' do
+      let :params do
+        {
+          :use_extrepo => false,
+        }
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
@@ -87,19 +116,20 @@ describe 'openstack_extras::repo::debian::debian' do
                                    }
                                 }
                               })
+        default_params.merge!({ :use_extrepo => false })
       end
 
       it { should contain_apt__source('debian_unstable').with(
-        :location => 'http://mymirror/debian/',
-        :release  => 'unstable',
-        :repos    => 'main'
+        :location    => 'http://mymirror/debian/',
+        :release     => 'unstable',
+        :repos       => 'main',
       )}
 
       it { should contain_apt__source('puppetlabs').with(
-        :location => 'http://apt.puppetlabs.com',
-        :repos    => 'main',
-        :release  => 'stretch',
-        :key      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
+        :location    => 'http://apt.puppetlabs.com',
+        :repos       => 'main',
+        :release     => 'stretch',
+        :key         => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' },
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }
@@ -119,13 +149,14 @@ describe 'openstack_extras::repo::debian::debian' do
                                    'include' => { 'src' => true }
                                 }
                               })
+        default_params.merge!({ :use_extrepo => false })
       end
 
       it { should contain_apt__source('debian_unstable').with(
-        :include  => { 'src' => true },
-        :location => 'http://mymirror/debian/',
-        :release  => 'unstable',
-        :repos    => 'main',
+        :include     => { 'src' => true },
+        :location    => 'http://mymirror/debian/',
+        :release     => 'unstable',
+        :repos       => 'main',
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }

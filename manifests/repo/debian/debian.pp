@@ -15,6 +15,17 @@
 #   Debian APT source
 #   Defaults to true
 #
+# [*package_require*]
+#   (optional) Whether or not to run 'apt-get update' before
+#   installing any packages.
+#   Defaults to false
+#
+# [*use_extrepo*]
+#   (optional) Should this module use extrepo to
+#   setup the Debian apt sources.list. If true, the
+#   below parameters aren't in use.
+#   Defaults to true.
+#
 # [*source_hash*]
 #   (optional) A hash of apt::source resources to
 #   create and manage
@@ -24,11 +35,6 @@
 #   (optional) A hash of defaults to use for all apt::source
 #   resources created by this class
 #   Defaults to {}
-#
-# [*package_require*]
-#   (optional) Whether or not to run 'apt-get update' before
-#   installing any packages.
-#   Defaults to false
 #
 # [*deb_location*]
 #   (optional) Debian package repository location.
@@ -43,41 +49,68 @@
 class openstack_extras::repo::debian::debian(
   $release         = $::openstack_extras::repo::debian::params::release,
   $manage_deb      = true,
+  $package_require = false,
+  $use_extrepo     = true,
+  # Below params only used if $use_extrepo is set to false
   $source_hash     = {},
   $source_defaults = {},
-  $package_require = false,
   $deb_location    = "http://${::lsbdistcodename}-${release}.debian.net/debian",
   # DEPRECATED
   $manage_whz      = undef,
 ) inherits openstack_extras::repo::debian::params {
   # handle deprecation
   $deb_manage = pick($manage_whz, $manage_deb)
-  if $deb_manage {
-    exec { 'installing openstack-backports-archive-keyring':
-      command     => "/usr/bin/apt-get update ; \
-                   wget ${deb_location}/dists/pubkey.gpg ; \
-                   apt-key add pubkey.gpg ; \
-                   rm pubkey.gpg",
-      logoutput   => 'on_failure',
-      tries       => 3,
-      try_sleep   => 1,
-      refreshonly => true,
-      subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::deb_name}.list"],
-      notify      => Exec['apt_update'],
-    }
-    apt::source { $::openstack_extras::repo::debian::params::deb_name:
-      location => $deb_location,
-      release  => "${::lsbdistcodename}-${release}-backports",
-      repos    => $::openstack_extras::repo::debian::params::deb_repos,
-    }
-    -> apt::source { "${::openstack_extras::repo::debian::params::deb_name}-nochange":
-      location => $deb_location,
-      release  => "${::lsbdistcodename}-${release}-backports-nochange",
-      repos    => $::openstack_extras::repo::debian::params::deb_repos,
-    }
-  }
 
-  create_resources('apt::source', $source_hash, $source_defaults)
+  $lowercase_release = downcase($release)
+
+
+  if $deb_manage {
+
+    if $use_extrepo {
+      # Extrepo is much nicer than what's below, because
+      # the repositories are authenticated by extrepo itself.
+      # Also, using apt-key is now deprecated (to be removed in 2021).
+      # We use ensure_packages to avoid conflict with any other class
+      # external to this module that may also install extrepo.
+      ensure_packages(['extrepo',], {'ensure' => 'present'})
+
+      exec { "extrepo enable openstack_${lowercase_release}":
+        command     => "extrepo enable openstack_${lowercase_release}",
+        logoutput   => 'on_failure',
+        tries       => 3,
+        try_sleep   => 1,
+        refreshonly => true,
+        require     => Package['extrepo'],
+      }
+      if $package_require {
+        Exec["extrepo enable openstack_${lowercase_release}"] -> Exec['apt_update']
+      }
+    }else{
+      exec { 'installing openstack-backports-archive-keyring':
+        command     => "/usr/bin/apt-get update ; \
+                     wget ${deb_location}/dists/pubkey.gpg ; \
+                     apt-key add pubkey.gpg ; \
+                     rm pubkey.gpg",
+        logoutput   => 'on_failure',
+        tries       => 3,
+        try_sleep   => 1,
+        refreshonly => true,
+        subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::deb_name}.list"],
+        notify      => Exec['apt_update'],
+      }
+      apt::source { $::openstack_extras::repo::debian::params::deb_name:
+        location => $deb_location,
+        release  => "${::lsbdistcodename}-${lowercase_release}-backports",
+        repos    => $::openstack_extras::repo::debian::params::deb_repos,
+      }
+      -> apt::source { "${::openstack_extras::repo::debian::params::deb_name}-nochange":
+        location => $deb_location,
+        release  => "${::lsbdistcodename}-${lowercase_release}-backports-nochange",
+        repos    => $::openstack_extras::repo::debian::params::deb_repos,
+      }
+    }
+    create_resources('apt::source', $source_hash, $source_defaults)
+  }
 
   if $package_require {
     Exec['apt_update'] -> Package<||>
