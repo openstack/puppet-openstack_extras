@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The manage_priorities parameter in openstack_extras::repo::redhat::redhat
+    is deprecated, has no effect and will be removed in a future release.
