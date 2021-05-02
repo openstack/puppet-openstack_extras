@@ -24,6 +24,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require    => 'Anchor[openstack_extras_redhat]',
       )}
 
+      it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
+
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
         :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :owner  => 'root',
@@ -32,9 +34,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :before => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_yumrepo('rdo-qemu-ev').with(
+      it { should contain_yumrepo('centos-advanced-virt').with(
         :baseurl    => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
-        :descr      => "RDO CentOS-#{facts[:operatingsystemmajrelease]}-stream - QEMU EV",
+        :descr      => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :enabled    => '1',
         :gpgcheck   => '1',
@@ -74,7 +76,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_yumrepo('rdo-release') }
 
       it { should_not contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization') }
-      it { should_not contain_yumrepo('rdo-qemu-ev') }
+      it { should_not contain_yumrepo('centos-advanced-virt') }
 
       it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}").with(
         :source => "puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}",
@@ -123,9 +125,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-victoria/",
       )}
 
-      it { should contain_yumrepo('rdo-qemu-ev').with(
+      it { should contain_yumrepo('centos-advanced-virt').with(
         :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/virt/\$basearch/advanced-virtualization/",
-        :descr   => "RDO CentOS-#{facts[:operatingsystemmajrelease]} - QEMU EV",
+        :descr   => "CentOS-#{facts[:operatingsystemmajrelease]} - Advanced Virt",
       )}
     end
 
@@ -253,7 +255,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-victoria/",
       )}
 
-      it { should contain_yumrepo('rdo-qemu-ev').with(
+      it { should contain_yumrepo('centos-advanced-virt').with(
         :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/\$basearch/advancedvirt-common/",
       )}
     end
@@ -311,7 +313,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :before => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_yumrepo('rdo-qemu-ev').with(
+      it { should contain_yumrepo('centos-advanced-virt').with(
         :enabled    => '1',
         :gpgcheck   => '1',
         :mirrorlist => 'absent',

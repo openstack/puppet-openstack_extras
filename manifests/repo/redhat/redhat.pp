@@ -156,10 +156,15 @@ class openstack_extras::repo::redhat::redhat (
       $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advanced-virtualization/"
     }
 
+    # TODO(tobias-urdin): Remove this after one cycle.
+    yumrepo { 'rdo-qemu-ev':
+      ensure => 'absent',
+    }
+
     $virt_hash = {
-      'rdo-qemu-ev' => {
+      'centos-advanced-virt' => {
         'baseurl' => $virt_baseurl,
-        'descr'   => "RDO CentOS-${$centos_major} - QEMU EV",
+        'descr'   => "CentOS-${$centos_major} - Advanced Virt",
         'gpgkey'  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
       }
     }
