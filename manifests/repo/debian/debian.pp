@@ -74,16 +74,16 @@ class openstack_extras::repo::debian::debian(
       # external to this module that may also install extrepo.
       ensure_packages(['extrepo',], {'ensure' => 'present'})
 
-      exec { "extrepo enable openstack_${lowercase_release}":
-        command     => "extrepo enable openstack_${lowercase_release}",
-        logoutput   => 'on_failure',
-        tries       => 3,
-        try_sleep   => 1,
-        refreshonly => true,
-        require     => Package['extrepo'],
+      exec { "/usr/bin/extrepo enable openstack_${lowercase_release}":
+        command   => "/usr/bin/extrepo enable openstack_${lowercase_release}",
+        logoutput => 'on_failure',
+        tries     => 3,
+        try_sleep => 1,
+        require   => Package['extrepo'],
+        creates   => "/etc/apt/sources.list.d/extrepo_openstack_${lowercase_release}.sources",
       }
       if $package_require {
-        Exec["extrepo enable openstack_${lowercase_release}"] -> Exec['apt_update']
+        Exec["/usr/bin/extrepo enable openstack_${lowercase_release}"] -> Exec['apt_update']
       }
     }else{
       exec { 'installing openstack-backports-archive-keyring':

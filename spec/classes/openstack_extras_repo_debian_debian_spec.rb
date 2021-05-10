@@ -23,8 +23,8 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('extrepo enable openstack_victoria').with(
-        :command => 'extrepo enable openstack_victoria',
+      it { should contain_exec('/usr/bin/extrepo enable openstack_victoria').with(
+        :command => '/usr/bin/extrepo enable openstack_victoria',
       )}
       it { should contain_package('extrepo').with(
         :ensure => 'present',
@@ -39,8 +39,8 @@ describe 'openstack_extras::repo::debian::debian' do
           :use_extrepo => true,
         }
       end
-      it { should contain_exec('extrepo enable openstack_wallaby').with(
-        :command => 'extrepo enable openstack_wallaby',
+      it { should contain_exec('/usr/bin/extrepo enable openstack_wallaby').with(
+        :command => '/usr/bin/extrepo enable openstack_wallaby',
       )}
       it { should contain_package('extrepo').with(
         :ensure => 'present',
