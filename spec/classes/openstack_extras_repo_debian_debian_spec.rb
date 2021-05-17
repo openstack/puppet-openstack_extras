@@ -24,11 +24,12 @@ describe 'openstack_extras::repo::debian::debian' do
 
     context 'with default params' do
       it { should contain_exec('/usr/bin/extrepo enable openstack_victoria').with(
-        :command => '/usr/bin/extrepo enable openstack_victoria',
-      )}
-      it { should contain_package('extrepo').with(
-        :ensure => 'present',
-        :name   => 'extrepo',
+        :command => "/bin/true # comment to satisfy puppet syntax requirements
+apt-get update
+apt-get install -y extrepo
+extrepo enable openstack_victoria
+apt-get update
+",
       )}
     end
 
@@ -40,11 +41,12 @@ describe 'openstack_extras::repo::debian::debian' do
         }
       end
       it { should contain_exec('/usr/bin/extrepo enable openstack_wallaby').with(
-        :command => '/usr/bin/extrepo enable openstack_wallaby',
-      )}
-      it { should contain_package('extrepo').with(
-        :ensure => 'present',
-        :name   => 'extrepo',
+        :command => "/bin/true # comment to satisfy puppet syntax requirements
+apt-get update
+apt-get install -y extrepo
+extrepo enable openstack_wallaby
+apt-get update
+",
       )}
     end
 

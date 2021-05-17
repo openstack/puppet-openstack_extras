@@ -72,14 +72,23 @@ class openstack_extras::repo::debian::debian(
       # Also, using apt-key is now deprecated (to be removed in 2021).
       # We use ensure_packages to avoid conflict with any other class
       # external to this module that may also install extrepo.
-      ensure_packages(['extrepo',], {'ensure' => 'present'})
+
+      # We cannot use package{} or ensure_packages[] as per below,
+      # because this introduces a dependency loop later on if
+      # $package_require is set to true.
+      # So please leave this commented.
+      #ensure_packages(['extrepo',], {'ensure' => 'present'})
 
       exec { "/usr/bin/extrepo enable openstack_${lowercase_release}":
-        command   => "/usr/bin/extrepo enable openstack_${lowercase_release}",
+        command   => "/bin/true # comment to satisfy puppet syntax requirements
+apt-get update
+apt-get install -y extrepo
+extrepo enable openstack_${lowercase_release}
+apt-get update
+",
         logoutput => 'on_failure',
         tries     => 3,
         try_sleep => 1,
-        require   => Package['extrepo'],
         creates   => "/etc/apt/sources.list.d/extrepo_openstack_${lowercase_release}.sources",
       }
       if $package_require {
