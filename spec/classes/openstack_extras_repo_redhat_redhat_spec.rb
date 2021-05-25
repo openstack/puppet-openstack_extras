@@ -14,14 +14,15 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl    => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-victoria/",
-        :descr      => "OpenStack Victoria Repository",
-        :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
-        :enabled    => '1',
-        :gpgcheck   => '1',
-        :mirrorlist => 'absent',
-        :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-victoria/",
+        :descr           => "OpenStack Victoria Repository",
+        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        :enabled         => '1',
+        :gpgcheck        => '1',
+        :mirrorlist      => 'absent',
+        :module_hotfixes => true,
+        :notify          => 'Exec[yum_refresh]',
+        :require         => 'Anchor[openstack_extras_redhat]',
       )}
 
       it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
@@ -35,14 +36,15 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl    => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
-        :descr      => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
-        :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
-        :enabled    => '1',
-        :gpgcheck   => '1',
-        :mirrorlist => 'absent',
-        :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
+        :descr           => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
+        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+        :enabled         => '1',
+        :gpgcheck        => '1',
+        :mirrorlist      => 'absent',
+        :module_hotfixes => true,
+        :notify          => 'Exec[yum_refresh]',
+        :require         => 'Anchor[openstack_extras_redhat]',
       )}
 
       it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}") }
@@ -56,6 +58,17 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should_not contain_exec('yum_update') }
+    end
+
+    context 'with default parameters but puppetversion < 6.15.0' do
+      before do
+        facts.merge!( :puppetversion => '6.14.0' )
+     end
+
+     it {
+       should contain_yumrepo('rdo-release').without_module_hotfixes
+       should contain_yumrepo('centos-advanced-virt').without_module_hotfixes
+     }
     end
 
     context 'with parameters' do

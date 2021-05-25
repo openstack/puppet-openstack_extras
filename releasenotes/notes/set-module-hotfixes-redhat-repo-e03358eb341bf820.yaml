@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The yumrepo resources for RDO and CentOS Advanced Virt in the
+    openstack_extras::repo::redhat::redhat class now sets the new
+    parameter module_hotfixes included since 6.15.0 if the Puppet
+    version is supporting that. If you for some reason is using
+    standalone Puppet that does not include vendored modules (i.e
+    you are not using Puppet packages) you will need to make sure
+    that yumrepo_core >= 1.0.7 is used.
