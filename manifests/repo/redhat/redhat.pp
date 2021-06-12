@@ -158,7 +158,7 @@ class openstack_extras::repo::redhat::redhat (
     }
   }
 
-  if $manage_virt and ($facts['os']['name'] != 'Fedora') {
+  if $manage_virt {
     if $stream {
       $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advancedvirt-common/"
     } else {
@@ -197,7 +197,7 @@ class openstack_extras::repo::redhat::redhat (
     }
   }
 
-  if ($manage_epel and $facts['os']['name'] != 'Fedora') {
+  if $manage_epel {
     $epel_hash = {
       'epel' => {
         'metalink'       => "https://mirrors.fedoraproject.org/metalink?repo=epel-${facts['os']['release']['major']}&arch=\$basearch",
