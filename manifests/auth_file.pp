@@ -115,14 +115,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*project_domain*]
-#   (Optional) Project domain in v3 api.
-#   Defaults to 'Default'.
-#
-# [*user_domain*]
-#   (Optional) User domain in v3 api.
-#   Defaults to 'Default'.
-#
 # [*tenant_name*]
 #   (Optional) Tenant for this account as defined in keystone
 #   Defaults to undef.
@@ -155,26 +147,8 @@ class openstack_extras::auth_file (
   $identity_api_version   = '3',
   $object_api_version     = undef,
   # DEPRECATED PARAMETERS
-  $project_domain         = undef,
-  $user_domain            = undef,
   $tenant_name            = undef,
 ) {
-
-  if $project_domain != undef {
-    warning('project_domain is deprecated and will be removed in a future release. \
-Use project_domain_name instead')
-    $project_domain_name_real = $project_domain
-  } else {
-    $project_domain_name_real = $project_domain_name
-  }
-
-  if $user_domain != undef {
-    warning('user_domain is deprecated and will be removed in a future release. \
-Use user_domain_name instead')
-    $user_domain_name_real = $user_domain
-  } else {
-    $user_domain_name_real = $user_domain_name
-  }
 
   if $tenant_name != undef {
     warning('tenant_name is deprecated and will be removed in a future release. \

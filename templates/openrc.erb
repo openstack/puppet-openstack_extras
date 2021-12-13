@@ -15,11 +15,11 @@ export OS_PASSWORD='<%= @password.gsub(/'/){ %q(\') } %>'
 export OS_AUTH_URL='<%= @auth_url %>'
 export OS_AUTH_STRATEGY='<%= @auth_strategy %>'
 export OS_REGION_NAME='<%= @region_name %>'
-<% if @project_domain_name_real -%>
-export OS_PROJECT_DOMAIN_NAME='<%= @project_domain_name_real %>'
+<% if @project_domain_name -%>
+export OS_PROJECT_DOMAIN_NAME='<%= @project_domain_name %>'
 <% end -%>
-<% if @user_domain_name_real -%>
-export OS_USER_DOMAIN_NAME='<%= @user_domain_name_real %>'
+<% if @user_domain_name -%>
+export OS_USER_DOMAIN_NAME='<%= @user_domain_name %>'
 <% end -%>
 <% if @auth_type -%>
 export OS_AUTH_TYPE='<%= @auth_type %>'

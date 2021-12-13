@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``openstack_extras::auth_file`` class have
+    been removed.
+
+    - ``project_domain``
+    - ``user_domain``
