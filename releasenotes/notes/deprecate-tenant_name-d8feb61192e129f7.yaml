@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``openstack_extras::auth_file::tenant_name`` parameter has been
+    deprecated. Use the ``project_name`` parameter instead.

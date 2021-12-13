@@ -28,10 +28,6 @@
 #   (Optional) Username for this account as defined in keystone
 #   Defaults to 'admin'.
 #
-# [*tenant_name*]
-#   (Optional) Tenant for this account as defined in keystone
-#   Defaults to undef.
-#
 # [*project_name*]
 #   (Optional) Project for this account as defined in keystone
 #   Use instead of tenant_name for when using identity v3.
@@ -127,13 +123,16 @@
 #   (Optional) User domain in v3 api.
 #   Defaults to 'Default'.
 #
+# [*tenant_name*]
+#   (Optional) Tenant for this account as defined in keystone
+#   Defaults to undef.
+#
 class openstack_extras::auth_file (
   $password,
   $auth_url               = 'http://127.0.0.1:5000/v3/',
   $service_token          = undef,
   $service_endpoint       = 'http://127.0.0.1:5000/v3/',
   $username               = 'admin',
-  $tenant_name            = undef,
   $project_name           = 'openstack',
   $region_name            = 'RegionOne',
   $use_no_cache           = true,
@@ -158,6 +157,7 @@ class openstack_extras::auth_file (
   # DEPRECATED PARAMETERS
   $project_domain         = undef,
   $user_domain            = undef,
+  $tenant_name            = undef,
 ) {
 
   if $project_domain != undef {
@@ -174,6 +174,11 @@ Use user_domain_name instead')
     $user_domain_name_real = $user_domain
   } else {
     $user_domain_name_real = $user_domain_name
+  }
+
+  if $tenant_name != undef {
+    warning('tenant_name is deprecated and will be removed in a future release. \
+Use project_name instead')
   }
 
   file { $path:
