@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'victoria'
+        :release => 'xena'
       }
     end
 
@@ -23,11 +23,11 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('/usr/bin/extrepo enable openstack_victoria').with(
+      it { should contain_exec('/usr/bin/extrepo enable openstack_xena').with(
         :command => "/bin/true # comment to satisfy puppet syntax requirements
 apt-get update
 apt-get install -y extrepo
-extrepo enable openstack_victoria
+extrepo enable openstack_xena
 apt-get update
 ",
       )}
@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-victoria.debian.net/debian',
-        :release  => 'stretch-victoria-backports',
+        :location => 'http://stretch-xena.debian.net/debian',
+        :release  => 'stretch-xena-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-victoria.debian.net/debian',
-        :release  => 'stretch-victoria-backports-nochange',
+        :location => 'http://stretch-xena.debian.net/debian',
+        :release  => 'stretch-xena-backports-nochange',
         :repos    => 'main'
       )}
 

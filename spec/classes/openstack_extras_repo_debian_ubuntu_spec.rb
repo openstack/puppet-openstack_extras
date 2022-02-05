@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     let :paramclass_defaults do
       {
-        :release => 'victoria'
+        :release => 'xena'
       }
     end
 
@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'trusty-updates/victoria',
+        :release  => 'trusty-updates/xena',
         :repos    => 'main',
       )}
 
@@ -127,7 +127,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => 'trusty-proposed/victoria',
+        :release  => 'trusty-proposed/xena',
         :repos    => 'main',
       )}
     end
