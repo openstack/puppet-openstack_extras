@@ -4,7 +4,7 @@
 # OS family repo classes.
 #
 class openstack_extras::repo::redhat::params {
-  $release = 'victoria'
+  $release = 'xena'
 
   $repo_defaults = {
     'enabled'    => '1',
