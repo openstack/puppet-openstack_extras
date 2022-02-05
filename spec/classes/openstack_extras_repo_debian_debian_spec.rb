@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'victoria'
+        :release => 'wallaby'
       }
     end
 
@@ -27,14 +27,14 @@ describe 'openstack_extras::repo::debian::debian' do
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-victoria.debian.net/debian',
-        :release  => 'stretch-victoria-backports',
+        :location => 'http://stretch-wallaby.debian.net/debian',
+        :release  => 'stretch-wallaby-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-victoria.debian.net/debian',
-        :release  => 'stretch-victoria-backports-nochange',
+        :location => 'http://stretch-wallaby.debian.net/debian',
+        :release  => 'stretch-wallaby-backports-nochange',
         :repos    => 'main'
       )}
 

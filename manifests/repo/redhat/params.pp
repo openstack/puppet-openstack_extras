@@ -5,7 +5,7 @@
 #
 class openstack_extras::repo::redhat::params
 {
-  $release          = 'victoria'
+  $release          = 'wallaby'
 
   $repo_defaults    = { 'enabled'    => '1',
                         'gpgcheck'   => '1',
