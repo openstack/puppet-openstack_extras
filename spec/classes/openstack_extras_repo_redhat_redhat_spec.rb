@@ -25,28 +25,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require         => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
-
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
-        :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization',
-        :owner  => 'root',
-        :group  => 'root',
-        :mode   => '0644',
-        :before => 'Anchor[openstack_extras_redhat]',
-      )}
-
-      it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
-        :descr           => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
-        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
-        :enabled         => '1',
-        :gpgcheck        => '1',
-        :mirrorlist      => 'absent',
-        :module_hotfixes => true,
-        :notify          => 'Exec[yum_refresh]',
-        :require         => 'Anchor[openstack_extras_redhat]',
-      )}
-
       it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}") }
       it { should_not contain_yumrepo('epel') }
 
@@ -58,17 +36,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should_not contain_exec('yum_update') }
-    end
-
-    context 'with default parameters but puppetversion < 6.15.0' do
-      before do
-        facts.merge!( :puppetversion => '6.14.0' )
-     end
-
-     it {
-       should contain_yumrepo('rdo-release').without_module_hotfixes
-       should contain_yumrepo('centos-advanced-virt').without_module_hotfixes
-     }
     end
 
     context 'with parameters' do
@@ -122,25 +89,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :command     => '/usr/bin/dnf update -y',
         :refreshonly => true,
         :timeout     => 600,
-      )}
-    end
-
-    context 'with stream is false' do
-      let :params do
-        {
-          :manage_rdo  => true,
-          :manage_virt => true,
-          :stream      => false,
-        }
-      end
-
-      it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-xena/",
-      )}
-
-      it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/virt/\$basearch/advanced-virtualization/",
-        :descr   => "CentOS-#{facts[:operatingsystemmajrelease]} - Advanced Virt",
       )}
     end
 
@@ -252,6 +200,62 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :source  => 'https://trunk.rdoproject.org/some/thing.repo',
         :replace => false,
         :notify  => 'Exec[yum_refresh]',
+      )}
+    end
+  end
+
+  shared_examples 'openstack_extras::repo::redhat::redhat in CentOS < 9' do
+    context 'with default parameters' do
+      it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
+
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
+        :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0644',
+        :before => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_yumrepo('centos-advanced-virt').with(
+        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
+        :descr           => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
+        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
+        :enabled         => '1',
+        :gpgcheck        => '1',
+        :mirrorlist      => 'absent',
+        :module_hotfixes => true,
+        :notify          => 'Exec[yum_refresh]',
+        :require         => 'Anchor[openstack_extras_redhat]',
+      )}
+    end
+
+    context 'with default parameters but puppetversion < 6.15.0' do
+      before do
+        facts.merge!( :puppetversion => '6.14.0' )
+     end
+
+     it {
+       should contain_yumrepo('rdo-release').without_module_hotfixes
+       should contain_yumrepo('centos-advanced-virt').without_module_hotfixes
+     }
+    end
+
+    context 'with stream is false' do
+      let :params do
+        {
+          :manage_rdo  => true,
+          :manage_virt => true,
+          :stream      => false,
+        }
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-xena/",
+      )}
+
+      it { should contain_yumrepo('centos-advanced-virt').with(
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/virt/\$basearch/advanced-virtualization/",
+        :descr   => "CentOS-#{facts[:operatingsystemmajrelease]} - Advanced Virt",
       )}
     end
 
@@ -371,6 +375,129 @@ describe 'openstack_extras::repo::redhat::redhat' do
     end
   end
 
+  shared_examples 'openstack_extras::repo::redhat::redhat in CentOS >= 9' do
+    context 'with default parameters' do
+      it { should_not contain_yumrepo('rdo-qemu-ev') }
+      it { should_not contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization') }
+      it { should_not contain_yumrepo('centos-advanced-virt') }
+    end
+
+    context 'with stream is false' do
+      let :params do
+        {
+          :manage_rdo  => true,
+          :stream      => false,
+        }
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-xena/",
+      )}
+    end
+
+    context 'with default parameters but puppetversion < 6.15.0' do
+      before do
+        facts.merge!( :puppetversion => '6.14.0' )
+     end
+
+     it {
+       should contain_yumrepo('rdo-release').without_module_hotfixes
+     }
+    end
+
+    context 'with centos_mirror_url' do
+      let :params do
+        {
+          :manage_rdo        => true,
+          :centos_mirror_url => 'http://foo.bar',
+        }
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-xena/",
+      )}
+    end
+
+    context 'with repo_defaults and gpgkey_defaults' do
+      let :params do
+        {
+          :manage_rdo      => true,
+          :manage_epel     => true,
+          :repo_hash       => {
+            'CentOS-Example' => {
+              'baseurl' => 'http://example.com/$releasever/os/$basearch/',
+              'descr'   => 'CentOS-$releasever - Example',
+              'gpgkey'  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Example',
+            },
+          },
+          :gpgkey_hash     => {
+            '/etc/pki/rpm-gpg/RPM-GPG-KEY-Example' => {
+              'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-Example',
+            }
+          },
+          :repo_defaults   => {
+            'proxy' => 'http://example.com:8000',
+          },
+          :gpgkey_defaults => {
+            'owner' => 'steve',
+            'force' => true,
+          },
+        }
+      end
+
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
+        :owner  => 'steve',
+        :group  => 'root',
+        :mode   => '0644',
+        :force  => true,
+        :before => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_yumrepo('rdo-release').with(
+        :enabled    => '1',
+        :gpgcheck   => '1',
+        :mirrorlist => 'absent',
+        :proxy      => 'http://example.com:8000',
+        :notify     => 'Exec[yum_refresh]',
+        :require    => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}").with(
+        :owner  => 'steve',
+        :group  => 'root',
+        :mode   => '0644',
+        :force  => true,
+        :before => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_yumrepo('epel').with(
+        :enabled    => '1',
+        :gpgcheck   => '1',
+        :mirrorlist => 'absent',
+        :proxy      => 'http://example.com:8000',
+        :notify     => 'Exec[yum_refresh]',
+        :require    => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_yumrepo('CentOS-Example').with(
+        :enabled    => '1',
+        :gpgcheck   => '1',
+        :mirrorlist => 'absent',
+        :proxy      => 'http://example.com:8000',
+        :notify     => 'Exec[yum_refresh]',
+        :require    => 'Anchor[openstack_extras_redhat]',
+      )}
+
+      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-Example').with(
+        :owner  => 'steve',
+        :group  => 'root',
+        :mode   => '0644',
+        :force  => true,
+        :before => 'Anchor[openstack_extras_redhat]',
+      )}
+    end
+  end
+
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -381,6 +508,11 @@ describe 'openstack_extras::repo::redhat::redhat' do
 
       if facts[:osfamily] == 'RedHat'
         it_behaves_like 'openstack_extras::repo::redhat::redhat'
+        if facts[:operatingsystemmajrelease].to_i >= 9
+          it_behaves_like 'openstack_extras::repo::redhat::redhat in CentOS >= 9'
+        else
+          it_behaves_like 'openstack_extras::repo::redhat::redhat in CentOS < 9'
+        end
       end
     end
   end

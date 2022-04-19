@@ -6,6 +6,12 @@
 class openstack_extras::repo::redhat::params {
   $release = 'xena'
 
+  if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
+    $manage_virt = false
+  } else {
+    $manage_virt = true
+  }
+
   $repo_defaults = {
     'enabled'    => '1',
     'gpgcheck'   => '1',

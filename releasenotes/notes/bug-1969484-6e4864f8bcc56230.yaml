@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The advanced virtualization repository is no longer enabled in CentOS
+    Stream 9, because the separate repository is no longer available.

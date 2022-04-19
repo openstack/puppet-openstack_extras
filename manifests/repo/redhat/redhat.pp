@@ -17,7 +17,7 @@
 # [*manage_virt*]
 #   (Optional) Whether to create a yumrepo resource for the
 #   Advanced Virtualization repository.
-#   Defaults to true
+#   Defaults to $openstack_extras::repo::redhat::params::manage_virt
 #
 # [*manage_epel*]
 #   (Optional) Whether to create a predefined yumrepo resource for
@@ -85,7 +85,7 @@
 class openstack_extras::repo::redhat::redhat (
   $release           = $openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
-  $manage_virt       = true,
+  $manage_virt       = $openstack_extras::repo::redhat::params::manage_virt,
   $manage_epel       = false,
   $repo_hash         = {},
   $repo_source_hash  = {},
@@ -159,6 +159,10 @@ class openstack_extras::repo::redhat::redhat (
   }
 
   if $manage_virt {
+    if ! $openstack_extras::repo::redhat::params::manage_virt {
+      fail('The separate virt repository is not available for this version.')
+    }
+
     if $stream {
       $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advancedvirt-common/"
     } else {
