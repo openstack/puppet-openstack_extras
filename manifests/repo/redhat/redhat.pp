@@ -63,7 +63,7 @@
 #
 # [*centos_mirror_url*]
 #   (Optional) URL of CentOS mirror.
-#   Defaults to 'http://mirror.centos.org'
+#   Defaults to $openstack_extras::repo::redhat::params::centos_mirror_url
 #
 # [*update_packages*]
 #   (Optional) Whether to update all packages after yum repositories are
@@ -95,7 +95,7 @@ class openstack_extras::repo::redhat::redhat (
   $gpgkey_defaults   = {},
   $purge_unmanaged   = false,
   $package_require   = false,
-  $centos_mirror_url = 'http://mirror.centos.org',
+  $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
   $update_packages   = false,
   $stream            = true,
   # DEPRECATED PARAMS
@@ -131,9 +131,14 @@ class openstack_extras::repo::redhat::redhat (
   if $manage_rdo {
     $release_cap = capitalize($release)
 
+    $rdo_baseurl = $facts['os']['release']['major'] ? {
+      '9'     => "${centos_mirror_url}/SIGs/${centos_major}/cloud/\$basearch/openstack-${release}/",
+      default => "${centos_mirror_url}/centos/${centos_major}/cloud/\$basearch/openstack-${release}/"
+    }
+
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => "${centos_mirror_url}/centos/${centos_major}/cloud/\$basearch/openstack-${release}/",
+        'baseurl'  => $rdo_baseurl,
         'descr'    => "OpenStack ${release_cap} Repository",
         'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
       }

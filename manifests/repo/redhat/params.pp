@@ -7,9 +7,11 @@ class openstack_extras::repo::redhat::params {
   $release = 'yoga'
 
   if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
-    $manage_virt = false
+    $centos_mirror_url = 'http://mirror.stream.centos.org'
+    $manage_virt       = false
   } else {
-    $manage_virt = true
+    $centos_mirror_url = 'http://mirror.centos.org'
+    $manage_virt       = true
   }
 
   $repo_defaults = {

@@ -13,18 +13,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :before => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
-        :descr           => "OpenStack Yoga Repository",
-        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
-        :enabled         => '1',
-        :gpgcheck        => '1',
-        :mirrorlist      => 'absent',
-        :module_hotfixes => true,
-        :notify          => 'Exec[yum_refresh]',
-        :require         => 'Anchor[openstack_extras_redhat]',
-      )}
-
       it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}") }
       it { should_not contain_yumrepo('epel') }
 
@@ -89,20 +77,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :command     => '/usr/bin/dnf update -y',
         :refreshonly => true,
         :timeout     => 600,
-      )}
-    end
-
-    context 'with overridden release' do
-      let :params do
-        {
-          :release    => 'juno',
-          :manage_rdo => true,
-        }
-      end
-
-      it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-juno/",
-        :descr   => 'OpenStack Juno Repository',
       )}
     end
 
@@ -208,6 +182,18 @@ describe 'openstack_extras::repo::redhat::redhat' do
     context 'with default parameters' do
       it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
 
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :descr           => "OpenStack Yoga Repository",
+        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        :enabled         => '1',
+        :gpgcheck        => '1',
+        :mirrorlist      => 'absent',
+        :module_hotfixes => true,
+        :notify          => 'Exec[yum_refresh]',
+        :require         => 'Anchor[openstack_extras_redhat]',
+      )}
+
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
         :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :owner  => 'root',
@@ -226,6 +212,20 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :module_hotfixes => true,
         :notify          => 'Exec[yum_refresh]',
         :require         => 'Anchor[openstack_extras_redhat]',
+      )}
+    end
+
+    context 'with overridden release' do
+      let :params do
+        {
+          :release    => 'juno',
+          :manage_rdo => true,
+        }
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-juno/",
+        :descr   => 'OpenStack Juno Repository',
       )}
     end
 
@@ -380,6 +380,32 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_yumrepo('rdo-qemu-ev') }
       it { should_not contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization') }
       it { should_not contain_yumrepo('centos-advanced-virt') }
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl         => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :descr           => "OpenStack Yoga Repository",
+        :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        :enabled         => '1',
+        :gpgcheck        => '1',
+        :mirrorlist      => 'absent',
+        :module_hotfixes => true,
+        :notify          => 'Exec[yum_refresh]',
+        :require         => 'Anchor[openstack_extras_redhat]',
+      )}
+    end
+
+    context 'with overridden release' do
+      let :params do
+        {
+          :release    => 'juno',
+          :manage_rdo => true,
+        }
+      end
+
+      it { should contain_yumrepo('rdo-release').with(
+        :baseurl => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-juno/",
+        :descr   => 'OpenStack Juno Repository',
+      )}
     end
 
     context 'with stream is false' do
@@ -391,7 +417,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
+        :baseurl => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
       )}
     end
 
@@ -414,7 +440,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-yoga/",
+        :baseurl => "http://foo.bar/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
       )}
     end
 

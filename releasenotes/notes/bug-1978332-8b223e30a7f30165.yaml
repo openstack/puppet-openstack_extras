@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    The ``openstack_extras::repos::redhat::redhat`` class now configures RDO
+    repository properly in CentOS Stream 9.
