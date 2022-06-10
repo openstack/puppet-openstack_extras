@@ -4,7 +4,7 @@
 # OS family repo classes.
 #
 class openstack_extras::repo::redhat::params {
-  $release = 'xena'
+  $release = 'yoga'
 
   if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
     $manage_virt = false

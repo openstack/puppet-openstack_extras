@@ -14,8 +14,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-xena/",
-        :descr           => "OpenStack Xena Repository",
+        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :descr           => "OpenStack Yoga Repository",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled         => '1',
         :gpgcheck        => '1',
@@ -250,7 +250,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-xena/",
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
       )}
 
       it { should contain_yumrepo('centos-advanced-virt').with(
@@ -269,7 +269,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-xena/",
+        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-yoga/",
       )}
 
       it { should contain_yumrepo('centos-advanced-virt').with(
@@ -391,7 +391,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-xena/",
+        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
       )}
     end
 
@@ -414,7 +414,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-xena/",
+        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-yoga/",
       )}
     end
 
