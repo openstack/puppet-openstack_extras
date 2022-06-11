@@ -14,11 +14,6 @@
 #   RDO OpenStack repository.
 #   Defaults to true
 #
-# [*manage_virt*]
-#   (Optional) Whether to create a yumrepo resource for the
-#   Advanced Virtualization repository.
-#   Defaults to $openstack_extras::repo::redhat::params::manage_virt
-#
 # [*manage_epel*]
 #   (Optional) Whether to create a predefined yumrepo resource for
 #   the EPEL repository. Note EPEL is not required for deploying
@@ -82,10 +77,14 @@
 #   (Optional) Is this CentOS Stream and should we adjust mirrors.
 #   Defaults to undef
 #
+# [*manage_virt*]
+#   (Optional) Whether to create a yumrepo resource for the
+#   Advanced Virtualization repository.
+#   Defaults to undef
+#
 class openstack_extras::repo::redhat::redhat (
   $release           = $openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
-  $manage_virt       = $openstack_extras::repo::redhat::params::manage_virt,
   $manage_epel       = false,
   $repo_hash         = {},
   $repo_source_hash  = {},
@@ -100,6 +99,7 @@ class openstack_extras::repo::redhat::redhat (
   # DEPRECATED PARAMS
   $manage_priorities = undef,
   $stream            = undef,
+  $manage_virt       = undef,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -122,20 +122,19 @@ class openstack_extras::repo::redhat::redhat (
     warning('The stream parmeter has been deprecated and has no effect.')
   }
 
+  if $manage_virt != undef {
+    warning('The manage_virt parameter has been deprecatd and has no effect.')
+  }
+
   $_repo_defaults = merge($openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
   $_gpgkey_defaults = merge($openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
-
-  $centos_major = "${facts['os']['release']['major']}-stream"
 
   anchor { 'openstack_extras_redhat': }
 
   if $manage_rdo {
     $release_cap = capitalize($release)
 
-    $rdo_baseurl = $facts['os']['release']['major'] ? {
-      '9'     => "${centos_mirror_url}/SIGs/\$stream/cloud/\$basearch/openstack-${release}/",
-      default => "${centos_mirror_url}/centos/\$stream/cloud/\$basearch/openstack-${release}/"
-    }
+    $rdo_baseurl = "${centos_mirror_url}/SIGs/\$stream/cloud/\$basearch/openstack-${release}/"
 
     $rdo_hash = {
       'rdo-release' => {
@@ -164,55 +163,12 @@ class openstack_extras::repo::redhat::redhat (
     }
   }
 
-  if $manage_virt {
-    if ! $openstack_extras::repo::redhat::params::manage_virt {
-      fail('The separate virt repository is not available for this version.')
-    }
-
-    if $stream {
-      $virt_baseurl = "${centos_mirror_url}/centos/\$stream/virt/\$basearch/advancedvirt-common/"
-    } else {
-      $virt_baseurl = "${centos_mirror_url}/centos/\$stream/virt/\$basearch/advanced-virtualization/"
-    }
-
-    # TODO(tobias-urdin): Remove this after one cycle.
-    yumrepo { 'rdo-qemu-ev':
-      ensure => 'absent',
-    }
-
-    $virt_hash = {
-      'centos-advanced-virt' => {
-        'baseurl' => $virt_baseurl,
-        'descr'   => "CentOS-${$centos_major} - Advanced Virt",
-        'gpgkey'  => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
-      }
-    }
-
-    $virtkey_hash = {
-      '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization' => {
-        'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Virtualization'
-      }
-    }
-
-    create_resources('file', $virtkey_hash, $_gpgkey_defaults)
-    create_resources('yumrepo', $virt_hash, $_repo_defaults)
-
-    # NOTE(tobias-urdin): This was introduced in yumrepo_core 1.0.7 which is
-    # included from 6.15.0 and forward (also since 7.0.0).
-    # TODO(tobias-urdin): Should set this by default when we only support Puppet 7.
-    if versioncmp($::puppetversion, '6.15.0') >= 0 {
-      Yumrepo<| title == 'centos-advanced-virt' |> {
-        module_hotfixes => true,
-      }
-    }
-  } else {
-    # NOTE(tkajinam): Ensure the advanced-virt repository is purged
-    file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization':
-      ensure => absent
-    }
-    yumrepo { 'centos-advanced-virt':
-      ensure => absent
-    }
+  # NOTE(tkajinam): Ensure the advanced-virt repository is purged
+  file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization':
+    ensure => absent
+  }
+  yumrepo { 'centos-advanced-virt':
+    ensure => 'absent'
   }
 
   if $manage_epel {
