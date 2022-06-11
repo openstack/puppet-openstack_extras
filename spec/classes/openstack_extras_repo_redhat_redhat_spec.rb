@@ -183,7 +183,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should contain_yumrepo('rdo-qemu-ev').with_ensure('absent') }
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :baseurl         => "http://mirror.centos.org/centos/$stream/cloud/$basearch/openstack-yoga/",
         :descr           => "OpenStack Yoga Repository",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled         => '1',
@@ -203,7 +203,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl         => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/$basearch/advancedvirt-common/",
+        :baseurl         => "http://mirror.centos.org/centos/$stream/virt/$basearch/advancedvirt-common/",
         :descr           => "CentOS-#{facts[:operatingsystemmajrelease]}-stream - Advanced Virt",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization',
         :enabled         => '1',
@@ -224,7 +224,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-juno/",
+        :baseurl => "http://mirror.centos.org/centos/$stream/cloud/$basearch/openstack-juno/",
         :descr   => 'OpenStack Juno Repository',
       )}
     end
@@ -240,25 +240,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
      }
     end
 
-    context 'with stream is false' do
-      let :params do
-        {
-          :manage_rdo  => true,
-          :manage_virt => true,
-          :stream      => false,
-        }
-      end
-
-      it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
-      )}
-
-      it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl => "http://mirror.centos.org/centos/#{facts[:operatingsystemmajrelease]}/virt/\$basearch/advanced-virtualization/",
-        :descr   => "CentOS-#{facts[:operatingsystemmajrelease]} - Advanced Virt",
-      )}
-    end
-
     context 'with centos_mirror_url' do
       let :params do
         {
@@ -269,11 +250,11 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/cloud/\$basearch/openstack-yoga/",
+        :baseurl => "http://foo.bar/centos/$stream/cloud/$basearch/openstack-yoga/",
       )}
 
       it { should contain_yumrepo('centos-advanced-virt').with(
-        :baseurl => "http://foo.bar/centos/#{facts[:operatingsystemmajrelease]}-stream/virt/\$basearch/advancedvirt-common/",
+        :baseurl => "http://foo.bar/centos/$stream/virt/$basearch/advancedvirt-common/",
       )}
     end
 
@@ -382,7 +363,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_yumrepo('centos-advanced-virt') }
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-yoga/",
         :descr           => "OpenStack Yoga Repository",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled         => '1',
@@ -403,21 +384,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-juno/",
+        :baseurl => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-juno/",
         :descr   => 'OpenStack Juno Repository',
-      )}
-    end
-
-    context 'with stream is false' do
-      let :params do
-        {
-          :manage_rdo  => true,
-          :stream      => false,
-        }
-      end
-
-      it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://mirror.stream.centos.org/SIGs/#{facts[:operatingsystemmajrelease]}/cloud/\$basearch/openstack-yoga/",
       )}
     end
 
@@ -440,7 +408,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/SIGs/#{facts[:operatingsystemmajrelease]}-stream/cloud/$basearch/openstack-yoga/",
+        :baseurl => "http://foo.bar/SIGs/$stream/cloud/$basearch/openstack-yoga/",
       )}
     end
 

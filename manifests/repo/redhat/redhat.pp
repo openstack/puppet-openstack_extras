@@ -70,16 +70,16 @@
 #   configured.
 #   Defaults to false
 #
-# [*stream*]
-#   (Optional) Is this CentOS Stream and should we adjust mirrors.
-#   Defaults to true
-#
 # DEPRECATED PARAMS
 # =================
 #
 # [*manage_priorities*]
 #   (Optional) Whether to install yum-plugin-priorities package so
 #   'priority' value in yumrepo will be effective.
+#   Defaults to undef
+#
+# [*stream*]
+#   (Optional) Is this CentOS Stream and should we adjust mirrors.
 #   Defaults to undef
 #
 class openstack_extras::repo::redhat::redhat (
@@ -97,9 +97,9 @@ class openstack_extras::repo::redhat::redhat (
   $package_require   = false,
   $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
   $update_packages   = false,
-  $stream            = true,
   # DEPRECATED PARAMS
   $manage_priorities = undef,
+  $stream            = undef,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -118,13 +118,14 @@ class openstack_extras::repo::redhat::redhat (
     warning('openstack_extras::repo::redhat::redhat::manage_priorities parameter is deprecated and will be removed')
   }
 
+  if $stream != undef {
+    warning('The stream parmeter has been deprecated and has no effect.')
+  }
+
   $_repo_defaults = merge($openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
   $_gpgkey_defaults = merge($openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
 
-  $centos_major = $stream ? {
-    true    => "${facts['os']['release']['major']}-stream",
-    default => $facts['os']['release']['major']
-  }
+  $centos_major = "${facts['os']['release']['major']}-stream"
 
   anchor { 'openstack_extras_redhat': }
 
@@ -132,8 +133,8 @@ class openstack_extras::repo::redhat::redhat (
     $release_cap = capitalize($release)
 
     $rdo_baseurl = $facts['os']['release']['major'] ? {
-      '9'     => "${centos_mirror_url}/SIGs/${centos_major}/cloud/\$basearch/openstack-${release}/",
-      default => "${centos_mirror_url}/centos/${centos_major}/cloud/\$basearch/openstack-${release}/"
+      '9'     => "${centos_mirror_url}/SIGs/\$stream/cloud/\$basearch/openstack-${release}/",
+      default => "${centos_mirror_url}/centos/\$stream/cloud/\$basearch/openstack-${release}/"
     }
 
     $rdo_hash = {
@@ -169,9 +170,9 @@ class openstack_extras::repo::redhat::redhat (
     }
 
     if $stream {
-      $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advancedvirt-common/"
+      $virt_baseurl = "${centos_mirror_url}/centos/\$stream/virt/\$basearch/advancedvirt-common/"
     } else {
-      $virt_baseurl = "${centos_mirror_url}/centos/${centos_major}/virt/\$basearch/advanced-virtualization/"
+      $virt_baseurl = "${centos_mirror_url}/centos/\$stream/virt/\$basearch/advanced-virtualization/"
     }
 
     # TODO(tobias-urdin): Remove this after one cycle.
