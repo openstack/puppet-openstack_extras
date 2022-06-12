@@ -40,12 +40,6 @@
 #   (optional) Debian package repository location.
 #   Defaults to "http://${::lsbdistcodename}-${release}.debian.net/debian"
 #
-# === DEPRECATED
-#
-# [*manage_whz*]
-#   (optional) Whether or not to add the default Debian Stretch APT source
-#   Replaced by $manage_deb.
-#
 class openstack_extras::repo::debian::debian(
   $release         = $::openstack_extras::repo::debian::params::release,
   $manage_deb      = true,
@@ -55,16 +49,11 @@ class openstack_extras::repo::debian::debian(
   $source_hash     = {},
   $source_defaults = {},
   $deb_location    = "http://${::lsbdistcodename}-${release}.debian.net/debian",
-  # DEPRECATED
-  $manage_whz      = undef,
 ) inherits openstack_extras::repo::debian::params {
-  # handle deprecation
-  $deb_manage = pick($manage_whz, $manage_deb)
 
   $lowercase_release = downcase($release)
 
-
-  if $deb_manage {
+  if $manage_deb {
 
     if $use_extrepo {
       # Extrepo is much nicer than what's below, because
