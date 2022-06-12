@@ -68,11 +68,6 @@
 # DEPRECATED PARAMS
 # =================
 #
-# [*manage_priorities*]
-#   (Optional) Whether to install yum-plugin-priorities package so
-#   'priority' value in yumrepo will be effective.
-#   Defaults to undef
-#
 # [*stream*]
 #   (Optional) Is this CentOS Stream and should we adjust mirrors.
 #   Defaults to undef
@@ -97,7 +92,6 @@ class openstack_extras::repo::redhat::redhat (
   $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
   $update_packages   = false,
   # DEPRECATED PARAMS
-  $manage_priorities = undef,
   $stream            = undef,
   $manage_virt       = undef,
 ) inherits openstack_extras::repo::redhat::params {
@@ -113,10 +107,6 @@ class openstack_extras::repo::redhat::redhat (
   validate_legacy(Boolean, 'validate_bool', $purge_unmanaged)
   validate_legacy(Boolean, 'validate_bool', $package_require)
   validate_yum_hash($repo_hash)
-
-  if $manage_priorities != undef {
-    warning('openstack_extras::repo::redhat::redhat::manage_priorities parameter is deprecated and will be removed')
-  }
 
   if $stream != undef {
     warning('The stream parmeter has been deprecated and has no effect.')
