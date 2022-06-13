@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``openstack_extras::repo::debian::debian::manage_whz`` parameter has
+    been removed.
