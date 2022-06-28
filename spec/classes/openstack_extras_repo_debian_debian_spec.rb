@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'xena'
+        :release => 'yoga'
       }
     end
 
@@ -23,11 +23,11 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('/usr/bin/extrepo enable openstack_xena').with(
+      it { should contain_exec('/usr/bin/extrepo enable openstack_yoga').with(
         :command => "/bin/true # comment to satisfy puppet syntax requirements
 apt-get update
 apt-get install -y extrepo
-extrepo enable openstack_xena
+extrepo enable openstack_yoga
 apt-get update
 ",
       )}
@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-xena.debian.net/debian',
-        :release  => 'stretch-xena-backports',
+        :location => 'http://stretch-yoga.debian.net/debian',
+        :release  => 'stretch-yoga-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-xena.debian.net/debian',
-        :release  => 'stretch-xena-backports-nochange',
+        :location => 'http://stretch-yoga.debian.net/debian',
+        :release  => 'stretch-yoga-backports-nochange',
         :repos    => 'main'
       )}
 
