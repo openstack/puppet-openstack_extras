@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``openstack_extras::repo::redhat::redhat::manage_priorities`` parameter
+    has been removed.
