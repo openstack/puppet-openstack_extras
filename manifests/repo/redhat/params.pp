@@ -6,13 +6,7 @@
 class openstack_extras::repo::redhat::params {
   $release = 'yoga'
 
-  if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
-    $centos_mirror_url = 'http://mirror.stream.centos.org'
-    $manage_virt       = false
-  } else {
-    $centos_mirror_url = 'http://mirror.centos.org'
-    $manage_virt       = true
-  }
+  $centos_mirror_url = 'http://mirror.stream.centos.org'
 
   $repo_defaults = {
     'enabled'    => '1',

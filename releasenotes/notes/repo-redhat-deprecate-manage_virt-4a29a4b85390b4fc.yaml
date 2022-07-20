@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``openstack_extras::repo::redhat::redhat::manage_virt`` parameter has
+    been deprecated and has no effect now.
