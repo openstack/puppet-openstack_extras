@@ -7,7 +7,7 @@
         },
         {
             "name": "puppet/corosync",
-            "version_requirement": ">=5.0.0 <6.0.0"
+            "version_requirement": ">=5.0.0 <9.0.0"
         },
         {
             "name": "puppetlabs/stdlib",
