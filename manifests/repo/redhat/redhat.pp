@@ -65,18 +65,6 @@
 #   configured.
 #   Defaults to false
 #
-# DEPRECATED PARAMS
-# =================
-#
-# [*stream*]
-#   (Optional) Is this CentOS Stream and should we adjust mirrors.
-#   Defaults to undef
-#
-# [*manage_virt*]
-#   (Optional) Whether to create a yumrepo resource for the
-#   Advanced Virtualization repository.
-#   Defaults to undef
-#
 class openstack_extras::repo::redhat::redhat (
   $release           = $openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
@@ -91,9 +79,6 @@ class openstack_extras::repo::redhat::redhat (
   $package_require   = false,
   $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
   $update_packages   = false,
-  # DEPRECATED PARAMS
-  $stream            = undef,
-  $manage_virt       = undef,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -107,14 +92,6 @@ class openstack_extras::repo::redhat::redhat (
   validate_legacy(Boolean, 'validate_bool', $purge_unmanaged)
   validate_legacy(Boolean, 'validate_bool', $package_require)
   validate_yum_hash($repo_hash)
-
-  if $stream != undef {
-    warning('The stream parmeter has been deprecated and has no effect.')
-  }
-
-  if $manage_virt != undef {
-    warning('The manage_virt parameter has been deprecatd and has no effect.')
-  }
 
   $_repo_defaults = merge($openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
   $_gpgkey_defaults = merge($openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
