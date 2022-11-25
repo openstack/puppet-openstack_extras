@@ -4,7 +4,7 @@
 # OS family repo classes.
 #
 class openstack_extras::repo::redhat::params {
-  $release = 'yoga'
+  $release = 'zed'
 
   $centos_mirror_url = 'http://mirror.stream.centos.org'
 
