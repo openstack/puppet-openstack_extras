@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``openstack_extras::repo::redhat::redhat``
+    class have been removed.
+
+    - ``stream``
+    - ``manage_virt``
