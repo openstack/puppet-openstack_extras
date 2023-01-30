@@ -44,8 +44,8 @@ describe Puppet::Provider::Pacemaker_common do
 
   before(:each) do
     @class = subject
-    @class.stubs(:raw_cib).returns raw_cib
-    @class.stubs(:pcs).returns true
+    allow(@class).to receive(:raw_cib).and_return raw_cib
+    allow(@class).to receive(:pcs).and_return true
   end
 
   context 'configuration parser' do
@@ -162,29 +162,29 @@ describe Puppet::Provider::Pacemaker_common do
 
   context 'cluster control' do
     it 'can enable maintenance mode' do
-      @class.expects(:pcs).with 'property', 'set', 'maintenance-mode=true'
+      expect(@class).to receive(:pcs).with 'property', 'set', 'maintenance-mode=true'
       @class.maintenance_mode 'true'
     end
 
     it 'can disable maintenance mode' do
-      @class.expects(:pcs).with 'property', 'set', 'maintenance-mode=false'
+      expect(@class).to receive(:pcs).with 'property', 'set', 'maintenance-mode=false'
       @class.maintenance_mode 'false'
     end
 
     it 'can set no-quorum policy' do
-      @class.expects(:pcs).with 'property', 'set', 'no-quorum-policy=ignore'
+      expect(@class).to receive(:pcs).with 'property', 'set', 'no-quorum-policy=ignore'
       @class.no_quorum_policy 'ignore'
     end
   end
 
   context 'constraints control' do
     it 'can add location constraint' do
-      @class.expects(:cibadmin).returns(true)
+      expect(@class).to receive(:cibadmin).and_return(true)
       @class.constraint_location_add 'myprimitive', 'mynode', '200'
     end
 
     it 'can remove location constraint' do
-      @class.expects(:pcs).with 'constraint', 'location', 'remove', 'myprimitive_on_mynode'
+      expect(@class).to receive(:pcs).with 'constraint', 'location', 'remove', 'myprimitive_on_mynode'
       @class.constraint_location_remove 'myprimitive', 'mynode'
     end
   end
@@ -195,25 +195,25 @@ describe Puppet::Provider::Pacemaker_common do
     end
 
     it 'waits for Pacemaker to become ready' do
-      @class.stubs(:is_online?).returns true
+      allow(@class).to receive(:is_online?).and_return true
       @class.wait_for_online
     end
 
     it 'waits for status to become known' do
-      @class.stubs(:cib_reset).returns true
-      @class.stubs(:primitive_status).returns 'stopped'
+      allow(@class).to receive(:cib_reset).and_return true
+      allow(@class).to receive(:primitive_status).and_return 'stopped'
       @class.wait_for_status 'myprimitive'
     end
 
     it 'waits for the service to start' do
-      @class.stubs(:cib_reset).returns true
-      @class.stubs(:primitive_is_running?).with('myprimitive', nil).returns true
+      allow(@class).to receive(:cib_reset).and_return true
+      allow(@class).to receive(:primitive_is_running?).with('myprimitive', nil).and_return true
       @class.wait_for_start 'myprimitive'
     end
 
     it 'waits for the service to stop' do
-      @class.stubs(:cib_reset).returns true
-      @class.stubs(:primitive_is_running?).with('myprimitive', nil).returns false
+      allow(@class).to receive(:cib_reset).and_return true
+      allow(@class).to receive(:primitive_is_running?).with('myprimitive', nil).and_return false
       @class.wait_for_stop 'myprimitive'
     end
   end
