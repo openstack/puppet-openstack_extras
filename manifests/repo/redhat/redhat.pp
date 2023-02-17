@@ -130,14 +130,6 @@ class openstack_extras::repo::redhat::redhat (
     }
   }
 
-  # NOTE(tkajinam): Ensure the advanced-virt repository is purged
-  file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization':
-    ensure => absent
-  }
-  yumrepo { 'centos-advanced-virt':
-    ensure => 'absent'
-  }
-
   if $manage_epel {
     $epel_hash = {
       'epel' => {

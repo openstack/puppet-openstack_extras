@@ -24,13 +24,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require         => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Virtualization').with(
-        :ensure => 'absent'
-      ) }
-      it { should contain_yumrepo('centos-advanced-virt').with(
-        :ensure => 'absent'
-      ) }
-
       it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}") }
       it { should_not contain_yumrepo('epel') }
 
