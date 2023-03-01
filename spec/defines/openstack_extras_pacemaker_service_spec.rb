@@ -133,7 +133,7 @@ describe 'openstack_extras::pacemaker::service', :type => :define do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      if facts[:osfamily] == 'Debian' and facts[:operatingsystem] == 'Debian'
+      if facts[:os]['name'] == 'Debian'
         it_behaves_like 'openstack_extras::pacemaker::service'
       end
     end

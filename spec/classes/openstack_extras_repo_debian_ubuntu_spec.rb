@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'trusty-updates/zed',
+        :release  => 'jammy-updates/zed',
         :repos    => 'main',
       )}
 
@@ -42,7 +42,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'trusty-updates/juno',
+        :release  => 'jammy-updates/juno',
         :repos    => 'main',
       )}
 
@@ -63,12 +63,12 @@ describe 'openstack_extras::repo::debian::ubuntu' do
                                    'local_mirror' => {
                                      'location' => 'http://mymirror/ubuntu/',
                                      'repos'    => 'main',
-                                     'release'  => 'trusty'
+                                     'release'  => 'jammy'
                                    },
                                    'puppetlabs' => {
                                      'location' => 'http://apt.puppetlabs.com',
                                      'repos'    => 'main',
-                                     'release'  => 'trusty',
+                                     'release'  => 'jammy',
                                      'key'      => {
                                        'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
                                      }
@@ -79,13 +79,13 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('local_mirror').with(
         :location => 'http://mymirror/ubuntu/',
-        :release  => 'trusty',
+        :release  => 'jammy',
         :repos    => 'main'
       )}
 
       it { should contain_apt__source('puppetlabs').with(
         :location => 'http://apt.puppetlabs.com',
-        :release  => 'trusty',
+        :release  => 'jammy',
         :repos    => 'main',
         :key      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
       )}
@@ -99,7 +99,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
                                    'local_mirror' => {
                                      'location' => 'http://mymirror/ubuntu/',
                                      'repos'    => 'main',
-                                     'release'  => 'trusty'
+                                     'release'  => 'jammy'
                                    }
                                  }
                              })
@@ -112,7 +112,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
       it { should contain_apt__source('local_mirror').with(
         :include  => { 'src' => true },
         :location => 'http://mymirror/ubuntu/',
-        :release  => 'trusty',
+        :release  => 'jammy',
         :repos    => 'main',
       )}
 
@@ -127,7 +127,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => 'trusty-proposed/zed',
+        :release  => 'jammy-proposed/zed',
         :repos    => 'main',
       )}
     end
@@ -138,12 +138,10 @@ describe 'openstack_extras::repo::debian::ubuntu' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts({ :lsbdistid       => 'Ubuntu',
-                                            :lsbdistcodename => 'trusty',
-                                            :lsbdistrelease  => '14.04' }))
+        facts.merge!(OSDefaults.get_facts())
       end
 
-      if facts[:operatingsystem] == 'Ubuntu'
+      if facts[:os]['name'] == 'Ubuntu'
         it_behaves_like 'openstack_extras::repo::debian::ubuntu'
       end
     end

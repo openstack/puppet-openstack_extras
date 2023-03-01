@@ -38,7 +38,7 @@
 #
 # [*deb_location*]
 #   (optional) Debian package repository location.
-#   Defaults to "http://${::lsbdistcodename}-${release}.debian.net/debian"
+#   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
 class openstack_extras::repo::debian::debian(
   $release         = $::openstack_extras::repo::debian::params::release,
@@ -48,7 +48,7 @@ class openstack_extras::repo::debian::debian(
   # Below params only used if $use_extrepo is set to false
   $source_hash     = {},
   $source_defaults = {},
-  $deb_location    = "http://${::lsbdistcodename}-${release}.debian.net/debian",
+  $deb_location    = "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian",
 ) inherits openstack_extras::repo::debian::params {
 
   $lowercase_release = downcase($release)
@@ -98,12 +98,12 @@ apt-get update
       }
       apt::source { $::openstack_extras::repo::debian::params::deb_name:
         location => $deb_location,
-        release  => "${::lsbdistcodename}-${lowercase_release}-backports",
+        release  => "${facts['os']['distro']['codename']}-${lowercase_release}-backports",
         repos    => $::openstack_extras::repo::debian::params::deb_repos,
       }
       -> apt::source { "${::openstack_extras::repo::debian::params::deb_name}-nochange":
         location => $deb_location,
-        release  => "${::lsbdistcodename}-${lowercase_release}-backports-nochange",
+        release  => "${facts['os']['distro']['codename']}-${lowercase_release}-backports-nochange",
         repos    => $::openstack_extras::repo::debian::params::deb_repos,
       }
     }

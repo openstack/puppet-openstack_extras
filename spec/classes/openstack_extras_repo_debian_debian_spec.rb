@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-zed.debian.net/debian',
-        :release  => 'stretch-zed-backports',
+        :location => 'http://bullseye-zed.debian.net/debian',
+        :release  => 'bullseye-zed-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-zed.debian.net/debian',
-        :release  => 'stretch-zed-backports-nochange',
+        :location => 'http://bullseye-zed.debian.net/debian',
+        :release  => 'bullseye-zed-backports-nochange',
         :repos    => 'main'
       )}
 
@@ -78,21 +78,21 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://stretch-pike.debian.net/debian',
-        :release  => 'stretch-pike-backports',
+        :location => 'http://bullseye-pike.debian.net/debian',
+        :release  => 'bullseye-pike-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://stretch-pike.debian.net/debian',
-        :release  => 'stretch-pike-backports-nochange',
+        :location => 'http://bullseye-pike.debian.net/debian',
+        :release  => 'bullseye-pike-backports-nochange',
         :repos    => 'main'
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }
     end
 
-    context 'when not managing stretch repo' do
+    context 'when not managing bullseye repo' do
       let :params do
         default_params.merge!({ :manage_deb => false })
       end
@@ -111,7 +111,7 @@ apt-get update
                                    'puppetlabs' => {
                                      'location' => 'http://apt.puppetlabs.com',
                                      'repos'    => 'main',
-                                     'release'  => 'stretch',
+                                     'release'  => 'bullseye',
                                      'key'      => {
                                        'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
                                      }
@@ -130,7 +130,7 @@ apt-get update
       it { should contain_apt__source('puppetlabs').with(
         :location    => 'http://apt.puppetlabs.com',
         :repos       => 'main',
-        :release     => 'stretch',
+        :release     => 'bullseye',
         :key         => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' },
       )}
 
@@ -170,12 +170,10 @@ apt-get update
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts({ :lsbdistid       => 'Debian',
-                                            :lsbdistcodename => 'stretch',
-                                            :lsbdistrelease  => '9' }))
+        facts.merge!(OSDefaults.get_facts())
       end
 
-      if facts[:osfamily] == 'Debian' and facts[:operatingsystem] == 'Debian'
+      if facts[:os]['name'] == 'Debian'
         it_behaves_like 'openstack_extras::repo::debian::debian'
       end
     end

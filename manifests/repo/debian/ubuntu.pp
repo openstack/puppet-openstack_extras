@@ -62,7 +62,7 @@ class openstack_extras::repo::debian::ubuntu(
     }
     apt::source { $::openstack_extras::repo::debian::params::uca_name:
       location => $uca_location,
-      release  => "${::lsbdistcodename}-${repo}/${release}",
+      release  => "${facts['os']['distro']['codename']}-${repo}/${release}",
       repos    => $::openstack_extras::repo::debian::params::uca_repos,
     }
   }

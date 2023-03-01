@@ -123,7 +123,7 @@ class openstack_extras::repo::redhat::redhat (
     # NOTE(tobias-urdin): This was introduced in yumrepo_core 1.0.7 which is
     # included from 6.15.0 and forward (also since 7.0.0).
     # TODO(tobias-urdin): Should set this by default when we only support Puppet 7.
-    if versioncmp($::puppetversion, '6.15.0') >= 0 {
+    if versioncmp($facts['puppetversion'], '6.15.0') >= 0 {
       Yumrepo<| title == 'rdo-release' |> {
         module_hotfixes => true,
       }

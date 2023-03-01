@@ -24,7 +24,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require         => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}") }
+      it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}") }
       it { should_not contain_yumrepo('epel') }
 
       it { should_not contain_resources('yumrepo').with_purge(true) }
@@ -53,8 +53,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
       it { should_not contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud') }
       it { should_not contain_yumrepo('rdo-release') }
 
-      it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}").with(
-        :source => "puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}",
+      it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}").with(
+        :source => "puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}",
         :owner  => 'root',
         :group  => 'root',
         :mode   => '0644',
@@ -62,9 +62,9 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_yumrepo('epel').with(
-        :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-#{facts[:operatingsystemmajrelease]}&arch=\$basearch",
-        :descr          => "Extra Packages for Enterprise Linux #{facts[:operatingsystemmajrelease]} - \$basearch",
-        :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}",
+        :metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-#{facts[:os]['release']['major']}&arch=\$basearch",
+        :descr          => "Extra Packages for Enterprise Linux #{facts[:os]['release']['major']} - \$basearch",
+        :gpgkey         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}",
         :failovermethod => 'priority',
         :enabled        => '1',
         :gpgcheck       => '1',
@@ -168,7 +168,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :require    => 'Anchor[openstack_extras_redhat]',
       )}
 
-      it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:operatingsystemmajrelease]}").with(
+      it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}").with(
         :owner  => 'steve',
         :group  => 'root',
         :mode   => '0644',
@@ -309,7 +309,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      if facts[:osfamily] == 'RedHat'
+      if facts[:os]['family'] == 'RedHat'
         it_behaves_like 'openstack_extras::repo::redhat::redhat'
       end
     end
