@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     let :paramclass_defaults do
       {
-        :release => 'zed'
+        :release => 'antelope'
       }
     end
 
@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'jammy-updates/zed',
+        :release  => 'jammy-updates/antelope',
         :repos    => 'main',
       )}
 
@@ -127,7 +127,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => 'jammy-proposed/zed',
+        :release  => 'jammy-proposed/antelope',
         :repos    => 'main',
       )}
     end

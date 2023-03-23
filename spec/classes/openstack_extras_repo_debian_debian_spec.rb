@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'zed'
+        :release => 'antelope'
       }
     end
 
@@ -23,11 +23,11 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('/usr/bin/extrepo enable openstack_zed').with(
+      it { should contain_exec('/usr/bin/extrepo enable openstack_antelope').with(
         :command => "/bin/true # comment to satisfy puppet syntax requirements
 apt-get update
 apt-get install -y extrepo
-extrepo enable openstack_zed
+extrepo enable openstack_antelope
 apt-get update
 ",
       )}
@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://bullseye-zed.debian.net/debian',
-        :release  => 'bullseye-zed-backports',
+        :location => 'http://bullseye-antelope.debian.net/debian',
+        :release  => 'bullseye-antelope-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://bullseye-zed.debian.net/debian',
-        :release  => 'bullseye-zed-backports-nochange',
+        :location => 'http://bullseye-antelope.debian.net/debian',
+        :release  => 'bullseye-antelope-backports-nochange',
         :repos    => 'main'
       )}
 
