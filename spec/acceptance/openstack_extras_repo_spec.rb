@@ -22,8 +22,8 @@ describe 'openstack_extras::repo::*' do
         expect(command('apt-get install -y python-openstackclient').exit_code).to be_zero
         expect(command('apt-cache policy python-openstackclient | grep -A 1 \*\*\*').stdout).to match(/#{release}/)
       elsif os[:family] == 'RedHat'
-        expect(command('yum install -y python-openstackclient').exit_code).to be_zero
-        expect(command('yum list python-openstackclient | grep -A 1 "Installed Packages"').stdout).to match(/@rdo-release/)
+        expect(command('dnf install -y python-openstackclient').exit_code).to be_zero
+        expect(command('dnf list python-openstackclient | grep -A 1 "Installed Packages"').stdout).to match(/@rdo-release/)
       end
     end
   end
