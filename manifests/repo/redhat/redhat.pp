@@ -65,6 +65,10 @@
 #   configured.
 #   Defaults to false
 #
+# [*update_timeout*]
+#   (Optional) Timeout for package update.
+#   Defaults to 600
+#
 class openstack_extras::repo::redhat::redhat (
   $release           = $openstack_extras::repo::redhat::params::release,
   $manage_rdo        = true,
@@ -79,6 +83,7 @@ class openstack_extras::repo::redhat::redhat (
   $package_require   = false,
   $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
   $update_packages   = false,
+  $update_timeout    = 600,
 ) inherits openstack_extras::repo::redhat::params {
 
   validate_legacy(String, 'validate_string', $release)
@@ -181,7 +186,7 @@ class openstack_extras::repo::redhat::redhat (
     exec { 'yum_update':
       command     => '/usr/bin/dnf update -y',
       refreshonly => true,
-      timeout     => 600,
+      timeout     => $update_timeout,
     }
 
     Exec['yum_refresh'] ~> Exec['yum_update'] -> Package <||>

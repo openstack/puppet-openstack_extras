@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The new ``openstack_extras::repo::redhat::redhat::update_timeout``
+    parameter has been added. This allows tuning timeout for `yum update -y`
+    (or `dnf update -y`) command.

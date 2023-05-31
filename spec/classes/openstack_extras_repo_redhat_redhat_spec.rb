@@ -87,6 +87,22 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
     end
 
+    context 'with update_timeout' do
+      let :params do
+        {
+          :update_packages => true,
+          :update_timeout  => 1200,
+        }
+      end
+
+
+      it { should contain_exec('yum_update').with(
+        :command     => '/usr/bin/dnf update -y',
+        :refreshonly => true,
+        :timeout     => 1200,
+      )}
+    end
+
     context 'with overridden release' do
       let :params do
         {
