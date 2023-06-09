@@ -70,32 +70,22 @@
 #   Defaults to 600
 #
 class openstack_extras::repo::redhat::redhat (
-  $release           = $openstack_extras::repo::redhat::params::release,
-  $manage_rdo        = true,
-  $manage_epel       = false,
-  $repo_hash         = {},
-  $repo_source_hash  = {},
-  $repo_replace      = true,
-  $repo_defaults     = {},
-  $gpgkey_hash       = {},
-  $gpgkey_defaults   = {},
-  $purge_unmanaged   = false,
-  $package_require   = false,
-  $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
-  $update_packages   = false,
-  $update_timeout    = 600,
+  String[1] $release           = $openstack_extras::repo::redhat::params::release,
+  Boolean $manage_rdo          = true,
+  Boolean $manage_epel         = false,
+  Hash $repo_hash              = {},
+  Hash $repo_source_hash       = {},
+  Boolean $repo_replace        = true,
+  Hash $repo_defaults          = {},
+  Hash $gpgkey_hash            = {},
+  Hash $gpgkey_defaults        = {},
+  Boolean $purge_unmanaged     = false,
+  Boolean $package_require     = false,
+  String[1] $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
+  Boolean $update_packages     = false,
+  Integer[0] $update_timeout   = 600,
 ) inherits openstack_extras::repo::redhat::params {
 
-  validate_legacy(String, 'validate_string', $release)
-  validate_legacy(Boolean, 'validate_bool', $manage_rdo)
-  validate_legacy(Boolean, 'validate_bool', $manage_epel)
-  validate_legacy(Hash, 'validate_hash', $repo_hash)
-  validate_legacy(Hash, 'validate_hash', $repo_source_hash)
-  validate_legacy(Hash, 'validate_hash', $repo_defaults)
-  validate_legacy(Hash, 'validate_hash', $gpgkey_hash)
-  validate_legacy(Hash, 'validate_hash', $gpgkey_defaults)
-  validate_legacy(Boolean, 'validate_bool', $purge_unmanaged)
-  validate_legacy(Boolean, 'validate_bool', $package_require)
   validate_yum_hash($repo_hash)
 
   $_repo_defaults = merge($openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
