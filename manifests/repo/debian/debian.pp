@@ -41,14 +41,14 @@
 #   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
 class openstack_extras::repo::debian::debian(
-  $release         = $::openstack_extras::repo::debian::params::release,
-  $manage_deb      = true,
-  $package_require = false,
-  $use_extrepo     = true,
+  String[1] $release       = $::openstack_extras::repo::debian::params::release,
+  Boolean $manage_deb      = true,
+  Boolean $package_require = false,
+  Boolean $use_extrepo     = true,
   # Below params only used if $use_extrepo is set to false
-  $source_hash     = {},
-  $source_defaults = {},
-  $deb_location    = "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian",
+  Hash $source_hash        = {},
+  Hash $source_defaults    = {},
+  String[1] $deb_location  = "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian",
 ) inherits openstack_extras::repo::debian::params {
 
   $lowercase_release = downcase($release)

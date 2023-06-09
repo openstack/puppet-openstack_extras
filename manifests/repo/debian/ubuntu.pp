@@ -42,14 +42,15 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu(
-  $release         = $::openstack_extras::repo::debian::params::release,
-  $manage_uca      = true,
-  $repo            = 'updates',
-  $source_hash     = {},
-  $source_defaults = {},
-  $package_require = false,
-  $uca_location    = $::openstack_extras::repo::debian::params::uca_location,
+  String[1] $release       = $::openstack_extras::repo::debian::params::release,
+  Boolean $manage_uca      = true,
+  String[1] $repo          = 'updates',
+  Hash $source_hash        = {},
+  Hash $source_defaults    = {},
+  Boolean $package_require = false,
+  String[1] $uca_location  = $::openstack_extras::repo::debian::params::uca_location,
 ) inherits openstack_extras::repo::debian::params {
+
   if $manage_uca {
     exec { 'installing ubuntu-cloud-keyring':
       command     => '/usr/bin/apt-get -y install ubuntu-cloud-keyring',
