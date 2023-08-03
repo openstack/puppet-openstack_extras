@@ -127,6 +127,8 @@ define openstack_extras::pacemaker::service (
   $clone               = false,
 ) {
 
+  warning('This defined resource type has been deprecated and will be removed in a future release')
+
   $service_name     = $title
   $primitive_name   = "p_${service_name}"
   $ocf_script_name  = "${service_name}-ocf-file"
