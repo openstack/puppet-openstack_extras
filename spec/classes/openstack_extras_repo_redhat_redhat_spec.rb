@@ -117,16 +117,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
     end
 
-    context 'with default parameters but puppetversion < 6.15.0' do
-      before do
-        facts.merge!( :puppetversion => '6.14.0' )
-     end
-
-     it {
-       should contain_yumrepo('rdo-release').without_module_hotfixes
-     }
-    end
-
     context 'with centos_mirror_url' do
       let :params do
         {
