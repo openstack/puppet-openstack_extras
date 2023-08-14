@@ -100,9 +100,10 @@ class openstack_extras::repo::redhat::redhat (
 
     $rdo_hash = {
       'rdo-release' => {
-        'baseurl'  => $rdo_baseurl,
-        'descr'    => "OpenStack ${release_cap} Repository",
-        'gpgkey'   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        'baseurl'         => $rdo_baseurl,
+        'descr'           => "OpenStack ${release_cap} Repository",
+        'gpgkey'          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
+        'module_hotfixes' => true,
       }
     }
 
@@ -114,15 +115,6 @@ class openstack_extras::repo::redhat::redhat (
 
     create_resources('file', $rdokey_hash, $_gpgkey_defaults)
     create_resources('yumrepo', $rdo_hash, $_repo_defaults)
-
-    # NOTE(tobias-urdin): This was introduced in yumrepo_core 1.0.7 which is
-    # included from 6.15.0 and forward (also since 7.0.0).
-    # TODO(tobias-urdin): Should set this by default when we only support Puppet 7.
-    if versioncmp($facts['puppetversion'], '6.15.0') >= 0 {
-      Yumrepo<| title == 'rdo-release' |> {
-        module_hotfixes => true,
-      }
-    }
   }
 
   if $manage_epel {
