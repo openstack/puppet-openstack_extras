@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'antelope'
+        :release => 'bobcat'
       }
     end
 
@@ -23,11 +23,11 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('/usr/bin/extrepo enable openstack_antelope').with(
+      it { should contain_exec('/usr/bin/extrepo enable openstack_bobcat').with(
         :command => "/bin/true # comment to satisfy puppet syntax requirements
 apt-get update
 apt-get install -y extrepo
-extrepo enable openstack_antelope
+extrepo enable openstack_bobcat
 apt-get update
 ",
       )}
@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://bullseye-antelope.debian.net/debian',
-        :release  => 'bullseye-antelope-backports',
+        :location => 'http://bullseye-bobcat.debian.net/debian',
+        :release  => 'bullseye-bobcat-backports',
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://bullseye-antelope.debian.net/debian',
-        :release  => 'bullseye-antelope-backports-nochange',
+        :location => 'http://bullseye-bobcat.debian.net/debian',
+        :release  => 'bullseye-bobcat-backports-nochange',
         :repos    => 'main'
       )}
 

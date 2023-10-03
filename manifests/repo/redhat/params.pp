@@ -4,7 +4,7 @@
 # OS family repo classes.
 #
 class openstack_extras::repo::redhat::params {
-  $release = 'antelope'
+  $release = 'bobcat'
 
   $centos_mirror_url = 'http://mirror.stream.centos.org'
 
