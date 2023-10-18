@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add an
 #   Ubuntu Cloud Archive APT source for.
-#   Defaults to $::openstack_extras::repo::debian::params::release
+#   Defaults to 'bobcat'
 #
 # [*manage_uca*]
 #   (optional) Whether or not to add the default
@@ -42,14 +42,14 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu(
-  String[1] $release       = $::openstack_extras::repo::debian::params::release,
+  String[1] $release       = 'bobcat',
   Boolean $manage_uca      = true,
   String[1] $repo          = 'updates',
   Hash $source_hash        = {},
   Hash $source_defaults    = {},
   Boolean $package_require = false,
-  String[1] $uca_location  = $::openstack_extras::repo::debian::params::uca_location,
-) inherits openstack_extras::repo::debian::params {
+  String[1] $uca_location  = 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+) {
 
   if $manage_uca {
     exec { 'installing ubuntu-cloud-keyring':
@@ -58,13 +58,13 @@ class openstack_extras::repo::debian::ubuntu(
       tries       => 3,
       try_sleep   => 1,
       refreshonly => true,
-      subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::uca_name}.list"],
+      subscribe   => File['/etc/apt/sources.list.d/ubuntu-cloud-archive.list'],
       notify      => Exec['apt_update'],
     }
-    apt::source { $::openstack_extras::repo::debian::params::uca_name:
+    apt::source { 'ubuntu-cloud-archive':
       location => $uca_location,
       release  => "${facts['os']['distro']['codename']}-${repo}/${release}",
-      repos    => $::openstack_extras::repo::debian::params::uca_repos,
+      repos    => 'main',
     }
   }
 
