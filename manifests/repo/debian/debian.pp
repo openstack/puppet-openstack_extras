@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add a
 #   Debian apt source for.
-#   Defaults to $::openstack_extras::repo::debian::params::release
+#   Defaults to 'bobcat'
 #
 # [*manage_deb*]
 #   (optional) Whether or not to add the default
@@ -41,7 +41,7 @@
 #   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
 class openstack_extras::repo::debian::debian(
-  String[1] $release       = $::openstack_extras::repo::debian::params::release,
+  String[1] $release       = 'bobcat',
   Boolean $manage_deb      = true,
   Boolean $package_require = false,
   Boolean $use_extrepo     = true,
@@ -49,7 +49,7 @@ class openstack_extras::repo::debian::debian(
   Hash $source_hash        = {},
   Hash $source_defaults    = {},
   String[1] $deb_location  = "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian",
-) inherits openstack_extras::repo::debian::params {
+) {
 
   $lowercase_release = downcase($release)
 
@@ -93,18 +93,18 @@ apt-get update
         tries       => 3,
         try_sleep   => 1,
         refreshonly => true,
-        subscribe   => File["/etc/apt/sources.list.d/${::openstack_extras::repo::debian::params::deb_name}.list"],
+        subscribe   => File['/etc/apt/sources.list.d/debian-openstack-backports.list'],
         notify      => Exec['apt_update'],
       }
-      apt::source { $::openstack_extras::repo::debian::params::deb_name:
+      apt::source { 'debian-openstack-backports':
         location => $deb_location,
         release  => "${facts['os']['distro']['codename']}-${lowercase_release}-backports",
-        repos    => $::openstack_extras::repo::debian::params::deb_repos,
+        repos    => 'main',
       }
-      -> apt::source { "${::openstack_extras::repo::debian::params::deb_name}-nochange":
+      -> apt::source { 'debian-openstack-backports-nochange':
         location => $deb_location,
         release  => "${facts['os']['distro']['codename']}-${lowercase_release}-backports-nochange",
-        repos    => $::openstack_extras::repo::debian::params::deb_repos,
+        repos    => 'main',
       }
     }
     create_resources('apt::source', $source_hash, $source_defaults)

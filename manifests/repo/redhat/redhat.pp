@@ -7,7 +7,7 @@
 #
 # [*release*]
 #   (Optional) The OpenStack release to use.
-#   Defaults to $openstack_extras::repo::redhat::params::release
+#   Defaults to 'bobcat'
 #
 # [*manage_rdo*]
 #   (Optional) Whether to create a yumrepo resource for the
@@ -36,7 +36,7 @@
 # [*repo_defaults*]
 #   (Optional) The defaults for the yumrepo resources that will be
 #   created using create_resource.
-#   Defaults to $openstack_extras::repo::redhat::params::repo_defaults
+#   Defaults to {}
 #
 # [*gpgkey_hash*]
 #   (Optional) A hash of file resources that will be passed to
@@ -45,7 +45,7 @@
 #
 # [*gpgkey_defaults*]
 #   (Optional) The default resource attributes to create gpgkeys with.
-#   Defaults to $openstack_extras::repo::redhat::params::gpgkey_defaults
+#   Defaults to {}
 #
 # [*purge_unmanaged*]
 #   (Optional) Purge the yum.repos.d directory of all repositories
@@ -58,7 +58,7 @@
 #
 # [*centos_mirror_url*]
 #   (Optional) URL of CentOS mirror.
-#   Defaults to $openstack_extras::repo::redhat::params::centos_mirror_url
+#   Defaults to 'http://mirror.stream.centos.org'
 #
 # [*update_packages*]
 #   (Optional) Whether to update all packages after yum repositories are
@@ -70,7 +70,7 @@
 #   Defaults to 600
 #
 class openstack_extras::repo::redhat::redhat (
-  String[1] $release           = $openstack_extras::repo::redhat::params::release,
+  String[1] $release           = 'bobcat',
   Boolean $manage_rdo          = true,
   Boolean $manage_epel         = false,
   Hash $repo_hash              = {},
@@ -81,15 +81,27 @@ class openstack_extras::repo::redhat::redhat (
   Hash $gpgkey_defaults        = {},
   Boolean $purge_unmanaged     = false,
   Boolean $package_require     = false,
-  String[1] $centos_mirror_url = $openstack_extras::repo::redhat::params::centos_mirror_url,
+  String[1] $centos_mirror_url = 'http://mirror.stream.centos.org',
   Boolean $update_packages     = false,
   Integer[0] $update_timeout   = 600,
-) inherits openstack_extras::repo::redhat::params {
+) {
 
   validate_yum_hash($repo_hash)
 
-  $_repo_defaults = merge($openstack_extras::repo::redhat::params::repo_defaults, $repo_defaults)
-  $_gpgkey_defaults = merge($openstack_extras::repo::redhat::params::gpgkey_defaults, $gpgkey_defaults)
+  $_repo_defaults = merge({
+    'enabled'    => '1',
+    'gpgcheck'   => '1',
+    'mirrorlist' => 'absent',
+    'notify'     => 'Exec[yum_refresh]',
+    'require'    => 'Anchor[openstack_extras_redhat]',
+  }, $repo_defaults)
+
+  $_gpgkey_defaults = merge({
+    'owner'  => 'root',
+    'group'  => 'root',
+    'mode'   => '0644',
+    'before' => 'Anchor[openstack_extras_redhat]',
+  }, $gpgkey_defaults)
 
   anchor { 'openstack_extras_redhat': }
 
