@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     let :paramclass_defaults do
       {
-        :release => 'yoga'
+        :release => 'zed'
       }
     end
 
@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'trusty-updates/yoga',
+        :release  => 'trusty-updates/zed',
         :repos    => 'main',
       )}
 
@@ -127,7 +127,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => 'trusty-proposed/yoga',
+        :release  => 'trusty-proposed/zed',
         :repos    => 'main',
       )}
     end

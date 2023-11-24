@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Now the Zed release is used by default.
