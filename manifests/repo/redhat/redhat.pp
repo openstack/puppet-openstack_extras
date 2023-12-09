@@ -14,12 +14,6 @@
 #   RDO OpenStack repository.
 #   Defaults to true
 #
-# [*manage_epel*]
-#   (Optional) Whether to create a predefined yumrepo resource for
-#   the EPEL repository. Note EPEL is not required for deploying
-#   OpenStack with RDO.
-#   Defaults to false
-#
 # [*repo_hash*]
 #   (Optional) A hash of yumrepo resources that will be passed to
 #   create_resource. See examples folder for some useful examples.
@@ -69,10 +63,17 @@
 #   (Optional) Timeout for package update.
 #   Defaults to 600
 #
+# DEPRECATED PARAMETER
+#
+# [*manage_epel*]
+#   (Optional) Whether to create a predefined yumrepo resource for
+#   the EPEL repository. Note EPEL is not required for deploying
+#   OpenStack with RDO.
+#   Defaults to false
+#
 class openstack_extras::repo::redhat::redhat (
   String[1] $release           = 'bobcat',
   Boolean $manage_rdo          = true,
-  Boolean $manage_epel         = false,
   Hash $repo_hash              = {},
   Hash $repo_source_hash       = {},
   Boolean $repo_replace        = true,
@@ -84,6 +85,8 @@ class openstack_extras::repo::redhat::redhat (
   String[1] $centos_mirror_url = 'http://mirror.stream.centos.org',
   Boolean $update_packages     = false,
   Integer[0] $update_timeout   = 600,
+  # DEPRECATED PARAMETERS
+  Boolean $manage_epel         = false,
 ) {
 
   validate_yum_hash($repo_hash)
@@ -130,6 +133,8 @@ class openstack_extras::repo::redhat::redhat (
   }
 
   if $manage_epel {
+    warning('The manage_epel parameter has been deprecated and will be removed in a future release')
+
     $epel_hash = {
       'epel' => {
         'metalink'       => "https://mirrors.fedoraproject.org/metalink?repo=epel-${facts['os']['release']['major']}&arch=\$basearch",
