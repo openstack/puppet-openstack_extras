@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://bullseye-bobcat.debian.net/debian',
-        :release  => 'bullseye-bobcat-backports',
+        :location => "http://#{facts[:os]['distro']['codename']}-bobcat.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-bobcat-backports",
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://bullseye-bobcat.debian.net/debian',
-        :release  => 'bullseye-bobcat-backports-nochange',
+        :location => "http://#{facts[:os]['distro']['codename']}-bobcat.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-bobcat-backports-nochange",
         :repos    => 'main'
       )}
 
@@ -78,21 +78,21 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => 'http://bullseye-pike.debian.net/debian',
-        :release  => 'bullseye-pike-backports',
+        :location => "http://#{facts[:os]['distro']['codename']}-pike.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-pike-backports",
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => 'http://bullseye-pike.debian.net/debian',
-        :release  => 'bullseye-pike-backports-nochange',
+        :location => "http://#{facts[:os]['distro']['codename']}-pike.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-pike-backports-nochange",
         :repos    => 'main'
       )}
 
       it { should contain_exec('installing openstack-backports-archive-keyring') }
     end
 
-    context 'when not managing bullseye repo' do
+    context 'when not managing openstack repo' do
       let :params do
         default_params.merge!({ :manage_deb => false })
       end
@@ -102,23 +102,22 @@ apt-get update
 
     context 'with overridden source hash' do
       let :params do
-        default_params.merge!({ :source_hash => {
-                                   'debian_unstable' => {
-                                     'location' => 'http://mymirror/debian/',
-                                     'repos'    => 'main',
-                                     'release'  => 'unstable'
-                                   },
-                                   'puppetlabs' => {
-                                     'location' => 'http://apt.puppetlabs.com',
-                                     'repos'    => 'main',
-                                     'release'  => 'bullseye',
-                                     'key'      => {
-                                       'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
-                                     }
-                                   }
-                                }
-                              })
-        default_params.merge!({ :use_extrepo => false })
+        default_params.merge!({
+          :source_hash => {
+            'debian_unstable' => {
+              'location' => 'http://mymirror/debian/',
+              'repos'    => 'main',
+              'release'  => 'unstable'
+            },
+            'puppetlabs' => {
+              'location' => 'http://apt.puppetlabs.com',
+              'repos'    => 'main',
+              'release'  => facts[:os]['distro']['codename'],
+              'key'      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
+            }
+          },
+          :use_extrepo => false
+        })
       end
 
       it { should contain_apt__source('debian_unstable').with(
@@ -130,7 +129,7 @@ apt-get update
       it { should contain_apt__source('puppetlabs').with(
         :location    => 'http://apt.puppetlabs.com',
         :repos       => 'main',
-        :release     => 'bullseye',
+        :release     => facts[:os]['distro']['codename'],
         :key         => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' },
       )}
 
@@ -139,19 +138,19 @@ apt-get update
 
     context 'with overridden source default' do
       let :params do
-        default_params.merge!({ :source_hash => {
-                                   'debian_unstable' => {
-                                     'location' => 'http://mymirror/debian/',
-                                     'repos'    => 'main',
-                                     'release'  => 'unstable'
-                                   },
-                                }
-                              })
-        default_params.merge!({ :source_defaults => {
-                                   'include' => { 'src' => true }
-                                }
-                              })
-        default_params.merge!({ :use_extrepo => false })
+        default_params.merge!({
+          :source_hash     => {
+            'debian_unstable' => {
+              'location' => 'http://mymirror/debian/',
+              'repos'    => 'main',
+              'release'  => 'unstable'
+            },
+          },
+          :source_defaults => {
+            'include' => { 'src' => true }
+          },
+          :use_extrepo     => false
+        })
       end
 
       it { should contain_apt__source('debian_unstable').with(

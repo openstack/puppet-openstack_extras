@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'jammy-updates/bobcat',
+        :release  => "#{facts[:os]['distro']['codename']}-updates/bobcat",
         :repos    => 'main',
       )}
 
@@ -42,7 +42,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => 'jammy-updates/juno',
+        :release  => "#{facts[:os]['distro']['codename']}-updates/juno",
         :repos    => 'main',
       )}
 
@@ -59,33 +59,34 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     context 'with overridden source hash' do
       let :params do
-        default_params.merge!({ :source_hash => {
-                                   'local_mirror' => {
-                                     'location' => 'http://mymirror/ubuntu/',
-                                     'repos'    => 'main',
-                                     'release'  => 'jammy'
-                                   },
-                                   'puppetlabs' => {
-                                     'location' => 'http://apt.puppetlabs.com',
-                                     'repos'    => 'main',
-                                     'release'  => 'jammy',
-                                     'key'      => {
-                                       'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
-                                     }
-                                   }
-                                }
-                              })
+        default_params.merge!({
+          :source_hash => {
+            'local_mirror' => {
+              'location' => 'http://mymirror/ubuntu/',
+              'repos'    => 'main',
+              'release'  => facts[:os]['distro']['codename'],
+            },
+            'puppetlabs' => {
+              'location' => 'http://apt.puppetlabs.com',
+              'repos'    => 'main',
+              'release'  => facts[:os]['distro']['codename'],
+              'key'      => {
+                'id' => '4BD6EC30', 'server' => 'pgp.mit.edu'
+              }
+            }
+          }
+        })
       end
 
       it { should contain_apt__source('local_mirror').with(
         :location => 'http://mymirror/ubuntu/',
-        :release  => 'jammy',
+        :release  => facts[:os]['distro']['codename'],
         :repos    => 'main'
       )}
 
       it { should contain_apt__source('puppetlabs').with(
         :location => 'http://apt.puppetlabs.com',
-        :release  => 'jammy',
+        :release  => facts[:os]['distro']['codename'],
         :repos    => 'main',
         :key      => { 'id' => '4BD6EC30', 'server' => 'pgp.mit.edu' }
       )}
@@ -95,24 +96,24 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     context 'with overridden source default' do
       let :params do
-        default_params.merge!({ :source_hash => {
-                                   'local_mirror' => {
-                                     'location' => 'http://mymirror/ubuntu/',
-                                     'repos'    => 'main',
-                                     'release'  => 'jammy'
-                                   }
-                                 }
-                             })
-        default_params.merge!({ :source_defaults => {
-                                   'include' => { 'src' => true }
-                                }
-                              })
+        default_params.merge!({
+          :source_hash     => {
+            'local_mirror' => {
+              'location' => 'http://mymirror/ubuntu/',
+              'repos'    => 'main',
+              'release'  => facts[:os]['distro']['codename']
+            }
+          },
+          :source_defaults => {
+            'include' => { 'src' => true }
+          }
+        })
       end
 
       it { should contain_apt__source('local_mirror').with(
         :include  => { 'src' => true },
         :location => 'http://mymirror/ubuntu/',
-        :release  => 'jammy',
+        :release  => facts[:os]['distro']['codename'],
         :repos    => 'main',
       )}
 
@@ -121,13 +122,15 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     context 'with overridden uca repo name' do
       let :params do
-        default_params.merge!({ :repo => 'proposed',
-                                :uca_location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive' })
+        default_params.merge!({
+          :repo         => 'proposed',
+          :uca_location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive'
+        })
       end
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => 'jammy-proposed/bobcat',
+        :release  => "#{facts[:os]['distro']['codename']}-proposed/bobcat",
         :repos    => 'main',
       )}
     end
