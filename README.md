@@ -19,7 +19,6 @@ openstack_extras
 7. [Release Notes - Release notes for the project](#release-notes)
 8. [Contributors - Those with commits](#contributors)
 9. [Repository - The project source code repository](#repository)
-10. [Versioning - Notes on the version numbering scheme](#versioning)
 
 Overview
 --------
@@ -142,18 +141,3 @@ Repository
 ----------
 
 * https://opendev.org/openstack/puppet-openstack_extras
-
-Versioning
-----------
-
-This module has been given version 5 to track the puppet-openstack modules. The
-versioning for the puppet-openstack modules are as follows:
-
-```
-Puppet Module :: OpenStack Version :: OpenStack Codename
-2.0.0         -> 2013.1.0          -> Grizzly
-3.0.0         -> 2013.2.0          -> Havana
-4.0.0         -> 2014.1.0          -> Icehouse
-5.0.0         -> 2014.2.0          -> Juno
-6.0.0         -> 2015.1.0          -> Kilo
-```
