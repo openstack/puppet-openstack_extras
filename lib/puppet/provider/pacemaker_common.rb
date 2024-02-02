@@ -1,4 +1,7 @@
-require 'rexml/document'
+begin
+  require 'rexml/document'
+rescue LoadError
+end
 
 class Puppet::Provider::Pacemaker_common < Puppet::Provider
 
