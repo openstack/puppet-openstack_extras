@@ -13,8 +13,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :before => 'Anchor[openstack_extras_redhat]',
       )}
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-bobcat/",
-        :descr           => "OpenStack Bobcat Repository",
+        :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-caracal/",
+        :descr           => "OpenStack Caracal Repository",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled         => '1',
         :gpgcheck        => '1',
@@ -126,7 +126,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/SIGs/$stream/cloud/$basearch/openstack-bobcat/",
+        :baseurl => "http://foo.bar/SIGs/$stream/cloud/$basearch/openstack-caracal/",
       )}
     end
 
