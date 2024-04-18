@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``openstack_extras::pacemaker::service`` defined resource type has
+    been removed.

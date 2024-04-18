@@ -1,5 +1,5 @@
 ---
 deprecations:
   - |
-    The ``openstack_extras::pacemaker::serices`` defined resource type has been
+    The ``openstack_extras::pacemaker::service`` defined resource type has been
     deprecated and will be removed in a future release.
