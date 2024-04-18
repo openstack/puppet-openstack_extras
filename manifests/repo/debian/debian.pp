@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add a
 #   Debian apt source for.
-#   Defaults to 'bobcat'
+#   Defaults to 'caracal'
 #
 # [*manage_deb*]
 #   (optional) Whether or not to add the default
@@ -41,7 +41,7 @@
 #   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
 class openstack_extras::repo::debian::debian(
-  String[1] $release       = 'bobcat',
+  String[1] $release       = 'caracal',
   Boolean $manage_deb      = true,
   Boolean $package_require = false,
   Boolean $use_extrepo     = true,

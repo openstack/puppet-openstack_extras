@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add an
 #   Ubuntu Cloud Archive APT source for.
-#   Defaults to 'bobcat'
+#   Defaults to 'caracal'
 #
 # [*manage_uca*]
 #   (optional) Whether or not to add the default
@@ -42,7 +42,7 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu(
-  String[1] $release       = 'bobcat',
+  String[1] $release       = 'caracal',
   Boolean $manage_uca      = true,
   String[1] $repo          = 'updates',
   Hash $source_hash        = {},
