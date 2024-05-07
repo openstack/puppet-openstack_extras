@@ -113,12 +113,6 @@
 #   (Optional) Object API version to use.
 #   Defaults to undef.
 #
-# DEPRECATED PARAMETERS
-#
-# [*tenant_name*]
-#   (Optional) Tenant for this account as defined in keystone
-#   Defaults to undef.
-#
 class openstack_extras::auth_file (
   $password,
   $auth_url               = 'http://127.0.0.1:5000/v3/',
@@ -146,14 +140,7 @@ class openstack_extras::auth_file (
   $volume_api_version     = undef,
   $identity_api_version   = '3',
   $object_api_version     = undef,
-  # DEPRECATED PARAMETERS
-  $tenant_name            = undef,
 ) {
-
-  if $tenant_name != undef {
-    warning('tenant_name is deprecated and will be removed in a future release. \
-Use project_name instead')
-  }
 
   file { $path:
     owner     => 'root',
