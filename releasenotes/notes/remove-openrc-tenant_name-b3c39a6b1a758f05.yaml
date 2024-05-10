@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The deprecated ``openstack_extras::auth_file::tenant_name`` parameter has
+    been removed.
