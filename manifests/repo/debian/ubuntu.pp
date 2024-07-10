@@ -42,13 +42,13 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu(
-  String[1] $release       = 'caracal',
-  Boolean $manage_uca      = true,
-  String[1] $repo          = 'updates',
-  Hash $source_hash        = {},
-  Hash $source_defaults    = {},
-  Boolean $package_require = false,
-  String[1] $uca_location  = 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+  String[1] $release                = 'caracal',
+  Boolean $manage_uca               = true,
+  Enum['updates', 'proposed'] $repo = 'updates',
+  Hash $source_hash                 = {},
+  Hash $source_defaults             = {},
+  Boolean $package_require          = false,
+  String[1] $uca_location           = 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
 ) {
 
   if $manage_uca {
