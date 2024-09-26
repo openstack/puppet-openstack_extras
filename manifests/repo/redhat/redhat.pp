@@ -7,7 +7,7 @@
 #
 # [*release*]
 #   (Optional) The OpenStack release to use.
-#   Defaults to 'caracal'
+#   Defaults to 'dalmatian'
 #
 # [*manage_rdo*]
 #   (Optional) Whether to create a yumrepo resource for the
@@ -72,7 +72,7 @@
 #   Defaults to false
 #
 class openstack_extras::repo::redhat::redhat (
-  String[1] $release           = 'caracal',
+  String[1] $release           = 'dalmatian',
   Boolean $manage_rdo          = true,
   Hash $repo_hash              = {},
   Hash $repo_source_hash       = {},

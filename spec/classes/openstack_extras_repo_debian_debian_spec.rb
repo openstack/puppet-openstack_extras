@@ -14,7 +14,7 @@ describe 'openstack_extras::repo::debian::debian' do
 
     let :paramclass_defaults do
       {
-        :release => 'caracal'
+        :release => 'dalmatian'
       }
     end
 
@@ -23,11 +23,11 @@ describe 'openstack_extras::repo::debian::debian' do
     end
 
     context 'with default params' do
-      it { should contain_exec('/usr/bin/extrepo enable openstack_caracal').with(
+      it { should contain_exec('/usr/bin/extrepo enable openstack_dalmatian').with(
         :command => "/bin/true # comment to satisfy puppet syntax requirements
 apt-get update
 apt-get install -y extrepo
-extrepo enable openstack_caracal
+extrepo enable openstack_dalmatian
 apt-get update
 ",
       )}
@@ -58,14 +58,14 @@ apt-get update
       end
 
       it { should contain_apt__source('debian-openstack-backports').with(
-        :location => "http://#{facts[:os]['distro']['codename']}-caracal.debian.net/debian",
-        :release  => "#{facts[:os]['distro']['codename']}-caracal-backports",
+        :location => "http://#{facts[:os]['distro']['codename']}-dalmatian.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-dalmatian-backports",
         :repos    => 'main',
       )}
 
       it { should contain_apt__source('debian-openstack-backports-nochange').with(
-        :location => "http://#{facts[:os]['distro']['codename']}-caracal.debian.net/debian",
-        :release  => "#{facts[:os]['distro']['codename']}-caracal-backports-nochange",
+        :location => "http://#{facts[:os]['distro']['codename']}-dalmatian.debian.net/debian",
+        :release  => "#{facts[:os]['distro']['codename']}-dalmatian-backports-nochange",
         :repos    => 'main'
       )}
 
