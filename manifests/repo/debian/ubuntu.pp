@@ -6,13 +6,13 @@
 # === Parameters:
 #
 # [*release*]
-#   (optional) The OpenStack release to add an
-#   Ubuntu Cloud Archive APT source for.
-#   Defaults to 'dalmatian'
+#   (optional) The OpenStack release to add an Ubuntu Cloud Archive APT source
+#   for.
+#   Defaults to 'epoxy'
 #
 # [*manage_uca*]
-#   (optional) Whether or not to add the default
-#   Ubuntu Cloud Archive APT source
+#   (optional) Whether or not to add the default Ubuntu Cloud Archive APT
+#   source.
 #   Defaults to true
 #
 # [*repo*]
@@ -42,7 +42,7 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu(
-  String[1] $release                = 'dalmatian',
+  String[1] $release                = 'epoxy',
   Boolean $manage_uca               = true,
   Enum['updates', 'proposed'] $repo = 'updates',
   Hash $source_hash                 = {},
