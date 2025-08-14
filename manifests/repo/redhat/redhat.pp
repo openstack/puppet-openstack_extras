@@ -91,7 +91,7 @@ class openstack_extras::repo::redhat::redhat (
 
   validate_yum_hash($repo_hash)
 
-  $_repo_defaults = merge({
+  $_repo_defaults = stdlib::merge({
     'enabled'    => '1',
     'gpgcheck'   => '1',
     'mirrorlist' => 'absent',
@@ -99,7 +99,7 @@ class openstack_extras::repo::redhat::redhat (
     'require'    => 'Anchor[openstack_extras_redhat]',
   }, $repo_defaults)
 
-  $_gpgkey_defaults = merge({
+  $_gpgkey_defaults = stdlib::merge({
     'owner'  => 'root',
     'group'  => 'root',
     'mode'   => '0644',

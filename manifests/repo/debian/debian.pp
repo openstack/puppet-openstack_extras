@@ -64,7 +64,7 @@ class openstack_extras::repo::debian::debian(
       # because this introduces a dependency loop later on if
       # $package_require is set to true.
       # So please leave this commented.
-      #ensure_packages(['extrepo',], {'ensure' => 'present'})
+      #stdlib::ensure_packages(['extrepo',], {'ensure' => 'present'})
 
       exec { "/usr/bin/extrepo enable openstack_${lowercase_release}":
         command   => "/bin/true # comment to satisfy puppet syntax requirements
