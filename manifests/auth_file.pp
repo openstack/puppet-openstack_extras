@@ -143,11 +143,12 @@ class openstack_extras::auth_file (
 ) {
 
   file { $path:
+    ensure    => file,
     owner     => 'root',
     group     => 'root',
     mode      => '0700',
     show_diff => false,
     tag       => ['openrc'],
-    content   => template('openstack_extras/openrc.erb')
+    content   => template('openstack_extras/openrc.erb'),
   }
 }

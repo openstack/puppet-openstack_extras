@@ -119,13 +119,13 @@ class openstack_extras::repo::redhat::redhat (
         'descr'           => "OpenStack ${release_cap} Repository",
         'gpgkey'          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         'module_hotfixes' => true,
-      }
+      },
     }
 
     $rdokey_hash = {
       '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud' => {
-        'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud'
-      }
+        'source' => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud',
+      },
     }
 
     create_resources('file', $rdokey_hash, $_gpgkey_defaults)
@@ -140,14 +140,14 @@ class openstack_extras::repo::redhat::redhat (
         'metalink'       => "https://mirrors.fedoraproject.org/metalink?repo=epel-${facts['os']['release']['major']}&arch=\$basearch",
         'descr'          => "Extra Packages for Enterprise Linux ${facts['os']['release']['major']} - \$basearch",
         'gpgkey'         => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-${facts['os']['release']['major']}",
-        'failovermethod' => 'priority'
-      }
+        'failovermethod' => 'priority',
+      },
     }
 
     $epelkey_hash = {
       "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-${facts['os']['release']['major']}" => {
-        'source' => "puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-${facts['os']['release']['major']}"
-      }
+        'source' => "puppet:///modules/openstack_extras/RPM-GPG-KEY-EPEL-${facts['os']['release']['major']}",
+      },
     }
 
     create_resources('file', $epelkey_hash, $_gpgkey_defaults)
@@ -159,6 +159,7 @@ class openstack_extras::repo::redhat::redhat (
 
   $repo_source_hash.each |$filename, $url| {
     file { $filename:
+      ensure  => file,
       path    => "/etc/yum.repos.d/${filename}",
       source  => $url,
       replace => $repo_replace,
@@ -168,7 +169,7 @@ class openstack_extras::repo::redhat::redhat (
 
   if $purge_unmanaged {
     resources { 'yumrepo':
-      purge => true
+      purge => true,
     }
   }
 

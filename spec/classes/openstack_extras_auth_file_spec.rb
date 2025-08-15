@@ -10,6 +10,7 @@ describe 'openstack_extras::auth_file' do
       end
 
       it { is_expected.to contain_file('/root/openrc').with(
+        :ensure    => 'file',
         :owner     => 'root',
         :group     => 'root',
         :mode      => '0700',
@@ -72,6 +73,7 @@ describe 'openstack_extras::auth_file' do
       end
 
       it { is_expected.to contain_file('/path/to/file').with(
+        :ensure    => 'file',
         :owner     => 'root',
         :group     => 'root',
         :mode      => '0700',

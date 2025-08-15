@@ -274,6 +274,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_file('delorean.repo').with(
+        :ensure  => 'file',
         :path    => '/etc/yum.repos.d/delorean.repo',
         :source  => 'https://trunk.rdoproject.org/centos/puppet-passed-ci/delorean.repo',
         :replace => true,
@@ -281,6 +282,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       )}
 
       it { should contain_file('delorean-deps.repo').with(
+        :ensure  => 'file',
         :path    => '/etc/yum.repos.d/delorean-deps.repo',
         :source  => 'https://trunk.rdoproject.org/centos/delorean-deps.repo',
         :replace => true,
@@ -299,6 +301,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_file('thing.repo').with(
+        :ensure  => 'file',
         :path    => '/etc/yum.repos.d/thing.repo',
         :source  => 'https://trunk.rdoproject.org/some/thing.repo',
         :replace => false,
