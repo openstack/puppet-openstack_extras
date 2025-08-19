@@ -141,7 +141,6 @@ class openstack_extras::auth_file (
   $identity_api_version   = '3',
   $object_api_version     = undef,
 ) {
-
   file { $path:
     ensure    => file,
     owner     => 'root',

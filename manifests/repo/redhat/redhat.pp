@@ -88,7 +88,6 @@ class openstack_extras::repo::redhat::redhat (
   # DEPRECATED PARAMETERS
   Boolean $manage_epel         = false,
 ) {
-
   validate_yum_hash($repo_hash)
 
   $_repo_defaults = stdlib::merge({

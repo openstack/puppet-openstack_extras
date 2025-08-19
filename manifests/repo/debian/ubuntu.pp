@@ -41,7 +41,7 @@
 #   (optional) Ubuntu Cloud Archives repository location.
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
-class openstack_extras::repo::debian::ubuntu(
+class openstack_extras::repo::debian::ubuntu (
   String[1] $release                = 'epoxy',
   Boolean $manage_uca               = true,
   Enum['updates', 'proposed'] $repo = 'updates',
@@ -50,7 +50,6 @@ class openstack_extras::repo::debian::ubuntu(
   Boolean $package_require          = false,
   String[1] $uca_location           = 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
 ) {
-
   if $manage_uca {
     exec { 'installing ubuntu-cloud-keyring':
       command     => '/usr/bin/apt-get -y install ubuntu-cloud-keyring',

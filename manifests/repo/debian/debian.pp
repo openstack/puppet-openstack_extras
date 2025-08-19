@@ -38,7 +38,7 @@
 #   (optional) Debian package repository location.
 #   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
-class openstack_extras::repo::debian::debian(
+class openstack_extras::repo::debian::debian (
   String[1] $release       = 'epoxy',
   Boolean $manage_deb      = true,
   Boolean $package_require = false,
@@ -48,11 +48,9 @@ class openstack_extras::repo::debian::debian(
   Hash $source_defaults    = {},
   String[1] $deb_location  = "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian",
 ) {
-
   $lowercase_release = downcase($release)
 
   if $manage_deb {
-
     if $use_extrepo {
       # Extrepo is much nicer than what's below, because
       # the repositories are authenticated by extrepo itself.
@@ -81,7 +79,7 @@ apt-get update
       if $package_require {
         Exec["/usr/bin/extrepo enable openstack_${lowercase_release}"] -> Exec['apt_update']
       }
-    }else{
+    } else {
       exec { 'installing openstack-backports-archive-keyring':
         command     => "/usr/bin/apt-get update ; \
                      wget ${deb_location}/dists/pubkey.gpg ; \
