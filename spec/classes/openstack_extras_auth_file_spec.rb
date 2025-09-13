@@ -51,7 +51,7 @@ describe 'openstack_extras::auth_file' do
           :username                 => 'myuser',
           :project_name             => 'myproject',
           :region_name              => 'myregion',
-          :use_no_cache             => 'false',
+          :use_no_cache             => false,
           :os_interface             => 'internal',
           :os_endpoint_type         => 'internalURL',
           :cinder_endpoint_type     => 'internalURL',
