@@ -3,14 +3,12 @@ require 'spec_helper'
 describe 'openstack_extras::repo::redhat::redhat' do
   shared_examples 'openstack_extras::repo::redhat::redhat' do
     context 'with default parameters' do
-      it { should contain_anchor('openstack_extras_redhat') }
-
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud').with(
         :source => 'puppet:///modules/openstack_extras/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :owner  => 'root',
         :group  => 'root',
         :mode   => '0644',
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
       it { should contain_yumrepo('rdo-release').with(
         :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-epoxy/",
@@ -21,7 +19,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :mirrorlist      => 'absent',
         :module_hotfixes => true,
         :notify          => 'Exec[yum_refresh]',
-        :require         => 'Anchor[openstack_extras_redhat]',
+        :tag             => 'openstack-extras-repo',
       )}
 
       it { should_not contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}") }
@@ -48,8 +46,6 @@ describe 'openstack_extras::repo::redhat::redhat' do
         }
       end
 
-      it { should contain_anchor('openstack_extras_redhat') }
-
       it { should_not contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud') }
       it { should_not contain_yumrepo('rdo-release') }
 
@@ -58,7 +54,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :owner  => 'root',
         :group  => 'root',
         :mode   => '0644',
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
 
       it { should contain_yumrepo('epel').with(
@@ -70,7 +66,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :gpgcheck       => '1',
         :mirrorlist     => 'absent',
         :notify         => 'Exec[yum_refresh]',
-        :require        => 'Anchor[openstack_extras_redhat]',
+        :tag            => 'openstack-extras-repo',
       )}
 
       it { should contain_resources('yumrepo').with_purge(true) }
@@ -162,7 +158,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :group  => 'root',
         :mode   => '0644',
         :force  => true,
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
 
       it { should contain_yumrepo('rdo-release').with(
@@ -171,7 +167,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :mirrorlist => 'absent',
         :proxy      => 'http://example.com:8000',
         :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :tag        => 'openstack-extras-repo',
       )}
 
       it { should contain_file("/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-#{facts[:os]['release']['major']}").with(
@@ -179,7 +175,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :group  => 'root',
         :mode   => '0644',
         :force  => true,
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
 
       it { should contain_yumrepo('epel').with(
@@ -188,7 +184,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :mirrorlist => 'absent',
         :proxy      => 'http://example.com:8000',
         :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :tag        => 'openstack-extras-repo',
       )}
 
       it { should contain_yumrepo('CentOS-Example').with(
@@ -197,7 +193,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :mirrorlist => 'absent',
         :proxy      => 'http://example.com:8000',
         :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :tag        => 'openstack-extras-repo',
       )}
 
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-Example').with(
@@ -205,7 +201,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :group  => 'root',
         :mode   => '0644',
         :force  => true,
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
     end
 
@@ -240,7 +236,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS',
         :mirrorlist => 'absent',
         :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :tag        => 'openstack-extras-repo',
       )}
 
       it { should contain_yumrepo('CentOS-Updates').with(
@@ -251,7 +247,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :gpgkey     => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS',
         :mirrorlist => 'absent',
         :notify     => 'Exec[yum_refresh]',
-        :require    => 'Anchor[openstack_extras_redhat]',
+        :tag        => 'openstack-extras-repo',
       )}
 
       it { should contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-Something').with(
@@ -259,7 +255,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :owner  => 'root',
         :group  => 'root',
         :mode   => '0644',
-        :before => 'Anchor[openstack_extras_redhat]',
+        :tag    => 'openstack-extras-repo',
       )}
     end
 

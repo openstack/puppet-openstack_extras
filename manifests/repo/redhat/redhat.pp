@@ -95,17 +95,15 @@ class openstack_extras::repo::redhat::redhat (
     'gpgcheck'   => '1',
     'mirrorlist' => 'absent',
     'notify'     => 'Exec[yum_refresh]',
-    'require'    => 'Anchor[openstack_extras_redhat]',
+    'tag'        => 'openstack-extras-repo',
   }, $repo_defaults)
 
   $_gpgkey_defaults = stdlib::merge({
     'owner'  => 'root',
     'group'  => 'root',
     'mode'   => '0644',
-    'before' => 'Anchor[openstack_extras_redhat]',
+    'tag'    => 'openstack-extras-repo',
   }, $gpgkey_defaults)
-
-  anchor { 'openstack_extras_redhat': }
 
   if $manage_rdo {
     $release_cap = capitalize($release)
@@ -155,6 +153,8 @@ class openstack_extras::repo::redhat::redhat (
 
   create_resources('yumrepo', $repo_hash, $_repo_defaults)
   create_resources('file', $gpgkey_hash, $_gpgkey_defaults)
+
+  File<| tag == 'openstack-extras-repo' |> -> Yumrepo<| tag == 'openstack-extras-repo' |>
 
   $repo_source_hash.each |$filename, $url| {
     file { $filename:
