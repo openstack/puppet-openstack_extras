@@ -1,4 +1,8 @@
-require 'puppetlabs_spec_helper/module_spec_helper'
+if ENV.fetch('IMPLEMENTATION', 'puppet') == 'puppet'
+  require 'puppetlabs_spec_helper/module_spec_helper'
+else
+  require 'voxpupuli/test/spec_helper'
+end
 require 'shared_examples'
 require 'puppet-openstack_spec_helper/facts'
 
