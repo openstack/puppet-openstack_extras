@@ -19,6 +19,7 @@ Puppet::Functions.create_function(:validate_yum_hash) do
       'metadata_expire',
       'metalink',
       'mirrorlist',
+      'module_hotfixes',
       'priority',
       'protect',
       'provider',
