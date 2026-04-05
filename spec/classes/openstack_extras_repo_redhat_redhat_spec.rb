@@ -11,8 +11,8 @@ describe 'openstack_extras::repo::redhat::redhat' do
         :tag    => 'openstack-extras-repo',
       )}
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-flamingo/",
-        :descr           => "OpenStack Flamingo Repository",
+        :baseurl         => "http://mirror.stream.centos.org/SIGs/$stream/cloud/$basearch/openstack-gazpacho/",
+        :descr           => "OpenStack Gazpacho Repository",
         :gpgkey          => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud',
         :enabled         => '1',
         :gpgcheck        => '1',
@@ -122,7 +122,7 @@ describe 'openstack_extras::repo::redhat::redhat' do
       end
 
       it { should contain_yumrepo('rdo-release').with(
-        :baseurl => "http://foo.bar/SIGs/$stream/cloud/$basearch/openstack-flamingo/",
+        :baseurl => "http://foo.bar/SIGs/$stream/cloud/$basearch/openstack-gazpacho/",
       )}
     end
 
