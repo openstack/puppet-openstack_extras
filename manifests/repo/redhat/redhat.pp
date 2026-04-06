@@ -7,7 +7,7 @@
 #
 # [*release*]
 #   (Optional) The OpenStack release to use.
-#   Defaults to 'flamingo'
+#   Defaults to 'gazpacho'
 #
 # [*manage_rdo*]
 #   (Optional) Whether to create a yumrepo resource for the
@@ -72,7 +72,7 @@
 #   Defaults to false
 #
 class openstack_extras::repo::redhat::redhat (
-  String[1] $release           = 'flamingo',
+  String[1] $release           = 'gazpacho',
   Boolean $manage_rdo          = true,
   Hash $repo_hash              = {},
   Hash $repo_source_hash       = {},

@@ -13,7 +13,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
     let :paramclass_defaults do
       {
-        :release => 'flamingo'
+        :release => 'gazpacho'
       }
     end
 
@@ -28,7 +28,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        :release  => "#{facts[:os]['distro']['codename']}-updates/flamingo",
+        :release  => "#{facts[:os]['distro']['codename']}-updates/gazpacho",
         :repos    => 'main',
       )}
 
@@ -130,7 +130,7 @@ describe 'openstack_extras::repo::debian::ubuntu' do
 
       it { should contain_apt__source('ubuntu-cloud-archive').with(
         :location => 'http://mirror.dfw.rax.openstack.org/ubuntu-cloud-archive',
-        :release  => "#{facts[:os]['distro']['codename']}-proposed/flamingo",
+        :release  => "#{facts[:os]['distro']['codename']}-proposed/gazpacho",
         :repos    => 'main',
       )}
     end
