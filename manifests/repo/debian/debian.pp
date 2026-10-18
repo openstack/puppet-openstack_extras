@@ -7,7 +7,7 @@
 #
 # [*release*]
 #   (optional) The OpenStack release to add a Debian apt source for.
-#   Defaults to 'gazpacho'
+#   Defaults to 'hibiscus'
 #
 # [*manage_deb*]
 #   (optional) Whether or not to add the default Debian APT source
@@ -39,7 +39,7 @@
 #   Defaults to "http://${facts['os']['distro']['codename']}-${release}.debian.net/debian"
 #
 class openstack_extras::repo::debian::debian (
-  String[1] $release       = 'gazpacho',
+  String[1] $release       = 'hibiscus',
   Boolean $manage_deb      = true,
   Boolean $package_require = false,
   Boolean $use_extrepo     = true,

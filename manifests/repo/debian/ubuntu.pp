@@ -8,7 +8,7 @@
 # [*release*]
 #   (optional) The OpenStack release to add an Ubuntu Cloud Archive APT source
 #   for.
-#   Defaults to 'gazpacho'
+#   Defaults to 'hibiscus'
 #
 # [*manage_uca*]
 #   (optional) Whether or not to add the default Ubuntu Cloud Archive APT
@@ -42,7 +42,7 @@
 #   Defaults to $::openstack_extras::repo::debian::params::uca_location
 #
 class openstack_extras::repo::debian::ubuntu (
-  String[1] $release                = 'gazpacho',
+  String[1] $release                = 'hibiscus',
   Boolean $manage_uca               = true,
   Enum['updates', 'proposed'] $repo = 'updates',
   Hash $source_hash                 = {},
